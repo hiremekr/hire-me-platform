@@ -4,13 +4,14 @@ import { Footer } from './Footer'
 interface JobApplicationFormProps {
   visaType: string
   visaName: string
+  mobileVisaName?: string
   description: string
   additionalFields?: any
   specialNote?: string
 }
 
 export const JobApplicationForm = (props: JobApplicationFormProps) => {
-  const { visaType, visaName, description, additionalFields, specialNote } = props
+  const { visaType, visaName, mobileVisaName, description, additionalFields, specialNote } = props
   
   return (
     <div>
@@ -21,8 +22,8 @@ export const JobApplicationForm = (props: JobApplicationFormProps) => {
           
           <div class="text-center mb-8">
             <h1 class="text-3xl font-bold text-navy mb-2">
-              <span class="hidden md:inline">{visaType} {visaName} 신청</span>
-              <span class="md:hidden whitespace-pre-line">{visaName}</span>
+              <span class="hidden md:inline">{visaType} {visaName}</span>
+              <span class="md:hidden whitespace-pre-line">{mobileVisaName || visaName}</span>
             </h1>
             <p class="text-gray whitespace-pre-line">{description}</p>
             {specialNote && (

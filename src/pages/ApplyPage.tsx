@@ -399,7 +399,7 @@ export const ApplyPage = () => {
               <ul class="space-y-3 mb-8 text-gray">
                 <li class="flex items-center">
                   <i class="fas fa-check-circle text-teal-blue mr-3"></i>
-                  한국에서 2년 이상 체류 EPS 경력 증명서 필수
+                  한국에서 2년 이상 체류
                 </li>
                 <li class="flex items-center">
                   <i class="fas fa-check-circle text-teal-blue mr-3"></i>
