@@ -32,9 +32,12 @@ export const CompanyPage = () => {
             <h2 class="text-4xl font-bold text-navy mb-4" style="font-family: 'Cardo', serif;">
               현재 구직 중인 검증된 인재들
             </h2>
-            <p class="text-xl text-gray">
+            <p class="text-xl text-gray mb-4">
               실시간으로 업데이트되는 우수한 외국인재 풀
             </p>
+            <a href="/company/talents" class="text-teal-blue hover:text-green font-semibold transition-colors">
+              전체 인재 풀 보기 ({candidates.length}명) →
+            </a>
           </div>
 
           {/* 롤링 배너 */}
@@ -74,10 +77,10 @@ export const CompanyPage = () => {
                     </div>
                     
                     <a 
-                      href={`/company/apply?candidate=${candidate.id}`}
+                      href={`/company/request?talent_id=${candidate.id}`}
                       class="block text-center py-3 px-6 rounded-xl font-bold transition-all bg-teal-blue text-white hover:bg-opacity-90 hover:no-underline"
                     >
-                      이 인재 상세보기 →
+                      이 인재 정보 요청 →
                     </a>
                   </div>
                 ))}
@@ -175,6 +178,19 @@ export const CompanyPage = () => {
                   />
                 </div>
 
+                <div>
+                  <label for="job-posting-link" class="block text-sm font-semibold text-navy mb-2">
+                    채용공고 링크
+                  </label>
+                  <input 
+                    type="url" 
+                    id="job-posting-link" 
+                    name="jobPostingLink"
+                    class="form-input"
+                    placeholder="https://www.company.com/careers 또는 사람인/잡코리아 링크"
+                  />
+                </div>
+
                 <button 
                   type="submit" 
                   id="quick-submit-btn"
@@ -189,7 +205,7 @@ export const CompanyPage = () => {
             <div class="mt-6 text-center text-sm text-gray">
               <p>
                 <i class="fas fa-info-circle mr-2"></i>
-                ※ 상세한 채용 정보는 인재 상세보기를 통해 제공해주세요
+                ※ 상세한 채용 정보는 <a href="/company/apply" class="text-teal-blue hover:underline">상세 신청하기</a>를 통해 제공해주세요
               </p>
             </div>
           </div>

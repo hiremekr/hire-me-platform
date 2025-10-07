@@ -619,6 +619,100 @@ function toggleExperienceField(hasExperience) {
   }
 }
 
+// ========== 인재풀 필터링 기능 ==========
+
+// 인재 정보 요청 함수
+function requestTalentInfo(talentId) {
+  // 모달 또는 폼 페이지로 이동
+  window.location.href = `/company/request?talent_id=${talentId}`;
+}
+
+// 필터링 함수
+function filterTalents() {
+  const nationalityFilter = document.getElementById('nationality-filter');
+  const visaFilter = document.getElementById('visa-filter');
+  const genderFilter = document.getElementById('gender-filter');
+  
+  if (!nationalityFilter || !visaFilter || !genderFilter) return;
+  
+  const nationalityValue = nationalityFilter.value;
+  const visaValue = visaFilter.value;
+  const genderValue = genderFilter.value;
+  
+  const cards = document.querySelectorAll('.talent-card');
+  let visibleCount = 0;
+  
+  cards.forEach(card => {
+    const nationality = card.getAttribute('data-nationality');
+    const visa = card.getAttribute('data-visa');
+    const gender = card.getAttribute('data-gender');
+    
+    const nationalityMatch = !nationalityValue || nationality === nationalityValue;
+    const visaMatch = !visaValue || visa === visaValue;
+    const genderMatch = !genderValue || gender === genderValue;
+    
+    if (nationalityMatch && visaMatch && genderMatch) {
+      card.style.display = 'block';
+      visibleCount++;
+    } else {
+      card.style.display = 'none';
+    }
+  });
+  
+  // 결과 카운트 업데이트
+  const filterCount = document.getElementById('filter-count');
+  if (filterCount) {
+    filterCount.textContent = visibleCount;
+  }
+  
+  // 검색 결과가 없을 때 메시지 표시
+  const noResults = document.getElementById('no-results');
+  const talentGrid = document.getElementById('talent-grid');
+  
+  if (noResults && talentGrid) {
+    if (visibleCount === 0) {
+      noResults.classList.remove('hidden');
+      talentGrid.style.display = 'none';
+    } else {
+      noResults.classList.add('hidden');
+      talentGrid.style.display = 'grid';
+    }
+  }
+}
+
+// 필터 초기화 함수
+function clearFilters() {
+  const nationalityFilter = document.getElementById('nationality-filter');
+  const visaFilter = document.getElementById('visa-filter');
+  const genderFilter = document.getElementById('gender-filter');
+  
+  if (nationalityFilter) nationalityFilter.value = '';
+  if (visaFilter) visaFilter.value = '';
+  if (genderFilter) genderFilter.value = '';
+  
+  // 모든 카드 표시
+  const cards = document.querySelectorAll('.talent-card');
+  cards.forEach(card => {
+    card.style.display = 'block';
+  });
+  
+  // 전체 카운트로 복원
+  const totalCards = cards.length;
+  const filterCount = document.getElementById('filter-count');
+  if (filterCount) {
+    filterCount.textContent = totalCards;
+  }
+  
+  // 검색 결과 메시지 숨기기
+  const noResults = document.getElementById('no-results');
+  const talentGrid = document.getElementById('talent-grid');
+  
+  if (noResults && talentGrid) {
+    noResults.classList.add('hidden');
+    talentGrid.style.display = 'grid';
+  }
+}
+
 // 페이지 로드 시 캐러셀 초기화
 document.addEventListener('DOMContentLoaded', function() {
   // 기존 코드...
@@ -626,5 +720,15 @@ document.addEventListener('DOMContentLoaded', function() {
   // 캐러셀 초기화 (회사 페이지에서만)
   if (window.location.pathname === '/company') {
     initCarousel();
+  }
+  
+  // 인재풀 페이지 초기화
+  if (window.location.pathname === '/company/talents') {
+    // 인재 카드의 데이터 속성 설정
+    const cards = document.querySelectorAll('.talent-card');
+    cards.forEach((card, index) => {
+      // 실제 데이터를 기반으로 속성 설정 (현재는 하드코딩된 값들 사용)
+      // 향후 서버에서 받은 데이터로 동적으로 설정 가능
+    });
   }
 });

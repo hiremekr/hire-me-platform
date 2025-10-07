@@ -108,7 +108,7 @@ export const CompanyApplyPage = () => {
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label for="company-name" class="block text-sm font-semibold text-navy mb-2">
-                      회사명 *
+                      회사명
                     </label>
                     <input 
                       type="text" 
@@ -116,13 +116,12 @@ export const CompanyApplyPage = () => {
                       name="companyName"
                       class="form-input"
                       placeholder="예: OO제조(주)"
-                      required
                     />
                   </div>
                   
                   <div>
                     <label for="business-number" class="block text-sm font-semibold text-navy mb-2">
-                      사업자등록번호 *
+                      사업자등록번호
                     </label>
                     <input 
                       type="text" 
@@ -131,7 +130,6 @@ export const CompanyApplyPage = () => {
                       class="form-input"
                       placeholder="000-00-00000"
                       pattern="[0-9]{3}-[0-9]{2}-[0-9]{5}"
-                      required
                     />
                   </div>
                   
@@ -164,7 +162,7 @@ export const CompanyApplyPage = () => {
                 
                 <div class="mt-6">
                   <label for="company-address" class="block text-sm font-semibold text-navy mb-2">
-                    회사 주소 *
+                    회사 주소
                   </label>
                   <input 
                     type="text" 
@@ -172,7 +170,6 @@ export const CompanyApplyPage = () => {
                     name="companyAddress"
                     class="form-input"
                     placeholder="서울특별시 강남구 테헤란로 123"
-                    required
                   />
                 </div>
                 
@@ -214,7 +211,7 @@ export const CompanyApplyPage = () => {
                   
                   <div>
                     <label for="manager-position" class="block text-sm font-semibold text-navy mb-2">
-                      담당자 직책 *
+                      담당자 직책
                     </label>
                     <input 
                       type="text" 
@@ -222,7 +219,6 @@ export const CompanyApplyPage = () => {
                       name="managerPosition"
                       class="form-input"
                       placeholder="인사팀장"
-                      required
                     />
                   </div>
                   
@@ -242,7 +238,7 @@ export const CompanyApplyPage = () => {
                   
                   <div>
                     <label for="manager-email" class="block text-sm font-semibold text-navy mb-2">
-                      담당자 이메일 *
+                      담당자 이메일
                     </label>
                     <input 
                       type="email" 
@@ -250,14 +246,13 @@ export const CompanyApplyPage = () => {
                       name="managerEmail"
                       class="form-input"
                       placeholder="hr@company.com"
-                      required
                     />
                   </div>
                 </div>
                 
                 <div class="mt-6">
                   <label for="business-card" class="block text-sm font-semibold text-navy mb-2">
-                    명함 파일 업로드 * <span class="text-sm text-gray">(담당자 신원 확인용)</span>
+                    명함 파일 업로드 <span class="text-sm text-gray">(담당자 신원 확인용 - 선택사항)</span>
                   </label>
                   <div class="file-upload">
                     <input 
@@ -267,7 +262,6 @@ export const CompanyApplyPage = () => {
                       accept="image/*,.pdf"
                       class="hidden"
                       onchange="handleFileUpload(this, 'card-preview')"
-                      required
                     />
                     <label for="business-card" class="cursor-pointer">
                       <i class="fas fa-cloud-upload-alt text-2xl text-teal-blue mb-2"></i>
@@ -288,7 +282,7 @@ export const CompanyApplyPage = () => {
                 
                 <div class="mb-6">
                   <label class="block text-sm font-semibold text-navy mb-3">
-                    현재 채용 진행 중 *
+                    현재 채용 진행 중
                   </label>
                   <div class="flex space-x-6">
                     <label class="flex items-center">
@@ -298,7 +292,6 @@ export const CompanyApplyPage = () => {
                         value="yes" 
                         class="mr-2"
                         onchange="toggleRecruitingFields(true)"
-                        required
                       />
                       <span>예</span>
                     </label>
@@ -309,7 +302,6 @@ export const CompanyApplyPage = () => {
                         value="no" 
                         class="mr-2"
                         onchange="toggleRecruitingFields(false)"
-                        required
                       />
                       <span>아니오</span>
                     </label>
@@ -335,14 +327,13 @@ export const CompanyApplyPage = () => {
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label for="job-field" class="block text-sm font-semibold text-navy mb-2">
-                      채용 분야 *
+                      채용 분야
                     </label>
                     <select 
                       id="job-field" 
                       name="jobField"
                       class="form-input"
                       onchange="showFieldSpecificOptions(this.value)"
-                      required
                     >
                       <option value="">선택하세요</option>
                       <option value="manufacturing">제조/생산직</option>
@@ -356,7 +347,7 @@ export const CompanyApplyPage = () => {
                   
                   <div>
                     <label for="required-people" class="block text-sm font-semibold text-navy mb-2">
-                      필요 인원 *
+                      필요 인원
                     </label>
                     <input 
                       type="number" 
@@ -365,14 +356,13 @@ export const CompanyApplyPage = () => {
                       class="form-input"
                       placeholder="예: 3"
                       min="1"
-                      required
                     />
                   </div>
                 </div>
 
                 <div id="manufacturing-options" class="hidden mt-6">
                   <label class="block text-sm font-semibold text-navy mb-3">
-                    근무 형태 *
+                    근무 형태
                   </label>
                   <div class="grid grid-cols-3 gap-4">
                     <label class="flex items-center">
@@ -392,7 +382,7 @@ export const CompanyApplyPage = () => {
 
                 <div class="mt-6">
                   <label for="job-description" class="block text-sm font-semibold text-navy mb-2">
-                    업무 내용 *
+                    업무 내용
                   </label>
                   <textarea 
                     id="job-description" 
@@ -400,14 +390,13 @@ export const CompanyApplyPage = () => {
                     class="form-textarea"
                     rows="5"
                     placeholder="구체적인 업무 내용을 작성해주세요. 예: 화학물질 배합, 포장, 검수 등의 업무를 담당하며..."
-                    required
                   ></textarea>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
                   <div>
                     <label for="salary-level" class="block text-sm font-semibold text-navy mb-2">
-                      급여 수준 *
+                      급여 수준
                     </label>
                     <input 
                       type="text" 
@@ -415,13 +404,12 @@ export const CompanyApplyPage = () => {
                       name="salaryLevel"
                       class="form-input"
                       placeholder="예: 월 250-300만원"
-                      required
                     />
                   </div>
                   
                   <div>
                     <label for="work-location" class="block text-sm font-semibold text-navy mb-2">
-                      근무지 *
+                      근무지
                     </label>
                     <input 
                       type="text" 
@@ -429,7 +417,6 @@ export const CompanyApplyPage = () => {
                       name="workLocation"
                       class="form-input"
                       placeholder="경기도 화성시 OO산업단지"
-                      required
                     />
                   </div>
                 </div>
@@ -438,26 +425,70 @@ export const CompanyApplyPage = () => {
                   <label class="block text-sm font-semibold text-navy mb-3">
                     선호 국적 (복수 선택 가능)
                   </label>
-                  <div class="grid grid-cols-3 gap-4">
-                    <label class="flex items-center">
-                      <input type="checkbox" name="preferredNationality" value="vietnam" class="mr-2" />
-                      <span>🇻🇳 베트남</span>
-                    </label>
+                  <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
                     <label class="flex items-center">
                       <input type="checkbox" name="preferredNationality" value="nepal" class="mr-2" />
                       <span>🇳🇵 네팔</span>
                     </label>
                     <label class="flex items-center">
-                      <input type="checkbox" name="preferredNationality" value="philippines" class="mr-2" />
-                      <span>🇵🇭 필리핀</span>
+                      <input type="checkbox" name="preferredNationality" value="bangladesh" class="mr-2" />
+                      <span>🇧🇩 방글라데시</span>
+                    </label>
+                    <label class="flex items-center">
+                      <input type="checkbox" name="preferredNationality" value="sri-lanka" class="mr-2" />
+                      <span>🇱🇰 스리랑카</span>
+                    </label>
+                    <label class="flex items-center">
+                      <input type="checkbox" name="preferredNationality" value="myanmar" class="mr-2" />
+                      <span>🇲🇲 미얀마</span>
+                    </label>
+                    <label class="flex items-center">
+                      <input type="checkbox" name="preferredNationality" value="vietnam" class="mr-2" />
+                      <span>🇻🇳 베트남</span>
+                    </label>
+                    <label class="flex items-center">
+                      <input type="checkbox" name="preferredNationality" value="pakistan" class="mr-2" />
+                      <span>🇵🇰 파키스탄</span>
+                    </label>
+                    <label class="flex items-center">
+                      <input type="checkbox" name="preferredNationality" value="indonesia" class="mr-2" />
+                      <span>🇮🇩 인도네시아</span>
+                    </label>
+                    <label class="flex items-center">
+                      <input type="checkbox" name="preferredNationality" value="cambodia" class="mr-2" />
+                      <span>🇰🇭 캄보디아</span>
                     </label>
                     <label class="flex items-center">
                       <input type="checkbox" name="preferredNationality" value="uzbekistan" class="mr-2" />
                       <span>🇺🇿 우즈베키스탄</span>
                     </label>
                     <label class="flex items-center">
-                      <input type="checkbox" name="preferredNationality" value="cambodia" class="mr-2" />
-                      <span>🇰🇭 캄보디아</span>
+                      <input type="checkbox" name="preferredNationality" value="mongolia" class="mr-2" />
+                      <span>🇲🇳 몽골</span>
+                    </label>
+                    <label class="flex items-center">
+                      <input type="checkbox" name="preferredNationality" value="thailand" class="mr-2" />
+                      <span>🇹🇭 태국</span>
+                    </label>
+                    <label class="flex items-center">
+                      <input type="checkbox" name="preferredNationality" value="philippines" class="mr-2" />
+                      <span>🇵🇭 필리핀</span>
+                    </label>
+                    <label class="flex items-center">
+                      <input type="checkbox" name="preferredNationality" value="laos" class="mr-2" />
+                      <span>🇱🇦 라오스</span>
+                    </label>
+                    <label class="flex items-center">
+                      <input type="checkbox" name="preferredNationality" value="india" class="mr-2" />
+                      <span>🇮🇳 인도</span>
+                    </label>
+                    <label class="flex items-center">
+                      <input type="checkbox" name="preferredNationality" value="malaysia" class="mr-2" />
+                      <span>🇲🇾 말레이지아</span>
+                    </label>
+                    <label class="flex items-center">
+                      <input type="checkbox" name="preferredNationality" value="egypt" class="mr-2" />
+                      <span>🇪🇬 이집트</span>
                     </label>
                     <label class="flex items-center">
                       <input type="checkbox" name="preferredNationality" value="any" class="mr-2" />

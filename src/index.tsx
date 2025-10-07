@@ -14,6 +14,8 @@ import { F2RIncomeFormPage } from './pages/F2RIncomeFormPage'
 import { E71FormPage } from './pages/E71FormPage'
 import { E74TransferFormPage } from './pages/E74TransferFormPage'
 import { SuccessPage } from './pages/SuccessPage'
+import { TalentPoolPage } from './pages/TalentPoolPage'
+import { TalentRequestPage } from './pages/TalentRequestPage'
 import successCases from '../data/success-cases.json'
 import candidates from '../data/candidates.json'
 import reviews from '../data/reviews.json'
@@ -272,6 +274,22 @@ app.get('/company', (c) => {
   return c.render(
     <CompanyPage />,
     { title: '기업채용 - HIRE ME' }
+  )
+})
+
+// 인재 풀 페이지
+app.get('/company/talents', (c) => {
+  return c.render(
+    <TalentPoolPage />,
+    { title: '인재 풀 - HIRE ME' }
+  )
+})
+
+// 인재 정보 요청 페이지
+app.get('/company/request', (c) => {
+  return c.render(
+    <TalentRequestPage />,
+    { title: '인재 정보 요청 - HIRE ME' }
   )
 })
 
