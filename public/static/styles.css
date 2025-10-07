@@ -28,6 +28,7 @@ body {
 .bg-teal-blue { background-color: var(--teal-blue); }
 .bg-green { background-color: var(--green); }
 .bg-orange { background-color: var(--orange); }
+.bg-charcoal { background-color: var(--charcoal); }
 .bg-light-gray { background-color: var(--light-gray); }
 
 .border-teal-blue { border-color: var(--teal-blue); }
