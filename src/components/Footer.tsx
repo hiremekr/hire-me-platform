@@ -12,23 +12,23 @@ export const Footer = () => {
               외국인 구직자와 기업을 연결하는 전문 취업 매칭 플랫폼입니다.<br />
               취업부터 비자까지, 전문가가 원스톱으로 지원합니다.
             </p>
-            <div class="bg-gray-700 rounded-lg p-4 mb-4">
-              <h4 class="text-white font-semibold mb-2">🏢 운영 기관 및 역할 분담</h4>
-              <div class="space-y-2 text-sm text-gray-300">
+            <div class="mb-4">
+              <h4 class="text-white font-semibold mb-3">🏢 운영 기관 및 역할 분담</h4>
+              <div class="space-y-2 text-sm text-gray-300 pl-2">
                 <div class="flex items-start">
-                  <span class="text-teal-blue mr-2">📋</span>
-                  <span><strong>채용 프로세스</strong>: 더글로벌리크루팅</span>
+                  <span class="text-teal-blue mr-2">•</span>
+                  <span><strong class="text-white">채용 프로세스</strong>: 더글로벌리크루팅</span>
                 </div>
                 <div class="flex items-start">
-                  <span class="text-green mr-2">📄</span>
-                  <span><strong>비자 업무</strong>: 행정사사무소 늘좋은</span>
+                  <span class="text-green mr-2">•</span>
+                  <span><strong class="text-white">비자 업무</strong>: 행정사사무소 늘좋은</span>
                 </div>
               </div>
             </div>
             <div class="space-y-2 text-sm text-gray-400">
               <div class="flex items-center">
                 <i class="fas fa-certificate text-green mr-2"></i>
-                <span>법무부 인증 출입국민원대행기관</span>
+                <span>법무부 등록 출입국민원대행기관</span>
               </div>
               <div class="flex items-center">
                 <i class="fas fa-certificate text-green mr-2"></i>
