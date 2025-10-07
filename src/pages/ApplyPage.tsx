@@ -189,7 +189,7 @@ export const ApplyPage = () => {
                 <div class="p-3 md:p-6">
                   <div class="text-2xl md:text-4xl text-green mb-2 md:mb-4">🎉</div>
                   <h4 class="text-sm md:text-lg font-bold text-navy mb-1 md:mb-2">STEP 6</h4>
-                  <h5 class="text-xs md:text-base font-semibold mb-1 md:mb-2">비자 신청 및 발급완료</h5>
+                  <h5 class="text-xs md:text-base font-semibold mb-1 md:mb-2">비자 신청 및 발급</h5>
                   <p class="text-xs md:text-sm text-gray">출입국 관리소 신청 → 비자 취득 완료</p>
                 </div>
               </div>

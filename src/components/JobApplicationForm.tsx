@@ -384,8 +384,8 @@ export const JobApplicationForm = (props: JobApplicationFormProps) => {
                 </h3>
                 
                 <div class="space-y-6">
-                  {/* E-7-4R 전용: 희망 급여와 교대 가능 여부만 */}
-                  {visaType === 'E-7-4R' && (
+                  {/* E-7-4R, E-7-4 전용: 희망 급여와 교대 가능 여부만 */}
+                  {(visaType === 'E-7-4R' || visaType === 'E-7-4') && (
                     <>
                       <div>
                         <label for="expected-salary" class="block text-sm font-semibold text-navy mb-2">
@@ -407,15 +407,15 @@ export const JobApplicationForm = (props: JobApplicationFormProps) => {
                         <div class="space-y-2">
                           <label class="flex items-center">
                             <input type="checkbox" name="shiftWork" value="day" class="mr-2" />
-                            <span class="text-sm">주간 근무 가능 / Day shift available</span>
+                            <span class="text-sm">주간만 근무가능 / Day shift only</span>
                           </label>
                           <label class="flex items-center">
                             <input type="checkbox" name="shiftWork" value="night" class="mr-2" />
-                            <span class="text-sm">야간 근무 가능 / Night shift available</span>
+                            <span class="text-sm">야간만 근무가능 / Night shift only</span>
                           </label>
                           <label class="flex items-center">
                             <input type="checkbox" name="shiftWork" value="rotating" class="mr-2" />
-                            <span class="text-sm">교대 근무 가능 / Rotating shift available</span>
+                            <span class="text-sm">주야 교대 가능 / Day/Night shift available</span>
                           </label>
                         </div>
                       </div>
