@@ -32,7 +32,7 @@ export const Header = () => {
             <button 
               id="mobile-menu-btn"
               class="text-gray-700 hover:text-teal-blue focus:outline-none"
-              onclick="toggleMobileMenu()"
+              type="button"
             >
               <i class="fas fa-bars text-xl"></i>
             </button>

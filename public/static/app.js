@@ -5,14 +5,21 @@ function toggleMobileMenu() {
   const mobileMenu = document.getElementById('mobile-menu');
   const menuBtn = document.getElementById('mobile-menu-btn');
   
-  if (mobileMenu) {
+  if (mobileMenu && menuBtn) {
     if (mobileMenu.classList.contains('hidden')) {
       mobileMenu.classList.remove('hidden');
       menuBtn.innerHTML = '<i class="fas fa-times text-xl"></i>';
+      console.log('모바일 메뉴 열림');
     } else {
       mobileMenu.classList.add('hidden');
       menuBtn.innerHTML = '<i class="fas fa-bars text-xl"></i>';
+      console.log('모바일 메뉴 닫힘');
     }
+  } else {
+    console.error('모바일 메뉴 요소를 찾을 수 없습니다:', {
+      mobileMenu: !!mobileMenu,
+      menuBtn: !!menuBtn
+    });
   }
 }
 
@@ -197,6 +204,16 @@ async function submitForm(formId, apiEndpoint) {
 
 // 페이지 로드 시 실행
 document.addEventListener('DOMContentLoaded', function() {
+  // 모바일 메뉴 버튼 이벤트 리스너 추가
+  const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+  if (mobileMenuBtn) {
+    mobileMenuBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      toggleMobileMenu();
+    });
+  }
+  
   // 애니메이션 트리거
   const animatedElements = document.querySelectorAll('.fade-in');
   const observer = new IntersectionObserver((entries) => {
@@ -217,7 +234,9 @@ document.addEventListener('DOMContentLoaded', function() {
     if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
       if (!mobileMenu.contains(event.target) && !menuBtn.contains(event.target)) {
         mobileMenu.classList.add('hidden');
-        menuBtn.innerHTML = '<i class="fas fa-bars text-xl"></i>';
+        if (menuBtn) {
+          menuBtn.innerHTML = '<i class="fas fa-bars text-xl"></i>';
+        }
       }
     }
   });
