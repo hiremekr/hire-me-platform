@@ -31,36 +31,78 @@ export const ApplyPage = () => {
           <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             
             {/* TOP 인재 풀 */}
-            <div class="text-center p-8 bg-light-gray rounded-2xl">
-              <div class="text-4xl text-teal-blue mb-4">
-                <i class="fas fa-trophy"></i>
+            <div class="text-center bg-light-gray rounded-2xl">
+              {/* PC 버전 */}
+              <div class="hidden md:block p-8">
+                <div class="text-4xl text-teal-blue mb-4">
+                  <i class="fas fa-trophy"></i>
+                </div>
+                <h3 class="text-xl font-bold text-navy mb-2">TOP 인재 풀</h3>
+                <p class="text-gray leading-relaxed">
+                  업계 탑 수준의<br />검증된 외국인재 보유
+                </p>
               </div>
-              <h3 class="text-xl font-bold text-navy mb-2">TOP 인재 풀</h3>
-              <p class="text-gray leading-relaxed">
-                업계 탑 수준의<br />검증된 외국인재 보유
-              </p>
+              
+              {/* 모바일 버전 - 50% 축소 */}
+              <div class="block md:hidden p-4">
+                <div class="text-2xl text-teal-blue mb-2">
+                  <i class="fas fa-trophy"></i>
+                </div>
+                <h3 class="text-lg font-bold text-navy mb-1">TOP 인재 풀</h3>
+                <p class="text-sm text-gray leading-relaxed">
+                  업계 탑 수준 검증된 인재 보유
+                </p>
+              </div>
             </div>
 
             {/* 최고 성공률 */}
-            <div class="text-center p-8 bg-light-gray rounded-2xl">
-              <div class="text-4xl text-green mb-4">
-                <i class="fas fa-chart-line"></i>
+            <div class="text-center bg-light-gray rounded-2xl">
+              {/* PC 버전 */}
+              <div class="hidden md:block p-8">
+                <div class="text-4xl text-green mb-4">
+                  <i class="fas fa-chart-line"></i>
+                </div>
+                <h3 class="text-xl font-bold text-navy mb-2">최고 성공률</h3>
+                <p class="text-gray leading-relaxed">
+                  업계 최고 수준의<br />비자 취득 성공률
+                </p>
               </div>
-              <h3 class="text-xl font-bold text-navy mb-2">최고 성공률</h3>
-              <p class="text-gray leading-relaxed">
-                업계 최고 수준의<br />비자 취득 성공률
-              </p>
+              
+              {/* 모바일 버전 - 50% 축소 */}
+              <div class="block md:hidden p-4">
+                <div class="text-2xl text-green mb-2">
+                  <i class="fas fa-chart-line"></i>
+                </div>
+                <h3 class="text-lg font-bold text-navy mb-1">최고 성공률</h3>
+                <p class="text-sm text-gray leading-relaxed">
+                  업계 최고 비자 취득 성공률
+                </p>
+              </div>
             </div>
 
             {/* ONE-STOP 서비스 */}
-            <div class="text-center p-8 bg-light-gray rounded-2xl">
-              <div class="text-4xl text-orange mb-4">
-                <i class="fas fa-concierge-bell"></i>
+            <div class="text-center bg-light-gray rounded-2xl">
+              {/* PC 버전 */}
+              <div class="hidden md:block p-8">
+                <div class="text-4xl text-orange mb-4">
+                  <i class="fas fa-concierge-bell"></i>
+                </div>
+                <h3 class="text-xl font-bold text-navy mb-2">ONE-STOP 서비스</h3>
+                <p class="text-gray leading-relaxed">
+                  전문가가 직접<br />맞춤형 서비스 제공
+                </p>
               </div>
-              <h3 class="text-xl font-bold text-navy mb-2">ONE-STOP 서비스</h3>
-              <p class="text-gray leading-relaxed">
-                전문가가 직접<br />맞춤형 서비스 제공
-              </p>
+              
+              {/* 모바일 버전 - 50% 축소 */}
+              <div class="block md:hidden p-4">
+                <div class="text-2xl text-orange mb-2">
+                  <i class="fas fa-concierge-bell"></i>
+                </div>
+                <h3 class="text-lg font-bold text-navy mb-1">원스톱 서비스</h3>
+                <p class="text-sm text-gray leading-relaxed">
+                  전문가 맞춤형 서비스 제공
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -87,31 +129,55 @@ export const ApplyPage = () => {
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-              <div class="text-center p-6 bg-white rounded-xl shadow-md">
-                <div class="text-4xl text-teal-blue mb-4">📄</div>
-                <h4 class="text-lg font-bold text-navy mb-2">STEP 1</h4>
-                <h5 class="font-semibold mb-2">구직 신청</h5>
-                <p class="text-sm text-gray">비자별 맞춤 신청서 작성</p>
+              <div class="text-center bg-white rounded-xl shadow-md">
+                {/* PC 버전 */}
+                <div class="hidden md:block p-6">
+                  <div class="text-4xl text-teal-blue mb-4">📄</div>
+                  <h4 class="text-lg font-bold text-navy mb-2">STEP 1</h4>
+                  <h5 class="font-semibold mb-2">구직 신청</h5>
+                  <p class="text-sm text-gray">비자별 맞춤 신청서 작성</p>
+                </div>
+                {/* 모바일 버전 - 30% 축소 */}
+                <div class="block md:hidden p-4">
+                  <div class="text-2xl text-teal-blue mb-2">📄</div>
+                  <h4 class="text-sm font-bold text-navy mb-1">STEP 1</h4>
+                  <h5 class="text-sm font-semibold mb-1">구직 신청</h5>
+                  <p class="text-xs text-gray">비자별 신청서 작성</p>
+                </div>
               </div>
               
-              <div class="text-center p-6 bg-white rounded-xl shadow-md">
-                <div class="text-4xl text-teal-blue mb-4">📤</div>
-                <h4 class="text-lg font-bold text-navy mb-2">STEP 2</h4>
-                <h5 class="font-semibold mb-2">이력서 제작</h5>
-                <p class="text-sm text-gray">한국형 이력서 전문 작성</p>
+              <div class="text-center bg-white rounded-xl shadow-md">
+                {/* PC 버전 */}
+                <div class="hidden md:block p-6">
+                  <div class="text-4xl text-teal-blue mb-4">📤</div>
+                  <h4 class="text-lg font-bold text-navy mb-2">STEP 2</h4>
+                  <h5 class="font-semibold mb-2">이력서 제작</h5>
+                  <p class="text-sm text-gray">한국형 이력서 전문 작성</p>
+                </div>
+                {/* 모바일 버전 - 30% 축소 */}
+                <div class="block md:hidden p-4">
+                  <div class="text-2xl text-teal-blue mb-2">📤</div>
+                  <h4 class="text-sm font-bold text-navy mb-1">STEP 2</h4>
+                  <h5 class="text-sm font-semibold mb-1">이력서 제작</h5>
+                  <p class="text-xs text-gray">한국형 이력서 작성</p>
+                </div>
               </div>
               
-              <div class="text-center p-6 bg-white rounded-xl shadow-md">
-                <div class="text-4xl text-teal-blue mb-4">🤝</div>
-                <h4 class="text-lg font-bold text-navy mb-2">STEP 3</h4>
-                <h5 class="font-semibold mb-2">기업 매칭</h5>
-                <p class="text-sm text-gray">맞춤형 기업 추천 및 연결</p>
-              </div>
-            </div>
-            
-            <div class="text-center">
-              <div class="text-3xl text-teal-blue mb-4">
-                <i class="fas fa-arrow-down"></i>
+              <div class="text-center bg-white rounded-xl shadow-md">
+                {/* PC 버전 */}
+                <div class="hidden md:block p-6">
+                  <div class="text-4xl text-teal-blue mb-4">🤝</div>
+                  <h4 class="text-lg font-bold text-navy mb-2">STEP 3</h4>
+                  <h5 class="font-semibold mb-2">기업 매칭</h5>
+                  <p class="text-sm text-gray">맞춤형 기업 추천 및 연결</p>
+                </div>
+                {/* 모바일 버전 - 30% 축소 */}
+                <div class="block md:hidden p-4">
+                  <div class="text-2xl text-teal-blue mb-2">🤝</div>
+                  <h4 class="text-sm font-bold text-navy mb-1">STEP 3</h4>
+                  <h5 class="text-sm font-semibold mb-1">기업 매칭</h5>
+                  <p class="text-xs text-gray">맞춤형 기업 추천 연결</p>
+                </div>
               </div>
             </div>
           </div>
@@ -125,39 +191,79 @@ export const ApplyPage = () => {
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-              <div class="text-center p-6 bg-white rounded-xl shadow-md">
-                <div class="text-4xl text-orange mb-4">📝</div>
-                <h4 class="text-lg font-bold text-navy mb-2">STEP 4</h4>
-                <h5 class="font-semibold mb-2">비자변경계약</h5>
-                <p class="text-sm text-gray">비자변경서비스 계약 체결</p>
+              <div class="text-center bg-white rounded-xl shadow-md">
+                {/* PC 버전 */}
+                <div class="hidden md:block p-6">
+                  <div class="text-4xl text-orange mb-4">📝</div>
+                  <h4 class="text-lg font-bold text-navy mb-2">STEP 4</h4>
+                  <h5 class="font-semibold mb-2">비자변경계약</h5>
+                  <p class="text-sm text-gray">비자변경서비스 계약 체결</p>
+                </div>
+                {/* 모바일 버전 - 30% 축소 */}
+                <div class="block md:hidden p-4">
+                  <div class="text-2xl text-orange mb-2">📝</div>
+                  <h4 class="text-sm font-bold text-navy mb-1">STEP 4</h4>
+                  <h5 class="text-sm font-semibold mb-1">비자변경계약</h5>
+                  <p class="text-xs text-gray">비자 서비스 계약</p>
+                </div>
               </div>
               
-              <div class="text-center p-6 bg-white rounded-xl shadow-md">
-                <div class="text-4xl text-orange mb-4">✅</div>
-                <h4 class="text-lg font-bold text-navy mb-2">STEP 5</h4>
-                <h5 class="font-semibold mb-2">추천서 발급</h5>
-                <p class="text-sm text-gray">지자체 또는 정부 추천서 (필요시)</p>
+              <div class="text-center bg-white rounded-xl shadow-md">
+                {/* PC 버전 */}
+                <div class="hidden md:block p-6">
+                  <div class="text-4xl text-orange mb-4">✅</div>
+                  <h4 class="text-lg font-bold text-navy mb-2">STEP 5</h4>
+                  <h5 class="font-semibold mb-2">추천서 발급</h5>
+                  <p class="text-sm text-gray">지자체 또는 정부 추천서 (필요시)</p>
+                </div>
+                {/* 모바일 버전 - 30% 축소 */}
+                <div class="block md:hidden p-4">
+                  <div class="text-2xl text-orange mb-2">✅</div>
+                  <h4 class="text-sm font-bold text-navy mb-1">STEP 5</h4>
+                  <h5 class="text-sm font-semibold mb-1">추천서 발급</h5>
+                  <p class="text-xs text-gray">지자체/정부 추천서</p>
+                </div>
               </div>
               
-              <div class="text-center p-6 bg-white rounded-xl shadow-md">
-                <div class="text-4xl text-orange mb-4">📮</div>
-                <h4 class="text-lg font-bold text-navy mb-2">STEP 6</h4>
-                <h5 class="font-semibold mb-2">비자 신청</h5>
-                <p class="text-sm text-gray">출입국 관리소 신청</p>
+              <div class="text-center bg-white rounded-xl shadow-md">
+                {/* PC 버전 */}
+                <div class="hidden md:block p-6">
+                  <div class="text-4xl text-orange mb-4">📮</div>
+                  <h4 class="text-lg font-bold text-navy mb-2">STEP 6</h4>
+                  <h5 class="font-semibold mb-2">비자 신청</h5>
+                  <p class="text-sm text-gray">출입국 관리소 신청</p>
+                </div>
+                {/* 모바일 버전 - 30% 축소 */}
+                <div class="block md:hidden p-4">
+                  <div class="text-2xl text-orange mb-2">📮</div>
+                  <h4 class="text-sm font-bold text-navy mb-1">STEP 6</h4>
+                  <h5 class="text-sm font-semibold mb-1">비자 신청</h5>
+                  <p class="text-xs text-gray">출입국 관리소 신청</p>
+                </div>
               </div>
               
-              <div class="text-center p-6 bg-white rounded-xl shadow-md">
-                <div class="text-4xl text-green mb-4">🎉</div>
-                <h4 class="text-lg font-bold text-navy mb-2">STEP 7</h4>
-                <h5 class="font-semibold mb-2">비자 발급</h5>
-                <p class="text-sm text-gray">비자 취득 완료</p>
+              <div class="text-center bg-white rounded-xl shadow-md">
+                {/* PC 버전 */}
+                <div class="hidden md:block p-6">
+                  <div class="text-4xl text-green mb-4">🎉</div>
+                  <h4 class="text-lg font-bold text-navy mb-2">STEP 7</h4>
+                  <h5 class="font-semibold mb-2">비자 발급</h5>
+                  <p class="text-sm text-gray">비자 취득 완료</p>
+                </div>
+                {/* 모바일 버전 - 30% 축소 */}
+                <div class="block md:hidden p-4">
+                  <div class="text-2xl text-green mb-2">🎉</div>
+                  <h4 class="text-sm font-bold text-navy mb-1">STEP 7</h4>
+                  <h5 class="text-sm font-semibold mb-1">비자 발급</h5>
+                  <p class="text-xs text-gray">비자 취득 완료</p>
+                </div>
               </div>
             </div>
 
             <div class="text-center">
               <p class="text-lg font-semibold text-navy">
                 <i class="fas fa-clock text-teal-blue mr-2"></i>
-                평균 2-3개월
+                평균 2~3개월 소요
               </p>
             </div>
           </div>
@@ -178,44 +284,89 @@ export const ApplyPage = () => {
 
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {reviews.slice(0, 6).map((review) => (
-              <div class="bg-light-gray rounded-2xl p-8 card-hover">
-                <div class="flex items-center mb-4">
-                  <div class="w-16 h-16 rounded-full mr-4 flex items-center justify-center text-white font-bold text-xl shadow-lg"
-                       style={
-                         review.nationality === '네팔' ? 'background: linear-gradient(135deg, #DC143C 0%, #003893 50%, #DC143C 100%); border: 3px solid #fff;' :
-                         review.nationality === '방글라데시' ? 'background: linear-gradient(135deg, #006A4E 0%, #F42A41 100%); border: 3px solid #fff;' :
-                         review.nationality === '스리랑카' ? 'background: linear-gradient(135deg, #FF9933 0%, #008000 50%, #000080 100%); border: 3px solid #fff;' :
-                         review.nationality === '미얀마' ? 'background: linear-gradient(135deg, #FECB00 0%, #34B233 50%, #EA2839 100%); border: 3px solid #fff;' :
-                         review.nationality === '파키스탄' ? 'background: linear-gradient(135deg, #01411C 0%, #ffffff 100%); border: 3px solid #01411C; color: #01411C;' :
-                         review.nationality === '베트남' ? 'background: linear-gradient(135deg, #DA020E 0%, #FFFF00 100%); border: 3px solid #fff;' : 
-                         'background: #6B7280; border: 3px solid #fff;'
-                       }>
-                    <span class="drop-shadow-md">
-                      {review.nationality === '네팔' ? '🇳🇵' :
-                       review.nationality === '방글라데시' ? '🇧🇩' :
-                       review.nationality === '스리랑카' ? '🇱🇰' :
-                       review.nationality === '미얀마' ? '🇲🇲' :
-                       review.nationality === '파키스탄' ? '🇵🇰' :
-                       review.nationality === '베트남' ? '🇻🇳' : '🌍'}
-                    </span>
+              <div class="bg-light-gray rounded-2xl card-hover">
+                {/* PC 버전 */}
+                <div class="hidden md:block p-8">
+                  <div class="flex items-center mb-4">
+                    <div class="w-16 h-16 rounded-full mr-4 flex items-center justify-center text-white font-bold text-xl shadow-lg"
+                         style={
+                           review.nationality === '네팔' ? 'background: linear-gradient(135deg, #DC143C 0%, #003893 50%, #DC143C 100%); border: 3px solid #fff;' :
+                           review.nationality === '방글라데시' ? 'background: linear-gradient(135deg, #006A4E 0%, #F42A41 100%); border: 3px solid #fff;' :
+                           review.nationality === '스리랑카' ? 'background: linear-gradient(135deg, #FF9933 0%, #008000 50%, #000080 100%); border: 3px solid #fff;' :
+                           review.nationality === '미얀마' ? 'background: linear-gradient(135deg, #FECB00 0%, #34B233 50%, #EA2839 100%); border: 3px solid #fff;' :
+                           review.nationality === '파키스탄' ? 'background: linear-gradient(135deg, #01411C 0%, #ffffff 100%); border: 3px solid #01411C; color: #01411C;' :
+                           review.nationality === '베트남' ? 'background: linear-gradient(135deg, #DA020E 0%, #FFFF00 100%); border: 3px solid #fff;' : 
+                           'background: #6B7280; border: 3px solid #fff;'
+                         }>
+                      <span class="drop-shadow-md">
+                        {review.nationality === '네팔' ? '🇳🇵' :
+                         review.nationality === '방글라데시' ? '🇧🇩' :
+                         review.nationality === '스리랑카' ? '🇱🇰' :
+                         review.nationality === '미얀마' ? '🇲🇲' :
+                         review.nationality === '파키스탄' ? '🇵🇰' :
+                         review.nationality === '베트남' ? '🇻🇳' : '🌍'}
+                      </span>
+                    </div>
+                    <div>
+                      <h4 class="font-bold text-navy">{review.name}</h4>
+                      <span class="text-sm text-gray">{review.nationality} · {review.visa}</span>
+                    </div>
                   </div>
-                  <div>
-                    <h4 class="font-bold text-navy">{review.name}</h4>
-                    <span class="text-sm text-gray">{review.nationality} · {review.visa}</span>
+                  
+                  <div class="stars mb-4 text-orange">
+                    {Array(review.rating).fill('★').join('')}
+                  </div>
+                  
+                  <p class="text-gray leading-relaxed mb-4 text-sm">
+                    "{review.review}"
+                  </p>
+                  
+                  <div class="flex justify-between items-center text-sm text-gray">
+                    <span>{review.company}</span>
+                    <span>{review.date}</span>
                   </div>
                 </div>
                 
-                <div class="stars mb-4 text-orange">
-                  {Array(review.rating).fill('★').join('')}
-                </div>
-                
-                <p class="text-gray leading-relaxed mb-4 text-sm">
-                  "{review.review}"
-                </p>
-                
-                <div class="flex justify-between items-center text-sm text-gray">
-                  <span>{review.company}</span>
-                  <span>{review.date}</span>
+                {/* 모바일 버전 - 30% 축소 */}
+                <div class="block md:hidden p-5">
+                  <div class="flex items-center mb-3">
+                    <div class="w-10 h-10 rounded-full mr-3 flex items-center justify-center text-white font-bold text-sm shadow-lg"
+                         style={
+                           review.nationality === '네팔' ? 'background: linear-gradient(135deg, #DC143C 0%, #003893 50%, #DC143C 100%); border: 2px solid #fff;' :
+                           review.nationality === '방글라데시' ? 'background: linear-gradient(135deg, #006A4E 0%, #F42A41 100%); border: 2px solid #fff;' :
+                           review.nationality === '스리랑카' ? 'background: linear-gradient(135deg, #FF9933 0%, #008000 50%, #000080 100%); border: 2px solid #fff;' :
+                           review.nationality === '미얀마' ? 'background: linear-gradient(135deg, #FECB00 0%, #34B233 50%, #EA2839 100%); border: 2px solid #fff;' :
+                           review.nationality === '파키스탄' ? 'background: linear-gradient(135deg, #01411C 0%, #ffffff 100%); border: 2px solid #01411C; color: #01411C;' :
+                           review.nationality === '베트남' ? 'background: linear-gradient(135deg, #DA020E 0%, #FFFF00 100%); border: 2px solid #fff;' : 
+                           'background: #6B7280; border: 2px solid #fff;'
+                         }>
+                      <span class="drop-shadow-md text-xs">
+                        {review.nationality === '네팔' ? '🇳🇵' :
+                         review.nationality === '방글라데시' ? '🇧🇩' :
+                         review.nationality === '스리랑카' ? '🇱🇰' :
+                         review.nationality === '미얀마' ? '🇲🇲' :
+                         review.nationality === '파키스탄' ? '🇵🇰' :
+                         review.nationality === '베트남' ? '🇻🇳' : '🌍'}
+                      </span>
+                    </div>
+                    <div>
+                      <h4 class="text-sm font-bold text-navy">{review.name}</h4>
+                      <span class="text-xs text-gray">{review.nationality} · {review.visa}</span>
+                    </div>
+                  </div>
+                  
+                  <div class="stars mb-2 text-orange text-sm">
+                    {Array(review.rating).fill('★').join('')}
+                  </div>
+                  
+                  <p class="text-gray leading-relaxed mb-3 text-xs">
+                    "{review.review}"
+                  </p>
+                  
+                  <div class="flex justify-between items-center text-xs text-gray">
+                    <span>{review.company}</span>
+                    <span>{review.date}</span>
+                  </div>
                 </div>
               </div>
             ))}
@@ -248,15 +399,15 @@ export const ApplyPage = () => {
               <ul class="space-y-3 mb-8 text-gray">
                 <li class="flex items-center">
                   <i class="fas fa-check-circle text-teal-blue mr-3"></i>
-                  지역 산업체 5년 이상 근무 숙련자
+                  한국에서 2년 이상 체류 EPS 경력 증명서 필수
                 </li>
                 <li class="flex items-center">
                   <i class="fas fa-check-circle text-teal-blue mr-3"></i>
-                  EPS 경력증명서 필수
+                  지자체 추천서 필수
                 </li>
                 <li class="flex items-center">
                   <i class="fas fa-check-circle text-teal-blue mr-3"></i>
-                  TOPIK/KIIP 4급 이상 권장
+                  한국어 레벨 2급 이상
                 </li>
               </ul>
               
@@ -388,7 +539,7 @@ export const ApplyPage = () => {
             궁금한 점이 있으신가요?
           </h2>
           <p class="text-xl text-white mb-12 opacity-90">
-            전문 상담사가 실시간으로 답변해드립니다
+            비자 전문 행정사가 빠르게 답변해드립니다
           </p>
           
           <button 
@@ -399,12 +550,7 @@ export const ApplyPage = () => {
             카카오톡 상담하기
           </button>
           
-          <div class="mt-8 text-white opacity-75">
-            <p class="text-sm">
-              <i class="fas fa-clock mr-2"></i>
-              상담시간: 평일 09:00 - 18:00 | 토요일 09:00 - 15:00
-            </p>
-          </div>
+
         </div>
       </section>
 
