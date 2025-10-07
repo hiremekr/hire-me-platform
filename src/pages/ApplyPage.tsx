@@ -113,7 +113,7 @@ export const ApplyPage = () => {
         <div class="max-w-6xl mx-auto">
           <div class="text-center mb-16">
             <h2 class="text-4xl font-bold text-navy mb-4" style="font-family: 'Cardo', serif;">
-              체계적인 7단계 프로세스
+              체계적인 6단계 프로세스
             </h2>
             <p class="text-xl text-gray">
               구직부터 비자 취득까지, 단계별 전문 관리
@@ -166,44 +166,31 @@ export const ApplyPage = () => {
               </span>
             </div>
             
-            <div class="grid grid-cols-4 gap-1 md:gap-6 mb-8">
+            <div class="grid grid-cols-3 gap-2 md:gap-8 mb-8">
               <div class="text-center bg-white rounded-xl shadow-md">
-                <div class="p-2 md:p-6">
-                  <div class="text-xl md:text-4xl text-orange mb-1 md:mb-4">📝</div>
-                  <h4 class="text-xs md:text-lg font-bold text-navy mb-1 md:mb-2">STEP 4</h4>
-                  <h5 class="text-xs md:text-base font-semibold mb-1 md:mb-2 hidden md:block">비자변경계약</h5>
-                  <h5 class="text-xs font-semibold mb-1 block md:hidden">계약</h5>
-                  <p class="text-xs md:text-sm text-gray hidden md:block">비자변경서비스 계약 체결</p>
+                <div class="p-3 md:p-6">
+                  <div class="text-2xl md:text-4xl text-orange mb-2 md:mb-4">📝</div>
+                  <h4 class="text-sm md:text-lg font-bold text-navy mb-1 md:mb-2">STEP 4</h4>
+                  <h5 class="text-xs md:text-base font-semibold mb-1 md:mb-2">비자변경계약</h5>
+                  <p class="text-xs md:text-sm text-gray">비자변경서비스 계약 체결</p>
                 </div>
               </div>
               
               <div class="text-center bg-white rounded-xl shadow-md">
-                <div class="p-2 md:p-6">
-                  <div class="text-xl md:text-4xl text-orange mb-1 md:mb-4">✅</div>
-                  <h4 class="text-xs md:text-lg font-bold text-navy mb-1 md:mb-2">STEP 5</h4>
-                  <h5 class="text-xs md:text-base font-semibold mb-1 md:mb-2 hidden md:block">추천서 발급</h5>
-                  <h5 class="text-xs font-semibold mb-1 block md:hidden">추천서</h5>
-                  <p class="text-xs md:text-sm text-gray hidden md:block">지자체 또는 정부 추천서 (필요시)</p>
+                <div class="p-3 md:p-6">
+                  <div class="text-2xl md:text-4xl text-orange mb-2 md:mb-4">✅</div>
+                  <h4 class="text-sm md:text-lg font-bold text-navy mb-1 md:mb-2">STEP 5</h4>
+                  <h5 class="text-xs md:text-base font-semibold mb-1 md:mb-2">추천서 발급</h5>
+                  <p class="text-xs md:text-sm text-gray">지자체 또는 정부 추천서 (필요시)</p>
                 </div>
               </div>
               
               <div class="text-center bg-white rounded-xl shadow-md">
-                <div class="p-2 md:p-6">
-                  <div class="text-xl md:text-4xl text-orange mb-1 md:mb-4">📮</div>
-                  <h4 class="text-xs md:text-lg font-bold text-navy mb-1 md:mb-2">STEP 6</h4>
-                  <h5 class="text-xs md:text-base font-semibold mb-1 md:mb-2 hidden md:block">비자 신청</h5>
-                  <h5 class="text-xs font-semibold mb-1 block md:hidden">신청</h5>
-                  <p class="text-xs md:text-sm text-gray hidden md:block">출입국 관리소 신청</p>
-                </div>
-              </div>
-              
-              <div class="text-center bg-white rounded-xl shadow-md">
-                <div class="p-2 md:p-6">
-                  <div class="text-xl md:text-4xl text-green mb-1 md:mb-4">🎉</div>
-                  <h4 class="text-xs md:text-lg font-bold text-navy mb-1 md:mb-2">STEP 7</h4>
-                  <h5 class="text-xs md:text-base font-semibold mb-1 md:mb-2 hidden md:block">비자 발급</h5>
-                  <h5 class="text-xs font-semibold mb-1 block md:hidden">발급</h5>
-                  <p class="text-xs md:text-sm text-gray hidden md:block">비자 취득 완료</p>
+                <div class="p-3 md:p-6">
+                  <div class="text-2xl md:text-4xl text-green mb-2 md:mb-4">🎉</div>
+                  <h4 class="text-sm md:text-lg font-bold text-navy mb-1 md:mb-2">STEP 6</h4>
+                  <h5 class="text-xs md:text-base font-semibold mb-1 md:mb-2">비자 신청 및 발급완료</h5>
+                  <p class="text-xs md:text-sm text-gray">출입국 관리소 신청 → 비자 취득 완료</p>
                 </div>
               </div>
             </div>
