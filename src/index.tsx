@@ -234,7 +234,7 @@ app.get('/', (c) => {
             <div class="bg-white border border-teal-blue rounded-full px-6 py-4 text-center">
               <i class="fas fa-certificate text-green mr-2"></i>
               <span class="text-sm font-medium text-gray-700">
-                고용노동부 등록 직업소개소
+                고용노동부 등록 유료직업소개소
               </span>
             </div>
             <div class="bg-white border border-teal-blue rounded-full px-6 py-4 text-center">

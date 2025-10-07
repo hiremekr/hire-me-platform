@@ -12,6 +12,19 @@ export const Footer = () => {
               외국인 구직자와 기업을 연결하는 전문 취업 매칭 플랫폼입니다.<br />
               취업부터 비자까지, 전문가가 원스톱으로 지원합니다.
             </p>
+            <div class="bg-gray-700 rounded-lg p-4 mb-4">
+              <h4 class="text-white font-semibold mb-2">🏢 운영 기관 및 역할 분담</h4>
+              <div class="space-y-2 text-sm text-gray-300">
+                <div class="flex items-start">
+                  <span class="text-teal-blue mr-2">📋</span>
+                  <span><strong>채용 프로세스</strong>: 더글로벌리크루팅</span>
+                </div>
+                <div class="flex items-start">
+                  <span class="text-green mr-2">📄</span>
+                  <span><strong>비자 업무</strong>: 행정사사무소 늘좋은</span>
+                </div>
+              </div>
+            </div>
             <div class="space-y-2 text-sm text-gray-400">
               <div class="flex items-center">
                 <i class="fas fa-certificate text-green mr-2"></i>
@@ -19,7 +32,7 @@ export const Footer = () => {
               </div>
               <div class="flex items-center">
                 <i class="fas fa-certificate text-green mr-2"></i>
-                <span>고용노동부 등록 직업소개소</span>
+                <span>고용노동부 등록 유료직업소개소</span>
               </div>
             </div>
           </div>
@@ -90,11 +103,13 @@ export const Footer = () => {
           <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div class="text-sm text-gray-400">
               <p>&copy; 2024 HIRE ME. All rights reserved.</p>
-              <p class="mt-1">
-                사업자등록번호: 123-45-67890 | 
-                대표자: 홍길동 | 
-                직업정보제공사업 신고번호: 서울청 제2024-123호
-              </p>
+              <div class="mt-2 space-y-1">
+                <p><strong class="text-gray-300">더글로벌리크루팅</strong></p>
+                <p>사업자등록번호: 000-00-00000 | 유료직업소개소 등록번호: 2024-3010243-14-5-00001호</p>
+                <p class="mt-1"><strong class="text-gray-300">행정사사무소 늘좋은</strong></p>
+                <p>사업자등록번호: 000-00-00000 | 출입국민원대행기관 등록번호: 제0000호</p>
+                <p class="mt-1">공동 대표자: 홍길동</p>
+              </div>
             </div>
             <div class="flex space-x-6 text-sm text-gray-400">
               <a href="#" class="hover:text-white transition-colors">이용약관</a>
