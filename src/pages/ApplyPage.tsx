@@ -128,31 +128,31 @@ export const ApplyPage = () => {
               </span>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            <div class="grid grid-cols-3 gap-2 md:gap-8 mb-12">
               <div class="text-center bg-white rounded-xl shadow-md">
-                <div class="p-6">
-                  <div class="text-4xl text-teal-blue mb-4">📄</div>
-                  <h4 class="text-lg font-bold text-navy mb-2">STEP 1</h4>
-                  <h5 class="font-semibold mb-2">구직 신청</h5>
-                  <p class="text-sm text-gray">비자별 맞춤 신청서 작성</p>
+                <div class="p-3 md:p-6">
+                  <div class="text-2xl md:text-4xl text-teal-blue mb-2 md:mb-4">📄</div>
+                  <h4 class="text-sm md:text-lg font-bold text-navy mb-1 md:mb-2">STEP 1</h4>
+                  <h5 class="text-xs md:text-base font-semibold mb-1 md:mb-2">구직 신청</h5>
+                  <p class="text-xs md:text-sm text-gray">비자별 맞춤 신청서 작성</p>
                 </div>
               </div>
               
               <div class="text-center bg-white rounded-xl shadow-md">
-                <div class="p-6">
-                  <div class="text-4xl text-teal-blue mb-4">📤</div>
-                  <h4 class="text-lg font-bold text-navy mb-2">STEP 2</h4>
-                  <h5 class="font-semibold mb-2">이력서 제작</h5>
-                  <p class="text-sm text-gray">한국형 이력서 전문 작성</p>
+                <div class="p-3 md:p-6">
+                  <div class="text-2xl md:text-4xl text-teal-blue mb-2 md:mb-4">📤</div>
+                  <h4 class="text-sm md:text-lg font-bold text-navy mb-1 md:mb-2">STEP 2</h4>
+                  <h5 class="text-xs md:text-base font-semibold mb-1 md:mb-2">이력서 제작</h5>
+                  <p class="text-xs md:text-sm text-gray">한국형 이력서 전문 작성</p>
                 </div>
               </div>
               
               <div class="text-center bg-white rounded-xl shadow-md">
-                <div class="p-6">
-                  <div class="text-4xl text-teal-blue mb-4">🤝</div>
-                  <h4 class="text-lg font-bold text-navy mb-2">STEP 3</h4>
-                  <h5 class="font-semibold mb-2">기업 매칭</h5>
-                  <p class="text-sm text-gray">맞춤형 기업 추천 및 연결</p>
+                <div class="p-3 md:p-6">
+                  <div class="text-2xl md:text-4xl text-teal-blue mb-2 md:mb-4">🤝</div>
+                  <h4 class="text-sm md:text-lg font-bold text-navy mb-1 md:mb-2">STEP 3</h4>
+                  <h5 class="text-xs md:text-base font-semibold mb-1 md:mb-2">기업 매칭</h5>
+                  <p class="text-xs md:text-sm text-gray">맞춤형 기업 추천 및 연결</p>
                 </div>
               </div>
             </div>
@@ -166,40 +166,44 @@ export const ApplyPage = () => {
               </span>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="grid grid-cols-4 gap-1 md:gap-6 mb-8">
               <div class="text-center bg-white rounded-xl shadow-md">
-                <div class="p-6">
-                  <div class="text-4xl text-orange mb-4">📝</div>
-                  <h4 class="text-lg font-bold text-navy mb-2">STEP 4</h4>
-                  <h5 class="font-semibold mb-2">비자변경계약</h5>
-                  <p class="text-sm text-gray">비자변경서비스 계약 체결</p>
+                <div class="p-2 md:p-6">
+                  <div class="text-xl md:text-4xl text-orange mb-1 md:mb-4">📝</div>
+                  <h4 class="text-xs md:text-lg font-bold text-navy mb-1 md:mb-2">STEP 4</h4>
+                  <h5 class="text-xs md:text-base font-semibold mb-1 md:mb-2 hidden md:block">비자변경계약</h5>
+                  <h5 class="text-xs font-semibold mb-1 block md:hidden">계약</h5>
+                  <p class="text-xs md:text-sm text-gray hidden md:block">비자변경서비스 계약 체결</p>
                 </div>
               </div>
               
               <div class="text-center bg-white rounded-xl shadow-md">
-                <div class="p-6">
-                  <div class="text-4xl text-orange mb-4">✅</div>
-                  <h4 class="text-lg font-bold text-navy mb-2">STEP 5</h4>
-                  <h5 class="font-semibold mb-2">추천서 발급</h5>
-                  <p class="text-sm text-gray">지자체 또는 정부 추천서 (필요시)</p>
+                <div class="p-2 md:p-6">
+                  <div class="text-xl md:text-4xl text-orange mb-1 md:mb-4">✅</div>
+                  <h4 class="text-xs md:text-lg font-bold text-navy mb-1 md:mb-2">STEP 5</h4>
+                  <h5 class="text-xs md:text-base font-semibold mb-1 md:mb-2 hidden md:block">추천서 발급</h5>
+                  <h5 class="text-xs font-semibold mb-1 block md:hidden">추천서</h5>
+                  <p class="text-xs md:text-sm text-gray hidden md:block">지자체 또는 정부 추천서 (필요시)</p>
                 </div>
               </div>
               
               <div class="text-center bg-white rounded-xl shadow-md">
-                <div class="p-6">
-                  <div class="text-4xl text-orange mb-4">📮</div>
-                  <h4 class="text-lg font-bold text-navy mb-2">STEP 6</h4>
-                  <h5 class="font-semibold mb-2">비자 신청</h5>
-                  <p class="text-sm text-gray">출입국 관리소 신청</p>
+                <div class="p-2 md:p-6">
+                  <div class="text-xl md:text-4xl text-orange mb-1 md:mb-4">📮</div>
+                  <h4 class="text-xs md:text-lg font-bold text-navy mb-1 md:mb-2">STEP 6</h4>
+                  <h5 class="text-xs md:text-base font-semibold mb-1 md:mb-2 hidden md:block">비자 신청</h5>
+                  <h5 class="text-xs font-semibold mb-1 block md:hidden">신청</h5>
+                  <p class="text-xs md:text-sm text-gray hidden md:block">출입국 관리소 신청</p>
                 </div>
               </div>
               
               <div class="text-center bg-white rounded-xl shadow-md">
-                <div class="p-6">
-                  <div class="text-4xl text-green mb-4">🎉</div>
-                  <h4 class="text-lg font-bold text-navy mb-2">STEP 7</h4>
-                  <h5 class="font-semibold mb-2">비자 발급</h5>
-                  <p class="text-sm text-gray">비자 취득 완료</p>
+                <div class="p-2 md:p-6">
+                  <div class="text-xl md:text-4xl text-green mb-1 md:mb-4">🎉</div>
+                  <h4 class="text-xs md:text-lg font-bold text-navy mb-1 md:mb-2">STEP 7</h4>
+                  <h5 class="text-xs md:text-base font-semibold mb-1 md:mb-2 hidden md:block">비자 발급</h5>
+                  <h5 class="text-xs font-semibold mb-1 block md:hidden">발급</h5>
+                  <p class="text-xs md:text-sm text-gray hidden md:block">비자 취득 완료</p>
                 </div>
               </div>
             </div>
