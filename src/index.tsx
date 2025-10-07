@@ -41,7 +41,7 @@ app.get('/', (c) => {
       <section class="hero-bg flex items-center justify-center relative pt-16">
         <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8 py-20">
           <h1 class="text-2xl text-teal-blue font-medium mb-4">
-            💼 외국인 구직자와 기업을 연결하는 취업 매칭 플랫폼
+            💼 외국인 취업 매칭 플랫폼
           </h1>
           
           <div class="mb-6">
