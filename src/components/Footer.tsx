@@ -6,11 +6,7 @@ export const Footer = () => {
           {/* 회사 정보 */}
           <div class="lg:col-span-2">
             <div class="flex items-center mb-6">
-              <img 
-                src="/static/hireme-logo.png" 
-                alt="HIRE ME" 
-                class="h-10 w-auto filter brightness-0 invert"
-              />
+              <h2 class="text-3xl font-bold text-white">HIRE ME</h2>
             </div>
             <p class="text-gray-300 mb-4 leading-relaxed">
               외국인 구직자와 기업을 연결하는 전문 취업 매칭 플랫폼입니다.<br />
