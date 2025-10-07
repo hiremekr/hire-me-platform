@@ -5,7 +5,7 @@ export const E74TransferFormPage = () => {
     <div class="space-y-6">
       <div>
         <label for="current-contract" class="block text-sm font-semibold text-navy mb-2">
-          현재 회사 계약서 *
+          현재 회사 계약서
         </label>
         <div class="file-upload">
           <input 
@@ -15,7 +15,6 @@ export const E74TransferFormPage = () => {
             accept="image/*,.pdf"
             class="hidden"
             onchange="handleFileUpload(this, 'contract-preview')"
-            required
           />
           <label for="current-contract" class="cursor-pointer">
             <i class="fas fa-file-contract text-2xl text-charcoal mb-2"></i>
@@ -28,7 +27,7 @@ export const E74TransferFormPage = () => {
       
       <div>
         <label for="income-proof" class="block text-sm font-semibold text-navy mb-2">
-          최근 2개년 소득금액증명원 *
+          최근 2개년 소득금액증명원
         </label>
         <div class="file-upload">
           <input 
@@ -38,7 +37,6 @@ export const E74TransferFormPage = () => {
             accept="image/*,.pdf"
             class="hidden"
             onchange="handleFileUpload(this, 'income-proof-preview')"
-            required
           />
           <label for="income-proof" class="cursor-pointer">
             <i class="fas fa-receipt text-2xl text-charcoal mb-2"></i>
@@ -51,7 +49,7 @@ export const E74TransferFormPage = () => {
       
       <div>
         <label for="eps-certificate-transfer" class="block text-sm font-semibold text-navy mb-2">
-          EPS 경력증명서 *
+          EPS 경력증명서
         </label>
         <div class="file-upload">
           <input 
@@ -61,7 +59,6 @@ export const E74TransferFormPage = () => {
             accept="image/*,.pdf"
             class="hidden"
             onchange="handleFileUpload(this, 'eps-transfer-preview')"
-            required
           />
           <label for="eps-certificate-transfer" class="cursor-pointer">
             <i class="fas fa-file-alt text-2xl text-charcoal mb-2"></i>
@@ -75,7 +72,7 @@ export const E74TransferFormPage = () => {
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label for="current-company" class="block text-sm font-semibold text-navy mb-2">
-            현재 회사명 *
+            현재 회사명
           </label>
           <input 
             type="text" 
@@ -83,13 +80,12 @@ export const E74TransferFormPage = () => {
             name="currentCompany"
             class="form-input"
             placeholder="예: OO제조(주)"
-            required
           />
         </div>
         
         <div>
           <label for="work-period" class="block text-sm font-semibold text-navy mb-2">
-            현재 회사 근무 기간 *
+            현재 회사 근무 기간
           </label>
           <input 
             type="text" 
@@ -97,14 +93,13 @@ export const E74TransferFormPage = () => {
             name="workPeriod"
             class="form-input"
             placeholder="예: 2년 3개월"
-            required
           />
         </div>
       </div>
       
       <div>
         <label for="transfer-reason" class="block text-sm font-semibold text-navy mb-2">
-          이직 사유 *
+          이직 사유
         </label>
         <textarea 
           id="transfer-reason" 
@@ -112,7 +107,6 @@ export const E74TransferFormPage = () => {
           class="form-textarea"
           rows="6"
           placeholder="이직을 희망하는 구체적인 사유를 작성해주세요"
-          required
         ></textarea>
         <p class="text-sm text-gray mt-1">구체적이고 정당한 사유를 작성해주세요</p>
       </div>

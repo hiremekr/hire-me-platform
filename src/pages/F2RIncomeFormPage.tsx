@@ -5,7 +5,7 @@ export const F2RIncomeFormPage = () => {
     <div class="space-y-6">
       <div>
         <label for="income-cert" class="block text-sm font-semibold text-navy mb-2">
-          최근 1개년 소득금액증명원 *
+          최근 1개년 소득금액증명원
         </label>
         <div class="file-upload">
           <input 
@@ -15,7 +15,6 @@ export const F2RIncomeFormPage = () => {
             accept="image/*,.pdf"
             class="hidden"
             onchange="handleFileUpload(this, 'income-preview')"
-            required
           />
           <label for="income-cert" class="cursor-pointer">
             <i class="fas fa-won-sign text-2xl text-teal-blue mb-2"></i>
@@ -28,7 +27,7 @@ export const F2RIncomeFormPage = () => {
       
       <div>
         <label for="korean-test-cert" class="block text-sm font-semibold text-navy mb-2">
-          한국어 성적표 (TOPIK/KIIP 4급 이상) *
+          한국어 성적표 (TOPIK/KIIP 4급 이상)
         </label>
         <div class="file-upload">
           <input 
@@ -38,7 +37,6 @@ export const F2RIncomeFormPage = () => {
             accept="image/*,.pdf"
             class="hidden"
             onchange="handleFileUpload(this, 'korean-test-preview')"
-            required
           />
           <label for="korean-test-cert" class="cursor-pointer">
             <i class="fas fa-language text-2xl text-teal-blue mb-2"></i>

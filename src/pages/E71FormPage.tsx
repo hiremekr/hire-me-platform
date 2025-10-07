@@ -5,7 +5,7 @@ export const E71FormPage = () => {
     <div class="space-y-6">
       <div>
         <label for="degree-cert" class="block text-sm font-semibold text-navy mb-2">
-          학위증명서 (학사 이상) *
+          학위증명서 (학사 이상)
         </label>
         <div class="file-upload">
           <input 
@@ -15,7 +15,6 @@ export const E71FormPage = () => {
             accept="image/*,.pdf"
             class="hidden"
             onchange="handleFileUpload(this, 'degree-preview')"
-            required
           />
           <label for="degree-cert" class="cursor-pointer">
             <i class="fas fa-university text-2xl text-orange mb-2"></i>
@@ -28,7 +27,7 @@ export const E71FormPage = () => {
       
       <div>
         <label for="career-cert" class="block text-sm font-semibold text-navy mb-2">
-          관련 경력증명서 *
+          관련 경력증명서
         </label>
         <div class="file-upload">
           <input 
@@ -38,7 +37,6 @@ export const E71FormPage = () => {
             accept="image/*,.pdf"
             class="hidden"
             onchange="handleFileUpload(this, 'career-preview')"
-            required
           />
           <label for="career-cert" class="cursor-pointer">
             <i class="fas fa-briefcase text-2xl text-orange mb-2"></i>
@@ -51,7 +49,7 @@ export const E71FormPage = () => {
       
       <div>
         <label for="specialty-field" class="block text-sm font-semibold text-navy mb-2">
-          전문 분야 *
+          전문 분야
         </label>
         <input 
           type="text" 
@@ -59,7 +57,6 @@ export const E71FormPage = () => {
           name="specialtyField"
           class="form-input"
           placeholder="예: IT개발, 디자인, 마케팅"
-          required
         />
         <p class="text-sm text-gray mt-1">구체적인 전문 분야를 입력해주세요</p>
       </div>

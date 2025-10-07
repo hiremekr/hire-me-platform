@@ -619,6 +619,20 @@ function toggleExperienceField(hasExperience) {
   }
 }
 
+// 국적 '기타' 선택 시 직접 입력 필드 토글
+function toggleOtherNationalityInput(value) {
+  const otherInput = document.getElementById('other-nationality');
+  if (otherInput) {
+    if (value === 'other') {
+      otherInput.classList.remove('hidden');
+      otherInput.focus();
+    } else {
+      otherInput.classList.add('hidden');
+      otherInput.value = '';
+    }
+  }
+}
+
 // ========== 인재풀 필터링 기능 ==========
 
 // 인재 정보 요청 함수

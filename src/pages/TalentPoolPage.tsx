@@ -15,7 +15,7 @@ export const TalentPoolPage = () => {
             <h1 class="text-4xl font-bold text-navy mb-4">
               🎯 현재 구직 중인 인재 풀
             </h1>
-            <p class="text-xl text-gray mb-2">검증된 외국인 인재들을 만나보세요</p>
+            <p class="text-xl text-gray mb-2">우수한 외국인 인재 정보를 확인하세요</p>
             <p class="text-lg text-gray-600">
               총 <span class="font-bold text-teal-blue">{candidatesData.length}명</span>의 인재가 새로운 기회를 기다리고 있습니다
             </p>
@@ -88,10 +88,16 @@ export const TalentPoolPage = () => {
             </div>
           </div>
 
-          {/* 인재 카드 그리드 - 반응형 (모바일 최적화 + PC 롤링 배너 스타일) */}
-          <div id="talent-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
+          {/* 인재 카드 그리드 - 반응형 (모바일 2x2, 태블릿 2열, PC 4열) */}
+          <div id="talent-grid" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-4 lg:gap-6">
             {candidatesData.map((candidate) => (
-              <div class="talent-card bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden" data-nationality={candidate.nationality} data-visa={candidate.desiredVisa} data-gender={candidate.gender}>
+              <div 
+                class="talent-card bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden cursor-pointer" 
+                data-nationality={candidate.nationality} 
+                data-visa={candidate.desiredVisa} 
+                data-gender={candidate.gender}
+                onclick={`requestTalentInfo(${candidate.id})`}
+              >
                 
                 {/* PC 버전 - 롤링 배너 스타일 */}
                 <div class="hidden md:block p-6">
@@ -129,7 +135,7 @@ export const TalentPoolPage = () => {
                   </button>
                 </div>
 
-                {/* 모바일 버전 - 압축된 카드 (높이 1/3) */}
+                {/* 모바일 버전 - 압축된 카드 (높이 1/3), 2x2 그리드 */}
                 <div class="block md:hidden">
                   {/* 모바일 카드 헤더 - 높이 압축 */}
                   <div class="bg-gradient-to-r from-teal-blue to-green p-2">
@@ -194,31 +200,17 @@ export const TalentPoolPage = () => {
             </div>
           </div>
 
-          {/* 더 많은 인재 정보 및 관리 안내 */}
+          {/* CTA 섹션 */}
           <div class="text-center mt-16">
             <div class="bg-white rounded-xl p-8 shadow-md">
               <h3 class="text-2xl font-bold text-navy mb-4">
-                <i class="fas fa-users text-teal-blue mr-2"></i>
-                더 많은 인재가 필요하신가요?
+                <i class="fas fa-handshake text-teal-blue mr-2"></i>
+                맞춤형 인재 추천 서비스
               </h3>
               <p class="text-gray mb-6">
-                매월 새로운 인재들이 자동으로 추가됩니다. <br/>
-                현재 <strong class="text-teal-blue">{candidatesData.length}명</strong>의 검증된 인재가 등록되어 있으며, 
-                관리자가 인재를 추가하면 실시간으로 이 페이지에 반영됩니다.
+                원하는 조건의 인재를 찾지 못하셨나요? <br/>
+                상세한 채용 요구사항을 알려주시면 최적의 인재를 추천해드립니다.
               </p>
-              
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                <div class="bg-light-gray rounded-lg p-4">
-                  <i class="fas fa-plus-circle text-green text-2xl mb-2"></i>
-                  <h4 class="font-bold text-navy mb-1">인재 자동 추가</h4>
-                  <p class="text-sm text-gray">새로운 인재가 등록되면 자동으로 표시됩니다</p>
-                </div>
-                <div class="bg-light-gray rounded-lg p-4">
-                  <i class="fas fa-edit text-orange text-2xl mb-2"></i>
-                  <h4 class="font-bold text-navy mb-1">정보 수정 가능</h4>
-                  <p class="text-sm text-gray">인재 정보는 언제든지 수정 및 업데이트 가능합니다</p>
-                </div>
-              </div>
               
               <a href="/company/apply" class="btn-orange-gradient py-4 px-8 rounded-xl font-bold transition-all hover:no-underline">
                 맞춤형 인재 추천 신청하기 →

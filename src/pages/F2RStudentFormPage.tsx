@@ -5,7 +5,7 @@ export const F2RStudentFormPage = () => {
     <div class="space-y-6">
       <div>
         <label for="graduation-cert" class="block text-sm font-semibold text-navy mb-2">
-          졸업증명서 (전문학사 이상) *
+          졸업증명서 (전문학사 이상)
         </label>
         <div class="file-upload">
           <input 
@@ -15,7 +15,6 @@ export const F2RStudentFormPage = () => {
             accept="image/*,.pdf"
             class="hidden"
             onchange="handleFileUpload(this, 'graduation-preview')"
-            required
           />
           <label for="graduation-cert" class="cursor-pointer">
             <i class="fas fa-graduation-cap text-2xl text-green mb-2"></i>
@@ -28,7 +27,7 @@ export const F2RStudentFormPage = () => {
       
       <div>
         <label for="transcript" class="block text-sm font-semibold text-navy mb-2">
-          성적증명서 *
+          성적증명서
         </label>
         <div class="file-upload">
           <input 
@@ -38,7 +37,6 @@ export const F2RStudentFormPage = () => {
             accept="image/*,.pdf"
             class="hidden"
             onchange="handleFileUpload(this, 'transcript-preview')"
-            required
           />
           <label for="transcript" class="cursor-pointer">
             <i class="fas fa-chart-line text-2xl text-green mb-2"></i>
@@ -51,7 +49,7 @@ export const F2RStudentFormPage = () => {
       
       <div>
         <label for="topik-kiip-cert" class="block text-sm font-semibold text-navy mb-2">
-          TOPIK/KIIP 4급 이상 증명서 *
+          TOPIK/KIIP 4급 이상 증명서
         </label>
         <div class="file-upload">
           <input 
@@ -61,7 +59,6 @@ export const F2RStudentFormPage = () => {
             accept="image/*,.pdf"
             class="hidden"
             onchange="handleFileUpload(this, 'topik-kiip-preview')"
-            required
           />
           <label for="topik-kiip-cert" class="cursor-pointer">
             <i class="fas fa-language text-2xl text-green mb-2"></i>
@@ -74,7 +71,7 @@ export const F2RStudentFormPage = () => {
       
       <div>
         <label for="visa-proof" class="block text-sm font-semibold text-navy mb-2">
-          D-2 또는 D-10 비자 증명 *
+          D-2 또는 D-10 비자 증명
         </label>
         <div class="file-upload">
           <input 
@@ -84,7 +81,6 @@ export const F2RStudentFormPage = () => {
             accept="image/*,.pdf"
             class="hidden"
             onchange="handleFileUpload(this, 'visa-preview')"
-            required
           />
           <label for="visa-proof" class="cursor-pointer">
             <i class="fas fa-id-card text-2xl text-green mb-2"></i>

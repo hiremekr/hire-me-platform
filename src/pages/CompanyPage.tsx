@@ -13,8 +13,14 @@ export const CompanyPage = () => {
           <h1 class="text-4xl md:text-6xl font-bold text-navy mb-6" style="font-family: 'Cardo', serif;">
             검증된 외국인 인재를<br />만나보세요
           </h1>
-          <p class="text-xl text-gray mb-12 max-w-2xl mx-auto leading-relaxed">
+          {/* Desktop version */}
+          <p class="hidden md:block text-xl text-gray mb-12 max-w-2xl mx-auto leading-relaxed">
             엄선된 인재 풀에서 귀사에 맞는 인재를 찾으세요
+          </p>
+          {/* Mobile version */}
+          <p class="block md:hidden text-xl text-gray mb-12 max-w-2xl mx-auto leading-relaxed whitespace-pre-line">
+            엄선된 인재풀에서
+귀사에 맞는 인재를 찾으세요
           </p>
           <a 
             href="#talent-pool" 
@@ -36,7 +42,7 @@ export const CompanyPage = () => {
               실시간으로 업데이트되는 우수한 외국인재 풀
             </p>
             <a href="/company/talents" class="text-teal-blue hover:text-green font-semibold transition-colors">
-              전체 인재 풀 보기 ({candidates.length}명) →
+              전체 인재 풀 보기 →
             </a>
           </div>
 
@@ -216,8 +222,14 @@ export const CompanyPage = () => {
       <section class="py-24 px-4 sm:px-6 lg:px-8 bg-light-gray">
         <div class="max-w-7xl mx-auto">
           <div class="text-center mb-16">
-            <h2 class="text-4xl font-bold text-navy mb-4" style="font-family: 'Cardo', serif;">
+            {/* Desktop version */}
+            <h2 class="hidden md:block text-4xl font-bold text-navy mb-4" style="font-family: 'Cardo', serif;">
               HIRE ME 기업 서비스 특장점
+            </h2>
+            {/* Mobile version */}
+            <h2 class="block md:hidden text-3xl font-bold text-navy mb-4 whitespace-pre-line" style="font-family: 'Cardo', serif;">
+              HIRE ME
+기업 서비스 특장점
             </h2>
           </div>
 
@@ -229,7 +241,7 @@ export const CompanyPage = () => {
               </div>
               <h4 class="text-lg font-bold text-navy mb-3">검증된 인재</h4>
               <p class="text-gray text-sm leading-relaxed">
-                경력, 한국어 능력, 비자 적합성을 사전에 검증한 우수 인재만 추천
+                사전 검증된 우수 인재풀 제공
               </p>
             </div>
 
@@ -237,9 +249,9 @@ export const CompanyPage = () => {
               <div class="text-4xl text-green mb-4">
                 <i class="fas fa-handshake"></i>
               </div>
-              <h4 class="text-lg font-bold text-navy mb-3">무료 추천</h4>
+              <h4 class="text-lg font-bold text-navy mb-3">완전 무료</h4>
               <p class="text-gray text-sm leading-relaxed">
-                인재 추천 및 매칭 서비스는 완전 무료. 성공적인 채용까지 지원
+                인재 매칭 및 추천 서비스 완전 무료 제공
               </p>
             </div>
 
@@ -247,9 +259,9 @@ export const CompanyPage = () => {
               <div class="text-4xl text-orange mb-4">
                 <i class="fas fa-gavel"></i>
               </div>
-              <h4 class="text-lg font-bold text-navy mb-3">비자 컨설팅</h4>
+              <h4 class="text-lg font-bold text-navy mb-3">비자 지원</h4>
               <p class="text-gray text-sm leading-relaxed">
-                전문 행정사가 직접 비자 취득부터 갱신까지 원스톱 지원
+                전문 행정사의 비자 취득 및 갱신 지원
               </p>
             </div>
 
@@ -257,9 +269,9 @@ export const CompanyPage = () => {
               <div class="text-4xl text-navy mb-4">
                 <i class="fas fa-headset"></i>
               </div>
-              <h4 class="text-lg font-bold text-navy mb-3">사후 관리</h4>
+              <h4 class="text-lg font-bold text-navy mb-3">채용 후 지원</h4>
               <p class="text-gray text-sm leading-relaxed">
-                채용 후 적응 과정, 비자 갱신 등 지속적인 관리 서비스 제공
+                입사 후 적응과정 및 정착 지원 서비스 제공
               </p>
             </div>
             
@@ -282,9 +294,9 @@ export const CompanyPage = () => {
               <div class="bg-teal-blue text-white w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
                 1
               </div>
-              <h4 class="text-lg font-bold text-navy mb-3">채용 정보 제출</h4>
+              <h4 class="text-lg font-bold text-navy mb-3">채용 정보 등록</h4>
               <p class="text-gray text-sm leading-relaxed">
-                필요한 인재의 조건과 근무 환경을 상세히 입력
+                채용조건 및 근무환경 정보 등록
               </p>
             </div>
 
@@ -292,9 +304,9 @@ export const CompanyPage = () => {
               <div class="bg-green text-white w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
                 2
               </div>
-              <h4 class="text-lg font-bold text-navy mb-3">맞춤 인재 추천</h4>
+              <h4 class="text-lg font-bold text-navy mb-3">인재 추천</h4>
               <p class="text-gray text-sm leading-relaxed">
-                조건에 맞는 검증된 인재 3-5명을 엄선하여 추천
+                최적 조건 매칭 인재 3-5명 추천
               </p>
             </div>
 
@@ -302,9 +314,9 @@ export const CompanyPage = () => {
               <div class="bg-orange text-white w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
                 3
               </div>
-              <h4 class="text-lg font-bold text-navy mb-3">면접 진행</h4>
+              <h4 class="text-lg font-bold text-navy mb-3">면접 지원</h4>
               <p class="text-gray text-sm leading-relaxed">
-                필요시 통역 지원을 통한 원활한 면접 진행
+                통역지원을 통한 원활한 면접 진행
               </p>
             </div>
 
@@ -312,9 +324,9 @@ export const CompanyPage = () => {
               <div class="bg-navy text-white w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
                 4
               </div>
-              <h4 class="text-lg font-bold text-navy mb-3">채용 후 지원</h4>
+              <h4 class="text-lg font-bold text-navy mb-3">사후 관리</h4>
               <p class="text-gray text-sm leading-relaxed">
-                비자 취득, 적응 과정 등 채용 후 통합 관리
+                비자취득 및 업무적응 사후관리
               </p>
             </div>
 

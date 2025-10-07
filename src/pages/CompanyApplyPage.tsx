@@ -23,28 +23,28 @@ export const CompanyApplyPage = () => {
               </h3>
               
               <div class="grid grid-cols-1 md:grid-cols-4 gap-6 text-center">
-                <div class="p-4">
-                  <div class="text-3xl text-teal-blue mb-3">1️⃣</div>
-                  <h4 class="font-bold text-navy mb-2">채용 정보 제출</h4>
-                  <p class="text-sm text-gray">필요한 인재 조건 상세 입력</p>
+                <div class="p-3">
+                  <div class="text-2xl text-teal-blue mb-2">1️⃣</div>
+                  <h4 class="font-bold text-navy mb-1">채용정보 등록</h4>
+                  <p class="text-xs text-gray">채용조건 입력</p>
                 </div>
                 
-                <div class="p-4">
-                  <div class="text-3xl text-green mb-3">2️⃣</div>
-                  <h4 class="font-bold text-navy mb-2">맞춤 인재 추천</h4>
-                  <p class="text-sm text-gray">검증된 인재 3-5명 추천</p>
+                <div class="p-3">
+                  <div class="text-2xl text-green mb-2">2️⃣</div>
+                  <h4 class="font-bold text-navy mb-1">인재 추천</h4>
+                  <p class="text-xs text-gray">최적 인재 3-5명</p>
                 </div>
                 
-                <div class="p-4">
-                  <div class="text-3xl text-orange mb-3">3️⃣</div>
-                  <h4 class="font-bold text-navy mb-2">면접 진행</h4>
-                  <p class="text-sm text-gray">통역 지원 면접 진행</p>
+                <div class="p-3">
+                  <div class="text-2xl text-orange mb-2">3️⃣</div>
+                  <h4 class="font-bold text-navy mb-1">면접 지원</h4>
+                  <p class="text-xs text-gray">통역지원 면접</p>
                 </div>
                 
-                <div class="p-4">
-                  <div class="text-3xl text-navy mb-3">4️⃣</div>
-                  <h4 class="font-bold text-navy mb-2">채용 후 지원</h4>
-                  <p class="text-sm text-gray">비자 취득 및 사후 관리</p>
+                <div class="p-3">
+                  <div class="text-2xl text-navy mb-2">4️⃣</div>
+                  <h4 class="font-bold text-navy mb-1">사후 관리</h4>
+                  <p class="text-xs text-gray">비자취득 지원</p>
                 </div>
               </div>
             </div>
@@ -58,29 +58,20 @@ export const CompanyApplyPage = () => {
                 개인정보 보호 정책 안내
               </h3>
               
-              <div class="space-y-4 text-gray">
+              <div class="space-y-2 text-gray text-sm">
                 <div class="flex items-start">
-                  <i class="fas fa-lock text-orange mt-1 mr-3"></i>
-                  <p><strong class="text-navy">구직자 개인정보는 철저히 보호됩니다</strong><br />
-                  개인정보보호법에 따라 안전하게 관리되며, 동의 없이 제3자에게 제공되지 않습니다.</p>
+                  <i class="fas fa-shield-check text-orange mt-1 mr-2"></i>
+                  <p><strong class="text-navy">개인정보 철저 보호</strong> - 법정 절차에 따른 안전 관리</p>
                 </div>
                 
                 <div class="flex items-start">
-                  <i class="fas fa-user-check text-orange mt-1 mr-3"></i>
-                  <p><strong class="text-navy">인사담당자 확인 후 이메일 제공</strong><br />
-                  실제 기업의 인사담당자임을 확인한 후, 관심 표명한 구직자의 연락처를 제공합니다.</p>
+                  <i class="fas fa-user-check text-orange mt-1 mr-2"></i>
+                  <p><strong class="text-navy">인사담당자 신원확인</strong> - 명함 등을 통한 신원 검증 후 서비스 제공</p>
                 </div>
                 
                 <div class="flex items-start">
-                  <i class="fas fa-search text-orange mt-1 mr-3"></i>
-                  <p><strong class="text-navy">실제 구인 의도 확인 필수</strong><br />
-                  허위 구인이나 개인정보 수집 목적의 신청을 방지하기 위해 철저한 검증 절차를 거칩니다.</p>
-                </div>
-                
-                <div class="flex items-start">
-                  <i class="fas fa-gavel text-red-500 mt-1 mr-3"></i>
-                  <p><strong class="text-red-600">부정한 목적 사용 시 법적 조치</strong><br />
-                  허위 정보 제공이나 부정한 목적으로 서비스를 이용할 경우 관련 법령에 따라 법적 조치를 취합니다.</p>
+                  <i class="fas fa-gavel text-red-500 mt-1 mr-2"></i>
+                  <p><strong class="text-red-600">부정사용 방지</strong> - 허위신청 시 법적 조치 예고</p>
                 </div>
               </div>
             </div>
@@ -121,7 +112,7 @@ export const CompanyApplyPage = () => {
                   
                   <div>
                     <label for="business-number" class="block text-sm font-semibold text-navy mb-2">
-                      사업자등록번호
+                      사업자등록번호 *
                     </label>
                     <input 
                       type="text" 
@@ -130,6 +121,7 @@ export const CompanyApplyPage = () => {
                       class="form-input"
                       placeholder="000-00-00000"
                       pattern="[0-9]{3}-[0-9]{2}-[0-9]{5}"
+                      required
                     />
                   </div>
                   
@@ -238,7 +230,7 @@ export const CompanyApplyPage = () => {
                   
                   <div>
                     <label for="manager-email" class="block text-sm font-semibold text-navy mb-2">
-                      담당자 이메일
+                      담당자 이메일 *
                     </label>
                     <input 
                       type="email" 
@@ -246,13 +238,14 @@ export const CompanyApplyPage = () => {
                       name="managerEmail"
                       class="form-input"
                       placeholder="hr@company.com"
+                      required
                     />
                   </div>
                 </div>
                 
                 <div class="mt-6">
                   <label for="business-card" class="block text-sm font-semibold text-navy mb-2">
-                    명함 파일 업로드 <span class="text-sm text-gray">(담당자 신원 확인용 - 선택사항)</span>
+                    명함 파일 업로드 * <span class="text-sm text-gray">(담당자 신원 확인용)</span>
                   </label>
                   <div class="file-upload">
                     <input 
@@ -262,6 +255,7 @@ export const CompanyApplyPage = () => {
                       accept="image/*,.pdf"
                       class="hidden"
                       onchange="handleFileUpload(this, 'card-preview')"
+                      required
                     />
                     <label for="business-card" class="cursor-pointer">
                       <i class="fas fa-cloud-upload-alt text-2xl text-teal-blue mb-2"></i>
@@ -340,6 +334,7 @@ export const CompanyApplyPage = () => {
                       <option value="construction">건설</option>
                       <option value="service">서비스</option>
                       <option value="agriculture">농축산</option>
+                      <option value="it">IT/개발</option>
                       <option value="professional">전문직/사무직</option>
                       <option value="other">기타</option>
                     </select>
@@ -491,6 +486,10 @@ export const CompanyApplyPage = () => {
                       <span>🇪🇬 이집트</span>
                     </label>
                     <label class="flex items-center">
+                      <input type="checkbox" name="preferredNationality" value="china" class="mr-2" />
+                      <span>🇨🇳 중국</span>
+                    </label>
+                    <label class="flex items-center">
                       <input type="checkbox" name="preferredNationality" value="any" class="mr-2" />
                       <span>🌍 무관</span>
                     </label>
@@ -586,6 +585,18 @@ export const CompanyApplyPage = () => {
                   class="flex-1 btn-orange-gradient py-4 px-8 rounded-xl font-bold transition-all"
                 >
                   신청 제출하기
+                </button>
+              </div>
+              
+              {/* 카카오톡 상담 버튼 */}
+              <div class="text-center mt-6">
+                <button 
+                  type="button"
+                  onclick="openKakaoTalk()" 
+                  class="bg-yellow-400 text-black px-8 py-3 rounded-xl font-bold hover:bg-yellow-300 transition-colors inline-flex items-center"
+                >
+                  <i class="fab fa-telegram mr-2 text-lg"></i>
+                  카카오톡 상담하기
                 </button>
               </div>
             </form>

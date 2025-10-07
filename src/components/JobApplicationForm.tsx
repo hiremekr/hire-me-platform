@@ -21,9 +21,10 @@ export const JobApplicationForm = (props: JobApplicationFormProps) => {
           
           <div class="text-center mb-8">
             <h1 class="text-3xl font-bold text-navy mb-2">
-              {visaType} {visaName} 신청
+              <span class="hidden md:inline">{visaType} {visaName} 신청</span>
+              <span class="md:hidden whitespace-pre-line">{visaName}</span>
             </h1>
-            <p class="text-gray">{description}</p>
+            <p class="text-gray whitespace-pre-line">{description}</p>
             {specialNote && (
               <div class="bg-yellow-50 border-2 border-yellow-400 rounded-xl p-4 mt-4 text-left">
                 <div class="flex items-start">
@@ -82,6 +83,7 @@ export const JobApplicationForm = (props: JobApplicationFormProps) => {
                       name="nationality"
                       class="form-input"
                       required
+                      onchange="toggleOtherNationalityInput(this.value)"
                     >
                       <option value="">선택하세요 / Select</option>
                       <option value="vietnam">🇻🇳 베트남 / Vietnam</option>
@@ -97,6 +99,14 @@ export const JobApplicationForm = (props: JobApplicationFormProps) => {
                       <option value="mongolia">🇲🇳 몽골 / Mongolia</option>
                       <option value="other">기타 / Other</option>
                     </select>
+                    {/* 기타 선택 시 직접 기입 가능한 칸 */}
+                    <input 
+                      type="text" 
+                      id="other-nationality" 
+                      name="otherNationality"
+                      class="form-input mt-2 hidden"
+                      placeholder="직접 기입하세요 / Please enter directly"
+                    />
                   </div>
                   
                   <div>
@@ -317,67 +327,52 @@ export const JobApplicationForm = (props: JobApplicationFormProps) => {
                     />
                   </div>
                   
-                  <div>
-                    <label for="current-visa" class="block text-sm font-semibold text-navy mb-2">
-                      현재 비자 / CURRENT VISA
-                    </label>
-                    <select 
-                      id="current-visa" 
-                      name="currentVisa"
-                      class="form-input"
-                    >
-                      <option value="">선택하세요</option>
-                      <option value="E-9">E-9 (비전문취업)</option>
-                      <option value="F-4">F-4 (재외동포)</option>
-                      <option value="D-10">D-10 (구직)</option>
-                      <option value="H-2">H-2 (방문취업)</option>
-                      <option value="D-2">D-2 (유학)</option>
-                      <option value="other">기타</option>
-                    </select>
-                  </div>
+
                 </div>
                 
-                <div class="mt-6">
-                  <label class="block text-sm font-semibold text-navy mb-3">
-                    경력 여부 / WORK EXPERIENCE
-                  </label>
-                  <div class="flex space-x-6 mb-4">
-                    <label class="flex items-center">
-                      <input 
-                        type="radio" 
-                        name="hasExperience" 
-                        value="yes" 
-                        class="mr-2"
-                        onchange="toggleExperienceField(true)"
-                      />
-                      <span>있음</span>
+                {visaType !== 'E-7-4' && (
+                  <div class="mt-6">
+                    <label class="block text-sm font-semibold text-navy mb-3">
+                      경력 여부 / WORK EXPERIENCE
                     </label>
-                    <label class="flex items-center">
-                      <input 
-                        type="radio" 
-                        name="hasExperience" 
-                        value="no" 
-                        class="mr-2"
-                        onchange="toggleExperienceField(false)"
-                        checked
-                      />
-                      <span>없음</span>
-                    </label>
+                    <div class="flex space-x-6 mb-4">
+                      <label class="flex items-center">
+                        <input 
+                          type="radio" 
+                          name="hasExperience" 
+                          value="yes" 
+                          class="mr-2"
+                          onchange="toggleExperienceField(true)"
+                        />
+                        <span>있음</span>
+                      </label>
+                      <label class="flex items-center">
+                        <input 
+                          type="radio" 
+                          name="hasExperience" 
+                          value="no" 
+                          class="mr-2"
+                          onchange="toggleExperienceField(false)"
+                          checked
+                        />
+                        <span>없음</span>
+                      </label>
+                    </div>
+                    
+                    <div id="experience-detail" class="hidden">
+                      <label for="experience" class="block text-sm font-semibold text-navy mb-2">
+                        경력 상세 / EXPERIENCE DETAILS
+                      </label>
+                      <textarea 
+                        id="experience" 
+                        name="experience"
+                        class="form-textarea"
+                        rows="5"
+                        placeholder="예: 화학물질 배합 4년, OO공장 근무"
+                      ></textarea>
+                    </div>
                   </div>
-                  
-                  <div id="experience-detail" class="hidden">
-                    <label for="experience" class="block text-sm font-semibold text-navy mb-2">
-                      경력 상세 / EXPERIENCE DETAILS
-                    </label>
-                    <textarea 
-                      id="experience" 
-                      name="experience"
-                      class="form-textarea"
-                      rows="5"
-                      placeholder="예: 화학물질 배합 4년, OO공장 근무"
-                    ></textarea>
-                  </div>
-                </div>
+                )}
               </div>
 
               {/* 섹션 5: 희망 사항 */}
@@ -388,46 +383,127 @@ export const JobApplicationForm = (props: JobApplicationFormProps) => {
                 </h3>
                 
                 <div class="space-y-6">
-                  <div>
-                    <label class="block text-sm font-semibold text-navy mb-3">
-                      희망 근무지 / PREFERRED LOCATION (복수 선택 가능 / Multiple selections allowed)
-                    </label>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                      {['서울', '경기', '인천', '충청', '전라', '경상', '강원', '제주'].map(region => (
-                        <label class="flex items-center">
-                          <input type="checkbox" name="preferredLocation" value={region} class="mr-2" />
-                          <span class="text-sm">{region}</span>
+                  {/* E-7-4R 전용: 희망 급여와 교대 가능 여부만 */}
+                  {visaType === 'E-7-4R' && (
+                    <>
+                      <div>
+                        <label for="expected-salary" class="block text-sm font-semibold text-navy mb-2">
+                          희망 급여 / EXPECTED SALARY
                         </label>
-                      ))}
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <label class="block text-sm font-semibold text-navy mb-3">
-                      희망 직종 / PREFERRED JOB TYPE (복수 선택 가능 / Multiple selections allowed)
-                    </label>
-                    <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
-                      {['제조', '건설', '서비스', '농축산', 'IT', '기타'].map(job => (
-                        <label class="flex items-center">
-                          <input type="checkbox" name="preferredJob" value={job} class="mr-2" />
-                          <span class="text-sm">{job}</span>
+                        <input 
+                          type="text" 
+                          id="expected-salary" 
+                          name="expectedSalary"
+                          class="form-input"
+                          placeholder="예: 월 250-300만원"
+                        />
+                      </div>
+                      
+                      <div>
+                        <label class="block text-sm font-semibold text-navy mb-3">
+                          주간/야간/교대 가능한지 여부 / SHIFT WORK AVAILABILITY
                         </label>
-                      ))}
-                    </div>
-                  </div>
+                        <div class="space-y-2">
+                          <label class="flex items-center">
+                            <input type="checkbox" name="shiftWork" value="day" class="mr-2" />
+                            <span class="text-sm">주간 근무 가능 / Day shift available</span>
+                          </label>
+                          <label class="flex items-center">
+                            <input type="checkbox" name="shiftWork" value="night" class="mr-2" />
+                            <span class="text-sm">야간 근무 가능 / Night shift available</span>
+                          </label>
+                          <label class="flex items-center">
+                            <input type="checkbox" name="shiftWork" value="rotating" class="mr-2" />
+                            <span class="text-sm">교대 근무 가능 / Rotating shift available</span>
+                          </label>
+                        </div>
+                      </div>
+                    </>
+                  )}
                   
-                  <div>
-                    <label for="expected-salary" class="block text-sm font-semibold text-navy mb-2">
-                      희망 급여 / EXPECTED SALARY
-                    </label>
-                    <input 
-                      type="text" 
-                      id="expected-salary" 
-                      name="expectedSalary"
-                      class="form-input"
-                      placeholder="예: 월 250-300만원"
-                    />
-                  </div>
+                  {/* 다른 비자 유형: F-2-R 전용 희망근무지 */}
+                  {(visaType === 'F-2-R' || visaType.includes('F-2-R')) && (
+                    <div>
+                      <label class="block text-sm font-semibold text-navy mb-3">
+                        희망 근무지 / PREFERRED LOCATION (복수 선택 가능 / Multiple selections allowed)
+                      </label>
+                      <p class="text-sm text-red-600 mb-3">F-2-R 비자는 서울, 제주는 제외됩니다.</p>
+                      <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        {['경기도', '강원도', '충청북도', '충청남도', '경상북도', '경상남도', '전라북도', '전라남도'].map(region => (
+                          <label class="flex items-center">
+                            <input type="checkbox" name="preferredLocation" value={region} class="mr-2" />
+                            <span class="text-sm">{region}</span>
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* 다른 비자 유형: 기본 희망근무지 */}
+                  {!visaType.includes('E-7-4R') && !visaType.includes('F-2-R') && (
+                    <div>
+                      <label class="block text-sm font-semibold text-navy mb-3">
+                        희망 근무지 / PREFERRED LOCATION (복수 선택 가능 / Multiple selections allowed)
+                      </label>
+                      <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        {['서울', '경기', '인천', '충청', '전라', '경상', '강원', '제주'].map(region => (
+                          <label class="flex items-center">
+                            <input type="checkbox" name="preferredLocation" value={region} class="mr-2" />
+                            <span class="text-sm">{region}</span>
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* F-2-R, E-7-1, E-7-4 전용: 희망 직종 직접 기입 */}
+                  {(visaType.includes('F-2-R') || visaType === 'E-7-1' || visaType === 'E-7-4') && (
+                    <div>
+                      <label for="preferred-job-text" class="block text-sm font-semibold text-navy mb-2">
+                        희망 직종 / PREFERRED JOB TYPE
+                      </label>
+                      <input 
+                        type="text" 
+                        id="preferred-job-text" 
+                        name="preferredJobText"
+                        class="form-input"
+                        placeholder="예: 제조업, 서비스업, IT 개발 등"
+                      />
+                    </div>
+                  )}
+                  
+                  {/* 기본 희망 직종 (선택형) - E-7-4R 제외 */}
+                  {!visaType.includes('E-7-4R') && !visaType.includes('F-2-R') && visaType !== 'E-7-1' && visaType !== 'E-7-4' && (
+                    <div>
+                      <label class="block text-sm font-semibold text-navy mb-3">
+                        희망 직종 / PREFERRED JOB TYPE (복수 선택 가능 / Multiple selections allowed)
+                      </label>
+                      <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                        {['제조', '건설', '서비스', '농축산', 'IT', '기타'].map(job => (
+                          <label class="flex items-center">
+                            <input type="checkbox" name="preferredJob" value={job} class="mr-2" />
+                            <span class="text-sm">{job}</span>
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* 희망 급여 - E-7-4R 외 다른 비자 유형 */}
+                  {!visaType.includes('E-7-4R') && (
+                    <div>
+                      <label for="expected-salary" class="block text-sm font-semibold text-navy mb-2">
+                        희망 급여 / EXPECTED SALARY
+                      </label>
+                      <input 
+                        type="text" 
+                        id="expected-salary" 
+                        name="expectedSalary"
+                        class="form-input"
+                        placeholder="예: 월 250-300만원"
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
 

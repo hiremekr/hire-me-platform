@@ -29,8 +29,8 @@ export const E74RFormPage = () => {
   return (
     <JobApplicationForm 
       visaType="E-7-4R"
-      visaName="지역특화형 숙련기능인력"
-      description="• 인구감소지역 지자체추천 필수 • 한국어 2급 이상 필수 (2026년까지 유예가능) • 구직신고필증 필수"
+      visaName="E-7-4R\n지역특화형\n숙련기능인력 신청"
+      description="인구감소지역 지자체 추천 필수\n한국어2급 이상 (2026년까지 유예)\n구직신고필증필수 (구직자로 신청시)"
       additionalFields={additionalFields}
     />
   )
