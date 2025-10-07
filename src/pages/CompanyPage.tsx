@@ -36,7 +36,7 @@ export const CompanyPage = () => {
         <div class="max-w-7xl mx-auto">
           <div class="text-center mb-16">
             <h2 class="text-4xl font-bold text-navy mb-4" style="font-family: 'Cardo', serif;">
-              현재 구직 중인 검증된 인재들
+              현재 구직중인 인재들
             </h2>
             <p class="text-xl text-gray mb-4">
               실시간으로 업데이트되는 우수한 외국인재 풀
@@ -54,28 +54,16 @@ export const CompanyPage = () => {
                   <div class="candidate-card">
                     <div class="text-center mb-6">
                       <div class="text-4xl mb-3">{candidate.flag}</div>
-                      <h4 class="text-xl font-bold text-navy">
-                        {candidate.nationality} / {candidate.gender} / {candidate.age}세
+                      <h4 class="text-lg font-bold text-navy mb-4 whitespace-pre-line">
+                        {candidate.nationality} {candidate.gender}/{candidate.age}세
+{candidate.experience}
+한국거주 {candidate.yearsInKorea}년
+{candidate.koreanLevel}
+{candidate.desiredVisa} 희망
                       </h4>
                     </div>
                     
                     <div class="space-y-3 mb-8 text-sm">
-                      <div class="flex items-center">
-                        <i class="fas fa-map-marker-alt text-teal-blue mr-3 w-4"></i>
-                        <span><strong>한국 거주:</strong> {candidate.yearsInKorea}년</span>
-                      </div>
-                      <div class="flex items-center">
-                        <i class="fas fa-briefcase text-teal-blue mr-3 w-4"></i>
-                        <span><strong>경력:</strong> {candidate.experience}</span>
-                      </div>
-                      <div class="flex items-center">
-                        <i class="fas fa-comment text-teal-blue mr-3 w-4"></i>
-                        <span><strong>한국어:</strong> {candidate.koreanLevel}</span>
-                      </div>
-                      <div class="flex items-center">
-                        <i class="fas fa-id-card text-teal-blue mr-3 w-4"></i>
-                        <span><strong>희망비자:</strong> {candidate.desiredVisa}</span>
-                      </div>
                       <div class="flex items-center">
                         <i class="fas fa-location-dot text-teal-blue mr-3 w-4"></i>
                         <span><strong>희망지역:</strong> {candidate.desiredLocation.join(', ')}</span>
