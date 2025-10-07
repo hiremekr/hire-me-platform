@@ -104,19 +104,27 @@ export const TalentPoolPage = () => {
                 <div class="hidden md:block p-6">
                   <div class="text-center mb-6">
                     <div class="text-4xl mb-3">{candidate.flag}</div>
-                    <h4 class="text-lg font-bold text-navy mb-4 whitespace-pre-line">
-                      {candidate.nationality} {candidate.gender}/{candidate.age}세
-{candidate.experience}
-한국거주 {candidate.yearsInKorea}년
-{candidate.koreanLevel}
-{candidate.desiredVisa} 희망
+                    <h4 class="text-xl font-bold text-navy">
+                      {candidate.nationality} / {candidate.gender} / {candidate.age}세
                     </h4>
                   </div>
                   
                   <div class="space-y-3 mb-8 text-sm">
                     <div class="flex items-center">
-                      <i class="fas fa-location-dot text-teal-blue mr-3 w-4"></i>
-                      <span><strong>희망지역:</strong> {candidate.desiredLocation.join(', ')}</span>
+                      <i class="fas fa-map-marker-alt text-teal-blue mr-3 w-4"></i>
+                      <span><strong>한국 거주:</strong> {candidate.yearsInKorea}년</span>
+                    </div>
+                    <div class="flex items-center">
+                      <i class="fas fa-briefcase text-teal-blue mr-3 w-4"></i>
+                      <span><strong>경력:</strong> {candidate.experience}</span>
+                    </div>
+                    <div class="flex items-center">
+                      <i class="fas fa-comment text-teal-blue mr-3 w-4"></i>
+                      <span><strong>한국어:</strong> {candidate.koreanLevel}</span>
+                    </div>
+                    <div class="flex items-center">
+                      <i class="fas fa-id-card text-teal-blue mr-3 w-4"></i>
+                      <span><strong>희망비자:</strong> {candidate.desiredVisa}</span>
                     </div>
                   </div>
                   
@@ -132,21 +140,38 @@ export const TalentPoolPage = () => {
                 <div class="block md:hidden">
                   {/* 모바일 카드 헤더 - 높이 압축 */}
                   <div class="bg-gradient-to-r from-teal-blue to-green p-2">
-                    <div class="flex items-center justify-center">
-                      <span class="text-2xl mr-2">{candidate.flag}</span>
-                      <div class="text-center">
-                        <p class="text-white font-semibold text-sm">{candidate.nationality} {candidate.gender}/{candidate.age}세</p>
+                    <div class="flex items-center justify-between">
+                      <div class="flex items-center">
+                        <span class="text-xl mr-2">{candidate.flag}</span>
+                        <div>
+                          <p class="text-white font-semibold text-sm">{candidate.nationality} {candidate.gender}/{candidate.age}세</p>
+                        </div>
+                      </div>
+                      <div class="bg-white/20 rounded-full px-2 py-1">
+                        <span class="text-white text-xs font-medium">{candidate.desiredVisa}</span>
                       </div>
                     </div>
                   </div>
 
                   {/* 모바일 카드 내용 - 압축된 레이아웃 */}
                   <div class="p-3">
-                    <div class="text-center text-xs mb-3 space-y-1 whitespace-pre-line">
-                      <div class="font-medium text-navy">{candidate.experience}</div>
-                      <div class="text-gray-600">한국거주 {candidate.yearsInKorea}년</div>
-                      <div class="text-gray-600">{candidate.koreanLevel}</div>
-                      <div class="text-teal-blue font-semibold">{candidate.desiredVisa} 희망</div>
+                    <div class="grid grid-cols-2 gap-2 text-xs mb-3">
+                      <div class="flex items-center">
+                        <i class="fas fa-briefcase text-teal-blue mr-1"></i>
+                        <span class="truncate">{candidate.experience}</span>
+                      </div>
+                      <div class="flex items-center">
+                        <i class="fas fa-calendar text-orange mr-1"></i>
+                        <span>{candidate.yearsInKorea}년</span>
+                      </div>
+                      <div class="flex items-center">
+                        <i class="fas fa-language text-purple-500 mr-1"></i>
+                        <span class="truncate">{candidate.koreanLevel}</span>
+                      </div>
+                      <div class="flex items-center">
+                        <i class="fas fa-id-card text-green mr-1"></i>
+                        <span class="text-green font-semibold">{candidate.desiredVisa}</span>
+                      </div>
                     </div>
                     
                     {/* 모바일 액션 버튼 - 압축 */}
