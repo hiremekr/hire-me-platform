@@ -5,11 +5,12 @@ export const Footer = () => {
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* 회사 정보 */}
           <div class="lg:col-span-2">
-            <div class="flex items-center space-x-3 mb-6">
-              <div class="w-12 h-12 bg-teal-blue rounded-lg flex items-center justify-center">
-                <span class="text-white font-bold text-xl">HM</span>
-              </div>
-              <span class="text-2xl font-bold">HIRE ME</span>
+            <div class="flex items-center mb-6">
+              <img 
+                src="/static/hireme-logo.png" 
+                alt="HIRE ME" 
+                class="h-10 w-auto filter brightness-0 invert"
+              />
             </div>
             <p class="text-gray-300 mb-4 leading-relaxed">
               외국인 구직자와 기업을 연결하는 전문 취업 매칭 플랫폼입니다.<br />
@@ -62,13 +63,13 @@ export const Footer = () => {
                 <i class="fas fa-map-marker-alt mt-1 mr-3 text-teal-blue"></i>
                 <div>
                   <p class="font-medium">본사</p>
-                  <p>서울특별시 강남구</p>
-                  <p>테헤란로 123길 45</p>
+                  <p>서울특별시 중구 장충단로 263</p>
+                  <p>밀리오레 빌딩 1802호</p>
                 </div>
               </div>
               <div class="flex items-center">
                 <i class="fas fa-phone mr-3 text-teal-blue"></i>
-                <span>02-1234-5678</span>
+                <span>010-6326-5572</span>
               </div>
               <div class="flex items-center">
                 <i class="fas fa-envelope mr-3 text-teal-blue"></i>
@@ -76,9 +77,13 @@ export const Footer = () => {
               </div>
               <div class="flex items-center">
                 <i class="fab fa-telegram mr-3 text-yellow-400"></i>
-                <a href="#" class="hover:text-white transition-colors">
+                <a href="tel:010-6326-5572" class="hover:text-white transition-colors">
                   카카오톡 상담
                 </a>
+              </div>
+              <div class="text-xs text-gray-400 mt-2 pl-6">
+                <p>문의가 많아 메시지 남겨주시면</p>
+                <p>순차적으로 확인 후 개별적으로 연락드립니다.</p>
               </div>
             </div>
           </div>

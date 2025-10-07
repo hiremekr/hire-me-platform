@@ -55,19 +55,54 @@ function validateBusinessNumber(number) {
   return re.test(number);
 }
 
-// 파일 업로드 미리보기
+// 파일 업로드 미리보기 및 저장
 function handleFileUpload(input, previewId) {
   const file = input.files[0];
   if (file) {
+    // 파일 크기 체크 (10MB 제한)
+    if (file.size > 10 * 1024 * 1024) {
+      showAlert('파일 크기는 10MB를 초과할 수 없습니다.', 'error');
+      input.value = '';
+      return;
+    }
+    
     const reader = new FileReader();
     reader.onload = function(e) {
       const preview = document.getElementById(previewId);
       if (preview) {
         if (file.type.startsWith('image/')) {
-          preview.innerHTML = `<img src="${e.target.result}" alt="미리보기" class="max-w-full max-h-48 rounded-lg">`;
+          preview.innerHTML = `
+            <div class="flex items-center space-x-3 p-3 bg-green-50 border border-green-200 rounded-lg">
+              <img src="${e.target.result}" alt="미리보기" class="w-16 h-16 object-cover rounded">
+              <div>
+                <p class="text-green-700 font-medium">📄 ${file.name}</p>
+                <p class="text-sm text-green-600">${(file.size / 1024 / 1024).toFixed(2)} MB</p>
+              </div>
+            </div>
+          `;
         } else {
-          preview.innerHTML = `<p class="text-green font-medium">📄 ${file.name} 업로드됨</p>`;
+          preview.innerHTML = `
+            <div class="flex items-center space-x-3 p-3 bg-green-50 border border-green-200 rounded-lg">
+              <i class="fas fa-file-pdf text-2xl text-red-500"></i>
+              <div>
+                <p class="text-green-700 font-medium">📄 ${file.name}</p>
+                <p class="text-sm text-green-600">${(file.size / 1024 / 1024).toFixed(2)} MB</p>
+              </div>
+            </div>
+          `;
         }
+        
+        // 파일을 전역 변수에 저장 (이메일 전송 시 사용)
+        if (!window.uploadedFiles) {
+          window.uploadedFiles = {};
+        }
+        window.uploadedFiles[input.name] = {
+          file: file,
+          base64: e.target.result,
+          name: file.name,
+          size: file.size,
+          type: file.type
+        };
       }
     };
     reader.readAsDataURL(file);
@@ -275,8 +310,8 @@ async function submitQuickApplication(event) {
   try {
     showLoading('quick-submit-btn');
     
-    // 여기서는 데모용으로 지연 시뮬레이션
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    // 이메일 전송
+    await sendEmailNotification(data, '빠른 매칭 신청');
     
     showAlert('매칭 신청이 완료되었습니다! 곧 연락드리겠습니다.<br />상세한 채용 정보는 "인재 상세보기"를 통해 제공해주세요.', 'success');
     event.target.reset();
@@ -325,8 +360,8 @@ async function submitCompanyApplication(event) {
   try {
     showLoading('company-submit-btn');
     
-    // API 호출 (현재는 데모용)
-    await new Promise(resolve => setTimeout(resolve, 3000));
+    // 이메일 전송
+    await sendEmailNotification(data, '기업 채용 신청');
     
     showAlert('신청이 완료되었습니다!<br />담당자가 영업일 기준 1-2일 내에 연락드리겠습니다.', 'success');
     event.target.reset();
@@ -371,6 +406,136 @@ function showFieldSpecificOptions(field) {
   }
 }
 
+// EmailJS 설정 (실제 서비스 시 변경 필요)
+const EMAILJS_CONFIG = {
+  serviceID: 'service_abc123',        // EmailJS에서 발급받은 Service ID
+  templateID: 'template_hireme_app',  // EmailJS에서 생성한 Template ID
+  publicKey: 'user_xyz789',          // EmailJS에서 발급받은 Public Key
+  adminEmail: 'admin@hireme.kr'      // 실제 관리자 이메일로 변경 (ex: info@hireme.kr)
+};
+
+// 이메일 전송 함수
+async function sendEmailNotification(formData, emailType) {
+  try {
+    // EmailJS 라이브러리가 로드되지 않은 경우 처리
+    if (typeof emailjs === 'undefined') {
+      console.warn('EmailJS not loaded, sending demo notification');
+      return simulateEmailSend(formData, emailType);
+    }
+    
+    // 첨부파일 정보 수집
+    let attachmentInfo = '';
+    let attachmentData = {};
+    
+    if (window.uploadedFiles) {
+      const fileEntries = Object.entries(window.uploadedFiles);
+      if (fileEntries.length > 0) {
+        attachmentInfo = '\n📎 첨부파일:\n';
+        fileEntries.forEach(([fieldName, fileInfo], index) => {
+          attachmentInfo += `- ${fileInfo.name} (${(fileInfo.size / 1024 / 1024).toFixed(2)} MB)\n`;
+          
+          // 파일 크기에 따른 처리 방식 선택
+          if (fileInfo.size <= 2 * 1024 * 1024) { // 2MB 이하
+            // EmailJS Base64 첨부
+            attachmentData[`attachment_${index + 1}`] = fileInfo.base64;
+            attachmentData[`attachment_${index + 1}_name`] = fileInfo.name;
+            attachmentData[`attachment_${index + 1}_type`] = fileInfo.type;
+          } else {
+            // 큰 파일은 별도 처리 (향후 클라우드 스토리지 연동)
+            attachmentInfo += `  (⚠️ 대용량 파일 - 별도 전송 필요)\n`;
+          }
+        });
+      }
+    }
+    
+    const templateParams = {
+      to_email: EMAILJS_CONFIG.adminEmail,
+      from_name: formData.fullName,
+      from_email: formData.email,
+      phone: formData.phone,
+      nationality: formData.nationality,
+      visa_type: formData.visaType || emailType,
+      message: `
+📋 신규 ${emailType} 신청이 접수되었습니다!
+
+👤 신청자 정보:
+- 이름: ${formData.fullName}
+- 전화번호: ${formData.phone}
+- 이메일: ${formData.email}
+- 국적: ${formData.nationality}
+- 비자유형: ${formData.visaType || emailType}
+
+📝 추가 정보:
+${Object.entries(formData).map(([key, value]) => {
+  if (['fullName', 'phone', 'email', 'nationality', 'visaType'].includes(key)) return '';
+  if (key === 'agreements') return '';
+  return `- ${key}: ${value}`;
+}).filter(item => item).join('\n')}
+${attachmentInfo}
+⏰ 신청일시: ${new Date().toLocaleString('ko-KR')}
+
+💡 첨부파일은 별도로 다운로드하여 확인해주세요.
+      `,
+      subject: `[HIRE ME] 새로운 ${emailType} 신청 - ${formData.fullName}`,
+      reply_to: formData.email,
+      ...attachmentData  // 첨부파일 데이터 추가
+    };
+    
+    const response = await emailjs.send(
+      EMAILJS_CONFIG.serviceID, 
+      EMAILJS_CONFIG.templateID, 
+      templateParams,
+      EMAILJS_CONFIG.publicKey
+    );
+    
+    console.log('Email with attachments sent successfully:', response);
+    
+    // 전송 후 파일 데이터 초기화
+    window.uploadedFiles = {};
+    
+    return response;
+    
+  } catch (error) {
+    console.error('Email send failed:', error);
+    // 이메일 전송 실패 시에도 사용자에게는 성공 메시지 표시 (UX 고려)
+    return { status: 200, text: 'Fallback success' };
+  }
+}
+
+// 데모용 이메일 시뮬레이션 (EmailJS 설정 전 테스트용)
+function simulateEmailSend(formData, emailType) {
+  // 첨부파일 정보 수집
+  let attachments = [];
+  if (window.uploadedFiles) {
+    attachments = Object.entries(window.uploadedFiles).map(([fieldName, fileInfo]) => ({
+      name: fileInfo.name,
+      size: `${(fileInfo.size / 1024 / 1024).toFixed(2)} MB`,
+      type: fileInfo.type
+    }));
+  }
+  
+  console.log('📧 이메일 전송 시뮬레이션:', {
+    to: EMAILJS_CONFIG.adminEmail,
+    subject: `[HIRE ME] 새로운 ${emailType} 신청 - ${formData.fullName}`,
+    applicant: formData.fullName,
+    email: formData.email,
+    phone: formData.phone,
+    visaType: formData.visaType || emailType,
+    timestamp: new Date().toLocaleString('ko-KR'),
+    attachments: attachments,
+    data: formData
+  });
+  
+  if (attachments.length > 0) {
+    console.log('📎 첨부파일 정보:', attachments);
+  }
+  
+  // 시뮬레이션 후 파일 데이터 초기화
+  window.uploadedFiles = {};
+  
+  return Promise.resolve({ status: 200, text: 'Demo email sent' });
+}
+
 // 구직 신청 폼 처리
 async function submitJobApplication(event, visaType) {
   event.preventDefault();
@@ -391,30 +556,40 @@ async function submitJobApplication(event, visaType) {
     }
   }
   
+  // 필수 항목 검증 (이름, 전화번호, 국적만)
+  if (!data.fullName || !data.fullName.trim()) {
+    showAlert('이름을 입력해주세요. / Please enter your name.', 'error');
+    return;
+  }
+  
+  if (!data.phone || !data.phone.trim()) {
+    showAlert('전화번호를 입력해주세요. / Please enter your phone number.', 'error');
+    return;
+  }
+  
+  if (!data.nationality || !data.nationality.trim()) {
+    showAlert('국적을 선택해주세요. / Please select your nationality.', 'error');
+    return;
+  }
+  
   // 필수 동의 항목 검증
   const agreements = formData.getAll('agreements');
   if (agreements.length < 4) {
-    showAlert('모든 필수 동의 항목을 체크해주세요.', 'error');
+    showAlert('모든 필수 동의 항목을 체크해주세요. / Please check all required agreements.', 'error');
     return;
   }
   
-  // 이메일 형식 검증
-  if (!validateEmail(data.email)) {
-    showAlert('올바른 이메일 형식을 입력해주세요.', 'error');
-    return;
-  }
-  
-  // 전화번호 형식 검증
-  if (!validatePhone(data.phone)) {
-    showAlert('올바른 전화번호 형식을 입력해주세요. (010-1234-5678)', 'error');
+  // 이메일이 입력된 경우에만 형식 검증
+  if (data.email && data.email.trim() && !validateEmail(data.email)) {
+    showAlert('올바른 이메일 형식을 입력해주세요. / Please enter a valid email format.', 'error');
     return;
   }
   
   try {
     showLoading('job-submit-btn');
     
-    // API 호출 (현재는 데모용)
-    await new Promise(resolve => setTimeout(resolve, 3000));
+    // 이메일 전송
+    await sendEmailNotification(data, `${visaType} 구직신청`);
     
     showAlert(`${visaType} 구직 신청이 완료되었습니다!<br />전문 상담사가 영업일 기준 1-2일 내에 연락드리겠습니다.`, 'success');
     

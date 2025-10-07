@@ -5,11 +5,12 @@ export const Header = () => {
         <div class="flex justify-between items-center h-16">
           {/* 로고 */}
           <div class="flex items-center">
-            <a href="/" class="flex items-center space-x-3">
-              <div class="w-10 h-10 bg-teal-blue rounded-lg flex items-center justify-center">
-                <span class="text-white font-bold text-xl">HM</span>
-              </div>
-              <span class="text-2xl font-bold text-navy">HIRE ME</span>
+            <a href="/" class="flex items-center">
+              <img 
+                src="/static/hireme-logo.png" 
+                alt="HIRE ME" 
+                class="h-8 w-auto"
+              />
             </a>
           </div>
           

@@ -128,15 +128,15 @@ export const ApplyPage = () => {
               <div class="text-center p-6 bg-white rounded-xl shadow-md">
                 <div class="text-4xl text-orange mb-4">📝</div>
                 <h4 class="text-lg font-bold text-navy mb-2">STEP 4</h4>
-                <h5 class="font-semibold mb-2">근로계약</h5>
-                <p class="text-sm text-gray">법적 검토 후 계약 체결</p>
+                <h5 class="font-semibold mb-2">비자변경계약</h5>
+                <p class="text-sm text-gray">비자변경서비스 계약 체결</p>
               </div>
               
               <div class="text-center p-6 bg-white rounded-xl shadow-md">
                 <div class="text-4xl text-orange mb-4">✅</div>
                 <h4 class="text-lg font-bold text-navy mb-2">STEP 5</h4>
                 <h5 class="font-semibold mb-2">추천서 발급</h5>
-                <p class="text-sm text-gray">지자체 추천서 신청</p>
+                <p class="text-sm text-gray">지자체 또는 정부 추천서 (필요시)</p>
               </div>
               
               <div class="text-center p-6 bg-white rounded-xl shadow-md">
@@ -154,14 +154,10 @@ export const ApplyPage = () => {
               </div>
             </div>
 
-            <div class="text-center space-y-2">
+            <div class="text-center">
               <p class="text-lg font-semibold text-navy">
                 <i class="fas fa-clock text-teal-blue mr-2"></i>
                 평균 2-3개월
-              </p>
-              <p class="text-gray">
-                <i class="fas fa-lightbulb text-orange mr-2"></i>
-                1-3단계: 무료 | 4-7단계: 계약 후
               </p>
             </div>
           </div>
@@ -184,7 +180,25 @@ export const ApplyPage = () => {
             {reviews.slice(0, 6).map((review) => (
               <div class="bg-light-gray rounded-2xl p-8 card-hover">
                 <div class="flex items-center mb-4">
-                  <div class="text-3xl mr-3">{review.flag}</div>
+                  <div class="w-16 h-16 rounded-full mr-4 flex items-center justify-center text-white font-bold text-xl shadow-lg"
+                       style={
+                         review.nationality === '네팔' ? 'background: linear-gradient(135deg, #DC143C 0%, #003893 50%, #DC143C 100%); border: 3px solid #fff;' :
+                         review.nationality === '방글라데시' ? 'background: linear-gradient(135deg, #006A4E 0%, #F42A41 100%); border: 3px solid #fff;' :
+                         review.nationality === '스리랑카' ? 'background: linear-gradient(135deg, #FF9933 0%, #008000 50%, #000080 100%); border: 3px solid #fff;' :
+                         review.nationality === '미얀마' ? 'background: linear-gradient(135deg, #FECB00 0%, #34B233 50%, #EA2839 100%); border: 3px solid #fff;' :
+                         review.nationality === '파키스탄' ? 'background: linear-gradient(135deg, #01411C 0%, #ffffff 100%); border: 3px solid #01411C; color: #01411C;' :
+                         review.nationality === '베트남' ? 'background: linear-gradient(135deg, #DA020E 0%, #FFFF00 100%); border: 3px solid #fff;' : 
+                         'background: #6B7280; border: 3px solid #fff;'
+                       }>
+                    <span class="drop-shadow-md">
+                      {review.nationality === '네팔' ? '🇳🇵' :
+                       review.nationality === '방글라데시' ? '🇧🇩' :
+                       review.nationality === '스리랑카' ? '🇱🇰' :
+                       review.nationality === '미얀마' ? '🇲🇲' :
+                       review.nationality === '파키스탄' ? '🇵🇰' :
+                       review.nationality === '베트남' ? '🇻🇳' : '🌍'}
+                    </span>
+                  </div>
                   <div>
                     <h4 class="font-bold text-navy">{review.name}</h4>
                     <span class="text-sm text-gray">{review.nationality} · {review.visa}</span>

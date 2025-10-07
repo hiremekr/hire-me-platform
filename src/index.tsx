@@ -150,7 +150,27 @@ app.get('/', (c) => {
               <div class="bg-white rounded-2xl p-8 shadow-md card-hover">
                 {/* 프로필 영역 */}
                 <div class="text-center mb-6">
-                  <div class="text-4xl mb-3">{case_.flag}</div>
+                  <div class="w-20 h-20 rounded-full mx-auto mb-3 flex items-center justify-center text-4xl shadow-lg"
+                       style={
+                         case_.nationality === '네팔' ? 'background: linear-gradient(135deg, #DC143C 0%, #003893 50%, #DC143C 100%); border: 4px solid #fff;' :
+                         case_.nationality === '방글라데시' ? 'background: linear-gradient(135deg, #006A4E 0%, #F42A41 100%); border: 4px solid #fff;' :
+                         case_.nationality === '스리랑카' ? 'background: linear-gradient(135deg, #FF9933 0%, #008000 50%, #000080 100%); border: 4px solid #fff;' :
+                         case_.nationality === '미얀마' ? 'background: linear-gradient(135deg, #FECB00 0%, #34B233 50%, #EA2839 100%); border: 4px solid #fff;' :
+                         case_.nationality === '파키스탄' ? 'background: linear-gradient(135deg, #01411C 0%, #ffffff 100%); border: 4px solid #01411C;' :
+                         case_.nationality === '베트남' ? 'background: linear-gradient(135deg, #DA020E 0%, #FFFF00 100%); border: 4px solid #fff;' :
+                         case_.nationality === '우즈베키스탄' ? 'background: linear-gradient(135deg, #0099B5 0%, #1EB53A 100%); border: 4px solid #fff;' : 
+                         'background: #6B7280; border: 4px solid #fff;'
+                       }>
+                    <span class="drop-shadow-md">
+                      {case_.nationality === '네팔' ? '🇳🇵' :
+                       case_.nationality === '방글라데시' ? '🇧🇩' :
+                       case_.nationality === '스리랑카' ? '🇱🇰' :
+                       case_.nationality === '미얀마' ? '🇲🇲' :
+                       case_.nationality === '파키스탄' ? '🇵🇰' :
+                       case_.nationality === '베트남' ? '🇻🇳' :
+                       case_.nationality === '우즈베키스탄' ? '🇺🇿' : '🌍'}
+                    </span>
+                  </div>
                   <h4 class="text-lg font-bold text-navy">
                     {case_.nationality} / {case_.name}
                   </h4>
@@ -164,10 +184,24 @@ app.get('/', (c) => {
                   "{case_.review}"
                 </p>
                 
+                {/* 회사 업종 정보 */}
+                <div class="text-center mb-3">
+                  <span class="text-sm text-gray-600 bg-gray-100 px-3 py-1 rounded-full">
+                    {case_.company}
+                  </span>
+                </div>
+                
                 {/* 매칭 지역 도장 */}
                 <div class="text-center mb-4">
                   <span class="stamp">
                     {case_.location} 매칭완료 ✓
+                  </span>
+                </div>
+                
+                {/* 날짜 정보 */}
+                <div class="text-center mb-3">
+                  <span class="text-xs text-gray-500">
+                    {new Date(case_.date).toLocaleDateString('ko-KR')}
                   </span>
                 </div>
                 

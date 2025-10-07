@@ -24,6 +24,29 @@ body {
 .text-orange { color: var(--orange); }
 .text-charcoal { color: var(--charcoal); }
 
+/* 국기 표시 스타일 */
+.flag-circle {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: bold;
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.flag-nepal { background: linear-gradient(45deg, #DC143C, #003893); }
+.flag-bangladesh { background: linear-gradient(45deg, #006A4E, #F42A41); }
+.flag-srilanka { background: linear-gradient(45deg, #FF9933, #000080, #008000); }
+.flag-myanmar { background: linear-gradient(45deg, #FECB00, #34B233, #EA2839); }
+.flag-pakistan { background: linear-gradient(45deg, #01411C, #FFFFFF); }
+.flag-vietnam { background: linear-gradient(45deg, #DA020E, #FFFF00); }
+.flag-uzbekistan { background: linear-gradient(45deg, #0099B5, #FFFFFF, #1EB53A); }
+
 .bg-navy { background-color: var(--navy); }
 .bg-teal-blue { background-color: var(--teal-blue); }
 .bg-green { background-color: var(--green); }

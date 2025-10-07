@@ -30,7 +30,7 @@ export const E74RFormPage = () => {
     <JobApplicationForm 
       visaType="E-7-4R"
       visaName="지역특화형 숙련기능인력"
-      description="지역 산업체에서 5년 이상 근무한 숙련 기능인력을 위한 비자입니다."
+      description="인구감소지역에서 지자체 추천을 받은 숙련기능인력을 위한 비자입니다."
       additionalFields={additionalFields}
     />
   )
