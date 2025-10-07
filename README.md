@@ -13,30 +13,44 @@
 - **개발 서버**: https://3000-ih9zoa9oftxqirxv6bfzv-6532622b.e2b.dev
 - **GitHub**: 설정 후 업데이트 예정
 
+### 주요 기능 URL
+- **홈페이지**: https://3000-ih9zoa9oftxqirxv6bfzv-6532622b.e2b.dev/
+- **구직의뢰**: https://3000-ih9zoa9oftxqirxv6bfzv-6532622b.e2b.dev/apply
+- **E-7-4R 신청**: https://3000-ih9zoa9oftxqirxv6bfzv-6532622b.e2b.dev/apply/e-7-4r
+- **F-2-R 신청**: https://3000-ih9zoa9oftxqirxv6bfzv-6532622b.e2b.dev/apply/f-2-r
+- **기업채용**: https://3000-ih9zoa9oftxqirxv6bfzv-6532622b.e2b.dev/company
+
 ## 📊 주요 기능
 
 ### ✅ 완료된 기능
 
 #### 🏠 HOME 페이지 (/)
-- 히어로 섹션 및 서비스 소개
+- 브랜드 로고 적용 및 히어로 섹션 
 - 구직자/기업용 CTA 배너
-- 성공 케이스 쇼케이스 (9개 실제 사례)
+- 성공 케이스 쇼케이스 (9개 실제 사례 - 현실적 데이터로 업데이트)
 - 신뢰 지표 및 인증 정보
 
 #### 👤 구직의뢰 페이지 (/apply)
 - 통계 카드 (3개: TOP 인재풀, 최고 성공률, ONE-STOP 서비스)
 - 7단계 프로세스 안내
-- 실제 이용자 후기 (6개)
+- 실제 이용자 후기 (6개 - 리얼한 경험담으로 업데이트)
 - 4가지 비자 타입 선택 인터페이스
 
-#### 📝 비자별 신청 폼
+#### 📝 비자별 신청 폼 (이중언어 지원)
 - **E-7-4R**: 지역특화형 숙련기능인력 (`/apply/e-7-4r`)
+  - 설명: 인구감소지역에서 지자체 추천을 받은 숙련기능인력을 위한 비자
 - **F-2-R**: 지역특화형 우수인재
   - 유학생 요건 (`/apply/f-2-r/student`)
   - 소득요건 (`/apply/f-2-r/income`)
   - 선택 페이지 (`/apply/f-2-r`)
 - **E-7-1**: 특정활동 (`/apply/e-7-1`)
 - **E-7-4**: 사업장변경 (`/apply/e-7-4-transfer`)
+
+#### 🌐 이중언어 지원 기능 (NEW!)
+- **폼 필드**: 모든 라벨이 한국어/영어 이중 표기
+- **동의사항**: 한국어/영어 대역 제공
+- **오류 메시지**: 이중언어로 안내
+- **필수 필드 최소화**: 이름/전화번호/국적만 필수 (외국인 사용자 편의성 고려)
 
 #### 🏢 기업채용 페이지 (/company)
 - 인재 풀 롤링 배너 (12명 후보자)
@@ -58,9 +72,10 @@
 ## 🗂️ 데이터 구조
 
 ### JSON 기반 데이터 관리
-- **성공 케이스**: `data/success-cases.json` (9개 사례)
+- **성공 케이스**: `data/success-cases.json` (9개 사례) - 현실적 데이터로 업데이트
 - **인재 풀**: `data/candidates.json` (12명 후보자)  
-- **이용자 후기**: `data/reviews.json` (6개 후기)
+- **이용자 후기**: `data/reviews.json` (6개 후기) - 리얼한 경험 데이터로 업데이트
+- **로고 이미지**: `public/static/hireme-logo.png` - 브랜드 로고 추가
 
 ### 주요 데이터 항목
 - **국적별 분포**: 네팔 (최다) > 방글라데시 > 스리랑카 > 기타
@@ -70,7 +85,7 @@
 ## 🛠️ 기술 스택
 
 ### Backend
-- **Hono Framework**: 경량 웹 프레임워크
+- **Hono Framework**: 경량 웹 프레임워리
 - **Cloudflare Workers**: 엣지 런타임 환경
 - **TypeScript**: 타입 안전성
 
@@ -91,9 +106,9 @@
 webapp/
 ├── src/
 │   ├── components/       # 재사용 가능한 컴포넌트
-│   │   ├── Header.tsx    # 헤더 네비게이션
-│   │   ├── Footer.tsx    # 푸터
-│   │   └── JobApplicationForm.tsx  # 공통 신청 폼
+│   │   ├── Header.tsx    # 헤더 네비게이션 (로고 적용)
+│   │   ├── Footer.tsx    # 푸터 (로고 적용)
+│   │   └── JobApplicationForm.tsx  # 공통 신청 폼 (이중언어)
 │   ├── pages/           # 페이지 컴포넌트
 │   │   ├── ApplyPage.tsx
 │   │   ├── CompanyPage.tsx
@@ -108,12 +123,13 @@ webapp/
 │   ├── index.tsx        # 메인 애플리케이션
 │   └── renderer.tsx     # JSX 렌더러
 ├── public/static/       # 정적 파일
+│   ├── hireme-logo.png  # 브랜드 로고 이미지
 │   ├── styles.css       # 커스텀 CSS
 │   └── app.js          # 클라이언트 JavaScript
 ├── data/               # JSON 데이터
 │   ├── candidates.json  # 인재 풀 데이터
-│   ├── success-cases.json # 성공 사례
-│   └── reviews.json     # 이용자 후기
+│   ├── success-cases.json # 성공 사례 (업데이트)
+│   └── reviews.json     # 이용자 후기 (업데이트)
 ├── ecosystem.config.cjs # PM2 설정
 ├── wrangler.jsonc      # Cloudflare 설정
 ├── vite.config.ts      # Vite 빌드 설정
@@ -203,11 +219,12 @@ npm run deploy:prod
 - 좌우 네비게이션 버튼
 - 반응형 카드 개수 조정
 
-### 폼 검증
-- 실시간 입력 검증 (이메일, 전화번호, 사업자등록번호)
-- 필수 필드 체크
-- 파일 업로드 미리보기
-- 동적 필드 표시/숨김
+### 폼 검증 (업데이트)
+- **필수 필드 최소화**: 이름, 전화번호, 국적만 필수 (외국인 사용자 편의성 고려)
+- **이중언어 검증**: 한국어/영어 오류 메시지
+- **선택적 검증**: 이메일 입력 시에만 형식 검증
+- **파일 업로드**: 미리보기 지원, 나중 제출 가능 안내
+- **동적 필드**: 필요에 따른 필드 표시/숨김
 
 ### 상태 관리
 - 로딩 스피너 표시
@@ -248,5 +265,12 @@ npm run deploy:prod
 ---
 
 **최종 업데이트**: 2024년 12월 기준  
-**개발 상태**: ✅ 프로토타입 완성 (실제 서비스 배포 준비 완료)  
+**개발 상태**: ✅ 프로토타입 완성 + 사용자 피드백 반영 완료
+
+**주요 개선사항**: 
+- 브랜드 로고 적용
+- 이중언어 지원 (한국어/영어)
+- 사용자 친화적 폼 필드 간소화
+- 현실적인 데이터로 업데이트
+
 **기술 스택**: Hono + Cloudflare Pages + TypeScript + TailwindCSS
