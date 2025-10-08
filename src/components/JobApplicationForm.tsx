@@ -37,7 +37,17 @@ export const JobApplicationForm = (props: JobApplicationFormProps) => {
           </div>
 
           <div class="form-container">
-            <form id="job-application-form" onsubmit="submitJobApplication(event, '{visaType}')">
+            <form 
+              action="https://formspree.io/f/xanpdpdz" 
+              method="POST" 
+              enctype="multipart/form-data"
+              id="job-application-form"
+            >
+              
+              {/* 숨겨진 필드: 비자 타입 구분 */}
+              <input type="hidden" name="visa-type" value={visaType} />
+              <input type="hidden" name="visa-name" value={visaName} />
+              <input type="hidden" name="_subject" value={`새로운 구직 신청 - ${visaType}`} />
               
               {/* 섹션 1: 개인 정보 */}
               <div class="form-section">
