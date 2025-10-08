@@ -17,8 +17,7 @@ export const SuccessPage = () => {
             </h1>
             
             <p class="text-xl text-gray mb-8 leading-relaxed">
-              구직 신청이 성공적으로 접수되었습니다.<br />
-              전문 상담사가 영업일 기준 <strong class="text-navy">1-2일 내</strong>에 연락드리겠습니다.
+              구직 신청이 성공적으로 접수되었습니다.
             </p>
 
             <div class="bg-light-gray rounded-2xl p-6 mb-8">
@@ -62,28 +61,7 @@ export const SuccessPage = () => {
               </div>
             </div>
 
-            <div class="border-t border-gray-200 pt-8">
-              <h3 class="text-lg font-bold text-navy mb-4">
-                <i class="fas fa-phone text-green mr-2"></i>
-                연락처 정보
-              </h3>
-              
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-gray">
-                <div class="text-center">
-                  <p class="font-semibold text-navy mb-2">더글로벌리크루팅</p>
-                  <p>📞 02-1234-5678</p>
-                  <p>📧 recruit@hireme.co.kr</p>
-                  <p class="text-xs mt-2">구직 관련 문의</p>
-                </div>
-                
-                <div class="text-center">
-                  <p class="font-semibold text-navy mb-2">행정사사무소 늘좋은</p>
-                  <p>📞 02-2345-6789</p>
-                  <p>📧 visa@hireme.co.kr</p>
-                  <p class="text-xs mt-2">비자 관련 문의</p>
-                </div>
-              </div>
-            </div>
+
           </div>
 
           <div class="space-y-4 sm:space-y-0 sm:space-x-6 sm:flex sm:justify-center">
@@ -103,12 +81,7 @@ export const SuccessPage = () => {
             </button>
           </div>
 
-          <div class="mt-8 text-sm text-gray">
-            <p>
-              <i class="fas fa-info-circle mr-2"></i>
-              상담 시간: 평일 09:00-18:00 | 토요일 09:00-15:00
-            </p>
-          </div>
+
         </div>
       </section>
 
