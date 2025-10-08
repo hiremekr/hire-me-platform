@@ -4,7 +4,7 @@ export const E74RFormPage = () => {
   const additionalFields = `
     <div>
       <label for="eps-certificate" class="block text-sm font-semibold text-navy mb-2">
-        EPS 경력증명서 (선택사항)
+        EPS 경력증명서 ⭐ (중요 서류)
       </label>
       <div class="file-upload">
         <input 

@@ -5,7 +5,7 @@ export const F2RIncomeFormPage = () => {
     <div class="space-y-6">
       <div>
         <label for="income-cert" class="block text-sm font-semibold text-navy mb-2">
-          최근 1개년 소득금액증명원 (선택사항)
+          최근 1개년 소득금액증명원 ⭐ (중요 서류)
         </label>
         <div class="file-upload">
           <input 
@@ -27,7 +27,7 @@ export const F2RIncomeFormPage = () => {
       
       <div>
         <label for="korean-test-cert" class="block text-sm font-semibold text-navy mb-2">
-          한국어 성적표 (TOPIK/KIIP 4급 이상) - 선택사항
+          한국어 성적표 (TOPIK/KIIP 4급 이상) ⭐ (중요 서류)
         </label>
         <div class="file-upload">
           <input 

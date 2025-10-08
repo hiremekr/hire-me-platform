@@ -160,12 +160,12 @@ export const JobApplicationForm = (props: JobApplicationFormProps) => {
               <div class="form-section">
                 <h3 class="text-xl font-bold text-navy mb-6">
                   <i class="fas fa-file-upload text-green mr-3"></i>
-                  섹션 2: 서류 업로드 (Document Upload) - 선택사항
+                  섹션 2: 서류 업로드 (Document Upload)
                 </h3>
-                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-                  <p class="text-sm text-blue-700">
-                    📋 서류는 나중에 상담을 통해 제출할 수 있습니다.<br/>
-                    📋 Documents can be submitted later during consultation.
+                <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+                  <p class="text-sm text-green-700">
+                    📎 파일 업로드가 가능합니다. 서류를 첨부하시면 더 빠른 매칭이 가능합니다.<br/>
+                    📎 File upload is available. Attaching documents enables faster job matching.
                   </p>
                 </div>
                 
@@ -173,7 +173,7 @@ export const JobApplicationForm = (props: JobApplicationFormProps) => {
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <label for="alien-card-front" class="block text-sm font-semibold text-navy mb-2">
-                        외국인등록증 앞면 / ID CARD Front
+                        외국인등록증 앞면 / ID CARD Front (권장)
                       </label>
                       <div class="file-upload">
                         <input 
@@ -195,7 +195,7 @@ export const JobApplicationForm = (props: JobApplicationFormProps) => {
                     
                     <div>
                       <label for="alien-card-back" class="block text-sm font-semibold text-navy mb-2">
-                        외국인등록증 뒷면 / ID CARD Back
+                        외국인등록증 뒷면 / ID CARD Back (권장)
                       </label>
                       <div class="file-upload">
                         <input 
@@ -219,7 +219,7 @@ export const JobApplicationForm = (props: JobApplicationFormProps) => {
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <label for="photo" class="block text-sm font-semibold text-navy mb-2">
-                        증명사진 / PHOTO (3.5cm x 4.5cm)
+                        증명사진 / PHOTO (3.5cm x 4.5cm) - 권장
                       </label>
                       <div class="file-upload">
                         <input 
@@ -241,7 +241,7 @@ export const JobApplicationForm = (props: JobApplicationFormProps) => {
                     
                     <div>
                       <label for="korean-cert" class="block text-sm font-semibold text-navy mb-2">
-                        KIIP/TOPIK 증명서 / Korean Certificate
+                        KIIP/TOPIK 증명서 / Korean Certificate (있으면 유리)
                       </label>
                       <div class="file-upload">
                         <input 

@@ -5,7 +5,7 @@ export const F2RStudentFormPage = () => {
     <div class="space-y-6">
       <div>
         <label for="graduation-cert" class="block text-sm font-semibold text-navy mb-2">
-          졸업증명서 (전문학사 이상) - 선택사항
+          졸업증명서 (전문학사 이상) ⭐ (중요 서류)
         </label>
         <div class="file-upload">
           <input 
@@ -27,7 +27,7 @@ export const F2RStudentFormPage = () => {
       
       <div>
         <label for="transcript" class="block text-sm font-semibold text-navy mb-2">
-          성적증명서 (선택사항)
+          성적증명서 (권장)
         </label>
         <div class="file-upload">
           <input 
@@ -49,7 +49,7 @@ export const F2RStudentFormPage = () => {
       
       <div>
         <label for="topik-kiip-cert" class="block text-sm font-semibold text-navy mb-2">
-          TOPIK/KIIP 4급 이상 증명서 (선택사항)
+          TOPIK/KIIP 4급 이상 증명서 ⭐ (중요 서류)
         </label>
         <div class="file-upload">
           <input 
@@ -71,7 +71,7 @@ export const F2RStudentFormPage = () => {
       
       <div>
         <label for="visa-proof" class="block text-sm font-semibold text-navy mb-2">
-          D-2 또는 D-10 비자 증명 (선택사항)
+          D-2 또는 D-10 비자 증명 ⭐ (중요 서류)
         </label>
         <div class="file-upload">
           <input 
