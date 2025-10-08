@@ -11,17 +11,18 @@
 ## 🌐 **배포된 서비스 URL** ✅
 
 ### **🚀 실제 서비스 (Cloudflare Pages)**
-- **메인 도메인**: https://hire-me-platform.pages.dev
-- **배포 URL**: https://6907270c.hire-me-platform.pages.dev
+- **자동 배포 (GitHub 연동)**: https://hire-me-platform1.pages.dev ✅
+- **수동 배포**: https://hire-me-platform.pages.dev
+- **특정 배포**: https://6907270c.hire-me-platform.pages.dev
 
-### 주요 기능 URL
-- **홈페이지**: https://hire-me-platform.pages.dev/
-- **구직의뢰**: https://hire-me-platform.pages.dev/apply
-- **E-7-4R 신청**: https://hire-me-platform.pages.dev/apply/e74r
-- **F-2-R 신청**: https://hire-me-platform.pages.dev/apply/f-2-r
-- **기업채용**: https://hire-me-platform.pages.dev/company
-- **인재풀**: https://hire-me-platform.pages.dev/company/talents
-- **기업 상세 신청**: https://hire-me-platform.pages.dev/company/apply
+### 주요 기능 URL (자동 배포 사이트)
+- **홈페이지**: https://hire-me-platform1.pages.dev/
+- **구직의뢰**: https://hire-me-platform1.pages.dev/apply
+- **E-7-4R 신청**: https://hire-me-platform1.pages.dev/apply/e74r
+- **F-2-R 신청**: https://hire-me-platform1.pages.dev/apply/f-2-r
+- **기업채용**: https://hire-me-platform1.pages.dev/company
+- **인재풀**: https://hire-me-platform1.pages.dev/company/talents
+- **기업 상세 신청**: https://hire-me-platform1.pages.dev/company/apply
 
 ### **개발/테스트 URL**
 - **샌드박스**: https://3000-ih9zoa9oftxqirxv6bfzv-6532622b.e2b.dev
@@ -307,7 +308,9 @@ npx wrangler pages project create hire-me-platform --production-branch main
 ---
 
 **🚀 배포 완료**: 2025년 10월 8일  
-**⚡ 배포 상태**: ✅ **실제 서비스 운영 중** - https://hire-me-platform.pages.dev  
+**⚡ 배포 상태**: ✅ **실제 서비스 운영 중**
+- **자동 배포**: https://hire-me-platform1.pages.dev (GitHub 연동) ✅
+- **수동 배포**: https://hire-me-platform.pages.dev (CLI 배포)  
 **📱 모바일 최적화**: ✅ **완료** (textarea 너비 20% 축소)  
 **🔄 성능 최적화**: ✅ **완료** (Google Drive API 롤백)  
 
