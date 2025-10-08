@@ -748,7 +748,11 @@ function clearFilters() {
 
 // 페이지 로드 시 캐러셀 초기화
 document.addEventListener('DOMContentLoaded', function() {
-  // 기존 코드...
+  // 모바일 메뉴 버튼 이벤트 리스너
+  const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+  if (mobileMenuBtn) {
+    mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+  }
   
   // 캐러셀 초기화 (회사 페이지에서만)
   if (window.location.pathname === '/company') {
