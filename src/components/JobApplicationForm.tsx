@@ -8,10 +8,19 @@ interface JobApplicationFormProps {
   description: string
   additionalFields?: any
   specialNote?: string
+  formspreeUrl?: string
 }
 
 export const JobApplicationForm = (props: JobApplicationFormProps) => {
-  const { visaType, visaName, mobileVisaName, description, additionalFields, specialNote } = props
+  const { visaType, visaName, mobileVisaName, description, additionalFields, specialNote, formspreeUrl } = props
+  
+  // 비자 타입별 Formspree URL 매핑 (현재는 모든 폼이 같은 URL 사용)
+  const getFormspreeUrl = () => {
+    if (formspreeUrl) return formspreeUrl
+    
+    // 모든 폼에서 동일한 엔드포인트 사용 (비자 타입은 hidden field로 구분)
+    return 'https://formspree.io/f/xanpdpdz'
+  }
   
   return (
     <div>
@@ -38,7 +47,7 @@ export const JobApplicationForm = (props: JobApplicationFormProps) => {
 
           <div class="form-container">
             <form 
-              action="https://formspree.io/f/xanpdpdz" 
+              action={getFormspreeUrl()} 
               method="POST" 
               enctype="multipart/form-data"
               id="job-application-form"

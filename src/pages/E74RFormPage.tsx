@@ -4,7 +4,7 @@ export const E74RFormPage = () => {
   const additionalFields = `
     <div>
       <label for="eps-certificate" class="block text-sm font-semibold text-navy mb-2">
-        EPS 경력증명서 *
+        EPS 경력증명서 (선택사항)
       </label>
       <div class="file-upload">
         <input 
@@ -14,7 +14,6 @@ export const E74RFormPage = () => {
           accept="image/*,.pdf"
           class="hidden"
           onchange="handleFileUpload(this, 'eps-preview')"
-          required
         />
         <label for="eps-certificate" class="cursor-pointer">
           <i class="fas fa-file-alt text-2xl text-orange mb-2"></i>

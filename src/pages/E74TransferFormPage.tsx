@@ -5,7 +5,7 @@ export const E74TransferFormPage = () => {
     <div class="space-y-6">
       <div>
         <label for="current-contract" class="block text-sm font-semibold text-navy mb-2">
-          현재 회사 계약서
+          현재 회사 계약서 (선택사항)
         </label>
         <div class="file-upload">
           <input 
@@ -27,7 +27,7 @@ export const E74TransferFormPage = () => {
       
       <div>
         <label for="income-proof" class="block text-sm font-semibold text-navy mb-2">
-          최근 2개년 소득금액증명원
+          최근 2개년 소득금액증명원 (선택사항)
         </label>
         <div class="file-upload">
           <input 
@@ -49,7 +49,7 @@ export const E74TransferFormPage = () => {
       
       <div>
         <label for="eps-certificate-transfer" class="block text-sm font-semibold text-navy mb-2">
-          EPS 경력증명서
+          EPS 경력증명서 (선택사항)
         </label>
         <div class="file-upload">
           <input 

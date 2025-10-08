@@ -5,7 +5,7 @@ export const E71FormPage = () => {
     <div class="space-y-6">
       <div>
         <label for="degree-cert" class="block text-sm font-semibold text-navy mb-2">
-          학위증명서 (학사 이상)
+          학위증명서 (학사 이상) - 선택사항
         </label>
         <div class="file-upload">
           <input 
@@ -27,7 +27,7 @@ export const E71FormPage = () => {
       
       <div>
         <label for="career-cert" class="block text-sm font-semibold text-navy mb-2">
-          관련 경력증명서
+          관련 경력증명서 (선택사항)
         </label>
         <div class="file-upload">
           <input 
