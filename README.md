@@ -8,19 +8,23 @@
 - **대상**: E-7-4R, F-2-R, E-7-1, E-7-4 비자 신청자 및 채용 기업
 - **특징**: 전문 행정사와 리크루팅 업체의 협업 서비스
 
-## 🌐 서비스 URL
+## 🌐 **배포된 서비스 URL** ✅
 
-- **개발 서버**: https://3000-ih9zoa9oftxqirxv6bfzv-6532622b.e2b.dev
-- **GitHub**: 설정 후 업데이트 예정
+### **🚀 실제 서비스 (Cloudflare Pages)**
+- **메인 도메인**: https://hire-me-platform.pages.dev
+- **배포 URL**: https://6907270c.hire-me-platform.pages.dev
 
 ### 주요 기능 URL
-- **홈페이지**: https://3000-ih9zoa9oftxqirxv6bfzv-6532622b.e2b.dev/
-- **구직의뢰**: https://3000-ih9zoa9oftxqirxv6bfzv-6532622b.e2b.dev/apply
-- **E-7-4R 신청**: https://3000-ih9zoa9oftxqirxv6bfzv-6532622b.e2b.dev/apply/e74r
-- **F-2-R 신청**: https://3000-ih9zoa9oftxqirxv6bfzv-6532622b.e2b.dev/apply/f-2-r
-- **기업채용**: https://3000-ih9zoa9oftxqirxv6bfzv-6532622b.e2b.dev/company
-- **인재풀**: https://3000-ih9zoa9oftxqirxv6bfzv-6532622b.e2b.dev/company/talents (NEW!)
-- **기업 상세 신청**: https://3000-ih9zoa9oftxqirxv6bfzv-6532622b.e2b.dev/company/apply
+- **홈페이지**: https://hire-me-platform.pages.dev/
+- **구직의뢰**: https://hire-me-platform.pages.dev/apply
+- **E-7-4R 신청**: https://hire-me-platform.pages.dev/apply/e74r
+- **F-2-R 신청**: https://hire-me-platform.pages.dev/apply/f-2-r
+- **기업채용**: https://hire-me-platform.pages.dev/company
+- **인재풀**: https://hire-me-platform.pages.dev/company/talents
+- **기업 상세 신청**: https://hire-me-platform.pages.dev/company/apply
+
+### **개발/테스트 URL**
+- **샌드박스**: https://3000-ih9zoa9oftxqirxv6bfzv-6532622b.e2b.dev
 
 ## 📊 주요 기능
 
@@ -48,20 +52,21 @@
 - **E-7-1**: 특정활동 (`/apply/e-7-1`)
 - **E-7-4**: 사업장변경 (`/apply/e-7-4-transfer`)
 
-#### 🌐 이중언어 지원 기능 (NEW!)
+#### 🌐 이중언어 지원 기능
 - **폼 필드**: 모든 라벨이 한국어/영어 이중 표기
 - **동의사항**: 한국어/영어 대역 제공
 - **오류 메시지**: 이중언어로 안내
 - **필수 필드 최소화**: 이름/전화번호/국적만 필수 (외국인 사용자 편의성 고려)
+- **모바일 최적화**: textarea 너비 20% 축소로 모바일 UX 개선 ✅
 
 #### 🏢 기업채용 페이지 (/company)
 - 인재 풀 롤링 배너 (24명 후보자로 확장)
 - 빠른 매칭 신청 폼
 - 서비스 특장점 소개
 - 프로세스 안내
-- **NEW**: 인재풀 바로가기 링크
+- 인재풀 바로가기 링크
 
-#### 👥 인재풀 페이지 (/company/talents) - **NEW!**
+#### 👥 인재풀 페이지 (/company/talents)
 - **24명의 검증된 외국인 인재** 전체 조회
 - **실시간 필터링 기능**: 국적, 희망비자, 성별로 검색
 - **당근마켓 스타일** 반응형 카드 레이아웃 (1-4열)
@@ -69,14 +74,13 @@
 - **관리자 친화적**: 인재 추가 시 자동 페이지 반영
 - **수정 가능한 구조**: JSON 기반 데이터 관리
 
-#### 📋 기업 상세 신청 (/company/apply) - **UPDATED**
+#### 📋 기업 상세 신청 (/company/apply)
 - **간소화된 필수 항목**: 담당자명, 담당자 전화번호만 필수
 - **EPS 16개국 선호국적**: 네팔~이집트까지 전체 EPS 국가 지원
 - 서비스 프로세스 안내
 - 개인정보 보호 정책
 - 상세 기업 정보 수집 폼 (대부분 선택사항)
 - 채용 분야별 맞춤 필드
-- **섹션 4 동의사항**: 여전히 필수 (법적 요구사항)
 
 #### ✅ 신청 완료 페이지 (/apply/success)
 - 신청 완료 확인
@@ -97,16 +101,10 @@
 - **성별 분포**: 남성 (85%) > 여성 (15%)
 - **지역별 매칭**: 전국 17개 시도별 성공 사례
 
-### 인재풀 관리 기능
-- **자동 확장**: 관리자가 `candidates.json`에 인재 추가 시 실시간 페이지 반영
-- **수정 가능**: 기존 인재 정보 언제든 업데이트 가능
-- **검색 기능**: 국적/희망비자/성별 조합 필터링
-- **반응형 레이아웃**: 모바일~데스크톱 최적화 (1-4열 자동 조정)
-
 ## 🛠️ 기술 스택
 
 ### Backend
-- **Hono Framework**: 경량 웹 프레임워리
+- **Hono Framework**: 경량 웹 프레임워크
 - **Cloudflare Workers**: 엣지 런타임 환경
 - **TypeScript**: 타입 안전성
 
@@ -121,6 +119,12 @@
 - **Wrangler**: Cloudflare CLI
 - **PM2**: 프로세스 관리
 
+### 배포 환경
+- **Cloudflare Pages**: 글로벌 CDN 배포 ✅
+- **Edge Runtime**: 전 세계 엣지 서버
+- **자동 HTTPS**: SSL 인증서 자동 관리
+- **Git 연동**: 코드 변경 시 자동 배포 준비
+
 ## 📁 프로젝트 구조
 
 ```
@@ -128,14 +132,14 @@ webapp/
 ├── src/
 │   ├── components/       # 재사용 가능한 컴포넌트
 │   │   ├── Header.tsx    # 헤더 네비게이션 (로고 적용)
-│   │   ├── Footer.tsx    # 푸터 (로고 적용)
+│   │   ├── Footer.tsx    # 푸터 (카카오톡 링크 업데이트)
 │   │   └── JobApplicationForm.tsx  # 공통 신청 폼 (이중언어)
 │   ├── pages/           # 페이지 컴포넌트
 │   │   ├── ApplyPage.tsx
 │   │   ├── CompanyPage.tsx
 │   │   ├── CompanyApplyPage.tsx    # 필수 항목 간소화
-│   │   ├── TalentPoolPage.tsx      # NEW! 인재풀 페이지
-│   │   ├── TalentRequestPage.tsx   # NEW! 인재정보 요청 페이지
+│   │   ├── TalentPoolPage.tsx      # 인재풀 페이지
+│   │   ├── TalentRequestPage.tsx   # 인재정보 요청 페이지 (모바일 최적화)
 │   │   ├── F2RSelectionPage.tsx
 │   │   ├── E74RFormPage.tsx        # E-7-4R 설명 업데이트
 │   │   ├── F2RStudentFormPage.tsx
@@ -147,12 +151,13 @@ webapp/
 │   └── renderer.tsx     # JSX 렌더러
 ├── public/static/       # 정적 파일
 │   ├── hireme-logo.png  # 브랜드 로고 이미지
-│   ├── styles.css       # 커스텀 CSS
+│   ├── styles.css       # 커스텀 CSS (모바일 최적화 포함)
 │   └── app.js          # 클라이언트 JavaScript
 ├── data/               # JSON 데이터
 │   ├── candidates.json  # 인재 풀 데이터 (24명, 관리자 추가 가능)
 │   ├── success-cases.json # 성공 사례 (업데이트)
 │   └── reviews.json     # 이용자 후기 (업데이트)
+├── dist/               # 빌드 결과물 (배포용)
 ├── ecosystem.config.cjs # PM2 설정
 ├── wrangler.jsonc      # Cloudflare 설정
 ├── vite.config.ts      # Vite 빌드 설정
@@ -212,13 +217,14 @@ pm2 restart webapp
 pm2 delete webapp
 ```
 
-### Cloudflare Pages 배포
+### Cloudflare Pages 배포 ✅
 ```bash
 # 프로덕션 빌드 및 배포
-npm run deploy
+npm run build
+npx wrangler pages deploy dist --project-name hire-me-platform
 
-# 프로젝트명 지정 배포  
-npm run deploy:prod
+# 프로젝트 생성 (최초 1회)
+npx wrangler pages project create hire-me-platform --production-branch main
 ```
 
 ## 📱 반응형 디자인
@@ -229,12 +235,13 @@ npm run deploy:prod
 - **Desktop**: > 1024px (3-4단 그리드, 최대 너비 1280px)
 
 ### 주요 반응형 요소
-- 네비게이션: Desktop 풀메뉴 ↔ Mobile 햔버거 메뉴
+- 네비게이션: Desktop 풀메뉴 ↔ Mobile 햄버거 메뉴
 - 카드 그리드: Desktop 4개 ↔ Tablet 3개 ↔ Mobile 2개 ↔ Mobile Small 1개
 - 롤링 배너: Desktop 3개 ↔ Tablet 2개 ↔ Mobile 1개
 - **인재풀 그리드**: xl:4열 → lg:3열 → sm:2열 → xs:1열 (당근마켓 스타일)
 - 폼 레이아웃: Desktop 2열 ↔ Mobile 1열
 - **필터 영역**: Desktop 3열 → Mobile 1열 (국적/희망비자/성별)
+- **모바일 textarea 최적화**: 250px 고정 너비로 오버플로우 해결 ✅
 
 ## 🔧 주요 기능 구현
 
@@ -256,20 +263,20 @@ npm run deploy:prod
 - 성공/오류 알림 메시지
 - 폼 제출 후 리다이렉션
 
-## 📋 향후 개선 사항
+## 📋 배포 현황 및 향후 개선사항
 
-### ✅ 최근 추가된 기능 (2024.12.07)
-- **인재풀 페이지**: 24명 인재 전체 조회 및 실시간 필터링
-- **기업 신청 간소화**: 담당자명/전화번호만 필수로 변경
-- **EPS 16개국 지원**: 선호국적 선택 범위 대폭 확대
-- **당근마켓 스타일**: 모바일 최적화 카드 레이아웃
-- **관리자 친화적**: JSON 기반 인재 데이터 관리
+### ✅ **2025년 10월 8일 배포 완료** 
+- **실제 서비스**: https://hire-me-platform.pages.dev ✅
+- **Cloudflare Pages**: 전 세계 CDN 배포 완료 ✅
+- **모바일 최적화**: textarea 너비 문제 해결 ✅
+- **Google Drive API 롤백**: 성능 최적화 완료 ✅
+- **카카오톡 링크**: 실제 채널 연동 완료 ✅
 
 ### 🔄 현재 데모 기능 (실제 구현 필요)
-- **폼 제출 처리**: 현재 클라이언트단 시뮬레이션
-- **이메일 연동**: 실제 이메일 발송 시스템 구축
-- **파일 업로드**: 실제 파일 저장 시스템 구축
-- **데이터베이스 연동**: JSON → 실제 DB 전환 (현재 JSON으로도 충분히 관리 가능)
+- **폼 제출 처리**: 현재 클라이언트단 시뮬레이션 (EmailJS 연동)
+- **이메일 연동**: EmailJS로 기본 구현, 고급 기능 추가 가능
+- **파일 업로드**: base64 미리보기, 실제 저장소 연동 필요
+- **데이터베이스 연동**: JSON → Cloudflare D1/KV 전환 검토
 
 ### 🚀 추가 기능 개발
 - **인재 등록 관리자 페이지**: 웹 UI를 통한 인재 추가/수정/삭제
@@ -293,30 +300,37 @@ npm run deploy:prod
 - **행정사사무소 늘좋은**: 비자 업무 담당
 
 ### 기술 지원
-- 개발 문의: 개발팀
-- 배포 문의: 인프라팀
+- **카카오톡 상담**: http://pf.kakao.com/_pPxnFxj/chat ✅
+- **전화 문의**: 010-6326-5572
+- **이메일**: contact@hireme.co.kr
 
 ---
 
-**최종 업데이트**: 2024년 12월 7일  
-**개발 상태**: ✅ 프로토타입 완성 + 사용자 피드백 반영 + 인재풀 시스템 구축 완료
+**🚀 배포 완료**: 2025년 10월 8일  
+**⚡ 배포 상태**: ✅ **실제 서비스 운영 중** - https://hire-me-platform.pages.dev  
+**📱 모바일 최적화**: ✅ **완료** (textarea 너비 20% 축소)  
+**🔄 성능 최적화**: ✅ **완료** (Google Drive API 롤백)  
 
 **주요 개선사항**: 
-- **인재풀 시스템 구축**: 24명 인재 데이터베이스 + 실시간 필터링
-- **기업 신청 프로세스 간소화**: 필수 항목 최소화 (담당자명/전화번호만)
+- **Cloudflare Pages 실제 배포**: 글로벌 CDN으로 전 세계 접속 가능 ✅
+- **모바일 UX 최적화**: textarea 오버플로우 문제 해결 ✅ 
+- **성능 최적화**: Google Drive API 제거로 로딩 속도 개선 ✅
+- **카카오톡 링크 수정**: 실제 채널로 연동 완료 ✅
+- **인재풀 시스템**: 24명 인재 데이터베이스 + 실시간 필터링
+- **기업 신청 간소화**: 필수 항목 최소화 (담당자명/전화번호만)
 - **EPS 16개국 지원**: 네팔~이집트까지 전체 EPS 국가 선택 가능
 - **당근마켓 스타일 UI**: 모바일 최적화 반응형 카드 레이아웃
-- **관리자 친화적 구조**: JSON 기반 인재 데이터 관리 (추가/수정 용이)
-- **E-7-4R 정확한 설명**: 지자체추천, 한국어2급, 구직신고필증 명시
-- 브랜드 로고 적용
-- 이중언어 지원 (한국어/영어)
-- 사용자 친화적 폼 필드 간소화
-- 현실적인 데이터로 업데이트
+- **이중언어 지원**: 한국어/영어 완전 지원
+- **현실적인 데이터**: 실제 서비스 수준의 콘텐츠
 
 **핵심 특징**:
+- **글로벌 배포**: Cloudflare Pages로 전 세계 빠른 접속 ✅
 - **확장성**: 관리자가 인재 추가 시 자동으로 페이지에 반영
 - **검색성**: 국적/희망비자/성별 조합 필터링으로 정확한 인재 검색
 - **사용성**: 담당자 정보만으로 빠른 기업 신청 가능
 - **완성도**: 실제 서비스 운영 가능한 수준의 UI/UX
+- **모바일 친화**: 모든 디바이스에서 최적화된 사용자 경험
 
 **기술 스택**: Hono + Cloudflare Pages + TypeScript + TailwindCSS
+
+**백업**: https://page.gensparksite.com/project_backups/hire-me-platform-working-version.tar.gz

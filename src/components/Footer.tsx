@@ -52,12 +52,12 @@ export const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="#" class="hover:text-white transition-colors">
+                <a href="tel:010-6326-5572" class="hover:text-white transition-colors">
                   <i class="fas fa-file-alt mr-2"></i>비자 상담
                 </a>
               </li>
               <li>
-                <a href="#" class="hover:text-white transition-colors">
+                <a href="tel:010-6326-5572" class="hover:text-white transition-colors">
                   <i class="fas fa-handshake mr-2"></i>면접 지원
                 </a>
               </li>
@@ -86,7 +86,7 @@ export const Footer = () => {
               </div>
               <div class="flex items-center">
                 <i class="fab fa-telegram mr-3 text-yellow-400"></i>
-                <a href="tel:010-6326-5572" class="hover:text-white transition-colors">
+                <a href="http://pf.kakao.com/_pPxnFxj/chat" target="_blank" class="hover:text-white transition-colors">
                   카카오톡 상담
                 </a>
               </div>
@@ -112,9 +112,9 @@ export const Footer = () => {
               </div>
             </div>
             <div class="flex space-x-6 text-sm text-gray-400">
-              <a href="#" class="hover:text-white transition-colors">이용약관</a>
-              <a href="#" class="hover:text-white transition-colors">개인정보처리방침</a>
-              <a href="#" class="hover:text-white transition-colors">사업자정보</a>
+              <a href="tel:010-6326-5572" class="hover:text-white transition-colors">이용약관</a>
+              <a href="tel:010-6326-5572" class="hover:text-white transition-colors">개인정보처리방침</a>
+              <a href="tel:010-6326-5572" class="hover:text-white transition-colors">사업자정보</a>
             </div>
           </div>
         </div>

@@ -46,8 +46,8 @@ export const CompanyPage = () => {
             </a>
           </div>
 
-          {/* 롤링 배너 */}
-          <div class="relative">
+          {/* 데스크톱 버전 - 롤링 배너 */}
+          <div class="hidden md:block relative">
             <div class="candidate-carousel">
               <div class="candidate-track" id="candidate-track">
                 {candidates.map((candidate) => (
@@ -108,6 +108,43 @@ export const CompanyPage = () => {
             >
               <i class="fas fa-chevron-right"></i>
             </button>
+          </div>
+
+          {/* 모바일 버전 - 그리드 카드 */}
+          <div class="md:hidden">
+            <h3 class="text-2xl font-bold text-navy mb-6 text-center">외국인인재풀</h3>
+            <div class="grid grid-cols-2 gap-4">
+              {candidates.slice(0, 12).map((candidate) => (
+                <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                  <div class="bg-gradient-to-r from-teal-blue to-green p-3">
+                    <div class="flex items-center justify-center">
+                      <span class="text-3xl">{candidate.flag}</span>
+                    </div>
+                  </div>
+                  <div class="p-3">
+                    <div class="text-xs space-y-1 mb-3">
+                      <div class="font-bold text-center text-navy mb-2">{candidate.nationality}/{candidate.gender}/{candidate.age}세</div>
+                      <div>한국거주: {candidate.yearsInKorea}년</div>
+                      <div>경력: {candidate.experience}</div>
+                      <div>한국어: {candidate.koreanLevel}</div>
+                      <div>희망비자: {candidate.desiredVisa}</div>
+                    </div>
+                    <a 
+                      href={`/company/request?talent_id=${candidate.id}`}
+                      class="block w-full bg-teal-blue text-white py-2 rounded text-sm text-center hover:bg-opacity-90 hover:no-underline"
+                    >
+                      정보 요청
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+            
+            <div class="text-center mt-6">
+              <a href="/company/talents" class="bg-white border-2 border-teal-blue text-teal-blue px-6 py-3 rounded-xl font-bold hover:no-underline">
+                전체 인재 보기
+              </a>
+            </div>
           </div>
         </div>
       </section>
@@ -233,7 +270,7 @@ export const CompanyPage = () => {
             </h2>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-8">
             
             <div class="text-center p-6 bg-white rounded-2xl shadow-md">
               <div class="text-4xl text-teal-blue mb-4">

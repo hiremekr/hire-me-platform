@@ -136,50 +136,30 @@ export const TalentPoolPage = () => {
                   </button>
                 </div>
 
-                {/* 모바일 버전 - 압축된 카드 (높이 1/3), 2x2 그리드 */}
+                {/* 모바일 버전 - 5줄 형식 */}
                 <div class="block md:hidden">
-                  {/* 모바일 카드 헤더 - 높이 압축 */}
-                  <div class="bg-gradient-to-r from-teal-blue to-green p-2">
-                    <div class="flex items-center justify-between">
-                      <div class="flex items-center">
-                        <span class="text-xl mr-2">{candidate.flag}</span>
-                        <div>
-                          <p class="text-white font-semibold text-sm">{candidate.nationality} {candidate.gender}/{candidate.age}세</p>
-                        </div>
-                      </div>
-                      <div class="bg-white/20 rounded-full px-2 py-1">
-                        <span class="text-white text-xs font-medium">{candidate.desiredVisa}</span>
-                      </div>
+                  {/* 모바일 카드 헤더 - 국기만 중앙 배치 */}
+                  <div class="bg-gradient-to-r from-teal-blue to-green p-3">
+                    <div class="flex items-center justify-center">
+                      <span class="text-3xl">{candidate.flag}</span>
                     </div>
                   </div>
 
-                  {/* 모바일 카드 내용 - 압축된 레이아웃 */}
+                  {/* 모바일 카드 내용 - 5줄 형식 */}
                   <div class="p-3">
-                    <div class="grid grid-cols-2 gap-2 text-xs mb-3">
-                      <div class="flex items-center">
-                        <i class="fas fa-briefcase text-teal-blue mr-1"></i>
-                        <span class="truncate">{candidate.experience}</span>
-                      </div>
-                      <div class="flex items-center">
-                        <i class="fas fa-calendar text-orange mr-1"></i>
-                        <span>{candidate.yearsInKorea}년</span>
-                      </div>
-                      <div class="flex items-center">
-                        <i class="fas fa-language text-purple-500 mr-1"></i>
-                        <span class="truncate">{candidate.koreanLevel}</span>
-                      </div>
-                      <div class="flex items-center">
-                        <i class="fas fa-id-card text-green mr-1"></i>
-                        <span class="text-green font-semibold">{candidate.desiredVisa}</span>
-                      </div>
+                    <div class="text-xs space-y-1 mb-3">
+                      <div class="font-bold text-center text-navy mb-2">{candidate.nationality}/{candidate.gender}/{candidate.age}세</div>
+                      <div>한국거주: {candidate.yearsInKorea}년</div>
+                      <div>경력: {candidate.experience}</div>
+                      <div>한국어: {candidate.koreanLevel}</div>
+                      <div>희망비자: {candidate.desiredVisa}</div>
                     </div>
                     
-                    {/* 모바일 액션 버튼 - 압축 */}
+                    {/* 모바일 액션 버튼 */}
                     <button 
                       onclick="requestTalentInfo({candidate.id})"
-                      class="w-full bg-gradient-to-r from-teal-blue to-green text-white py-2 px-3 rounded-lg text-sm font-semibold hover:from-green hover:to-teal-blue transition-all"
+                      class="block w-full bg-teal-blue text-white py-2 rounded text-sm text-center hover:bg-opacity-90 hover:no-underline"
                     >
-                      <i class="fas fa-envelope mr-1"></i>
                       정보 요청
                     </button>
                   </div>

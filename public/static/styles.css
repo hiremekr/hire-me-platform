@@ -153,6 +153,7 @@ body {
   padding: 16px;
   font-size: 16px;
   width: 100%;
+  box-sizing: border-box;
   transition: border-color 0.3s ease;
 }
 
@@ -170,6 +171,8 @@ body {
   min-height: 120px;
   resize: vertical;
   font-family: inherit;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .form-textarea:focus {
@@ -177,6 +180,9 @@ body {
   border-color: var(--teal-blue);
   box-shadow: 0 0 0 3px rgba(74, 144, 164, 0.1);
 }
+
+/* 모바일 전용 폼 스타일 */
+
 
 /* 파일 업로드 스타일 */
 .file-upload {
@@ -282,15 +288,150 @@ body {
   right: -24px;
 }
 
+/* 모바일 전용 고정 크기 텍스트 영역 */
+.mobile-fixed-textarea {
+  width: 250px;
+  max-width: 250px;
+  min-width: 250px;
+  height: 80px;
+  padding: 12px;
+  margin: 8px auto;
+  display: block;
+  border: 2px solid #E2E8F0;
+  border-radius: 12px;
+  background: white;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #333;
+  box-sizing: border-box;
+  resize: none;
+  overflow: auto;
+}
+
+.mobile-fixed-textarea:focus {
+  outline: none;
+  border-color: #4A90A4;
+  box-shadow: 0 0 0 3px rgba(74, 144, 164, 0.1);
+}
+
 /* 반응형 디자인 */
 @media (max-width: 768px) {
+  /* 전체 페이지 오버플로우 제어 */
+  body {
+    overflow-x: hidden !important;
+  }
+  
   .form-container {
     margin: 60px auto;
-    padding: 24px;
+    padding: 8px !important;
+    width: 100% !important;
+    max-width: calc(100vw - 16px) !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
   }
   
   .form-section {
-    padding: 20px;
+    padding: 12px !important;
+    margin: 12px 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  
+  .form-input, .form-textarea {
+    width: 100% !important;
+    max-width: calc(100vw - 80px) !important;
+    min-width: 0 !important;
+    padding: 10px !important;
+    font-size: 16px !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    border: 2px solid #E2E8F0 !important;
+    position: relative !important;
+    left: 0 !important;
+    right: 0 !important;
+  }
+  
+  .form-textarea {
+    resize: none;
+    min-height: 100px;
+  }
+  
+  /* 그리드 레이아웃 모바일 최적화 */
+  .grid.grid-cols-1.md\\:grid-cols-2.gap-6 {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+  
+  /* 섹션 내부 여백 조정 */
+  .max-w-4xl.mx-auto {
+    padding: 0 8px !important;
+  }
+  
+  /* 텍스트 영역 추가 수정 */
+  textarea.form-textarea {
+    width: calc(100% - 4px) !important;
+    max-width: calc(100vw - 88px) !important;
+    margin-left: 2px !important;
+    margin-right: 2px !important;
+  }
+  
+  /* 모든 space-y 클래스 조정 */
+  .space-y-6 > * + * {
+    margin-top: 12px !important;
+  }
+  
+  /* 극한의 텍스트 영역 수정 */
+  input[type="text"], input[type="email"], input[type="tel"], input[type="url"], textarea {
+    width: 95% !important;
+    max-width: 95% !important;
+    margin: 0 auto !important;
+    display: block !important;
+    box-sizing: border-box !important;
+  }
+  
+  /* 모든 기존 스타일 무효화하고 새 스타일 적용 */
+  .form-textarea#job-description,
+  .form-textarea#additional-request,
+  textarea.form-textarea#job-description,
+  textarea.form-textarea#additional-request,
+  #job-description.form-textarea,
+  #additional-request.form-textarea {
+    all: unset !important;
+    display: block !important;
+    width: 260px !important;
+    max-width: 260px !important;
+    min-width: 260px !important;
+    height: 80px !important;
+    padding: 12px !important;
+    margin: 8px auto !important;
+    border: 2px solid #E2E8F0 !important;
+    border-radius: 8px !important;
+    background: white !important;
+    font-family: inherit !important;
+    font-size: 14px !important;
+    line-height: 1.4 !important;
+    color: #333 !important;
+    box-sizing: border-box !important;
+    resize: none !important;
+    overflow-wrap: break-word !important;
+  }
+  
+  /* 포커스 스타일도 재정의 */
+  .form-textarea#job-description:focus,
+  .form-textarea#additional-request:focus,
+  textarea.form-textarea#job-description:focus,
+  textarea.form-textarea#additional-request:focus {
+    outline: none !important;
+    border-color: var(--teal-blue) !important;
+    box-shadow: 0 0 0 3px rgba(74, 144, 164, 0.1) !important;
+  }
+  
+  /* div 컨테이너 제한 */
+  .form-section > .space-y-6, .form-section > div {
+    width: 100% !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
   }
   
   .candidate-card {
@@ -299,6 +440,14 @@ body {
   
   .hero-bg {
     min-height: 80vh;
+  }
+}
+
+/* 데스크탑에서 특정 텍스트 영역 크기 복원 */
+@media (min-width: 769px) {
+  textarea#job-description, textarea#additional-request {
+    width: 100% !important;
+    max-width: 100% !important;
   }
 }
 
