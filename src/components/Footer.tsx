@@ -102,13 +102,13 @@ export const Footer = () => {
         <div class="border-t border-gray-600 mt-12 pt-8">
           <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div class="text-sm text-gray-400">
-              <p>&copy; 2024 HIRE ME. All rights reserved.</p>
+              <p>&copy; 2025 HIRE ME. All rights reserved.</p>
               <div class="mt-2 space-y-1">
                 <p><strong class="text-gray-300">더글로벌리크루팅</strong></p>
-                <p>사업자등록번호: 123-45-67890 | 유료직업소개소 등록번호: 2024-3010243-14-5-00001호</p>
+                <p>사업자등록번호: 509-09-74093 | 유료직업소개소 등록번호: 2024-3010243-14-5-00001호</p>
                 <p class="mt-1"><strong class="text-gray-300">행정사사무소 늘좋은</strong></p>
-                <p>사업자등록번호: 987-65-43210 | 출입국민원대행기관 등록번호: 제0000호</p>
-                <p class="mt-1">공동 대표자: 홍길동</p>
+                <p>사업자등록번호: 830-05-02501 | 출입국민원대행기관 </p>
+                <p class="mt-1">대표: 임정구</p>
               </div>
             </div>
             <div class="flex space-x-6 text-sm text-gray-400">
