@@ -341,8 +341,8 @@ window.addEventListener('resize', function() {
 
 // 카카오톡 상담 연결
 function openKakaoTalk() {
-  // 실제 서비스에서는 카카오톡 채널 URL로 변경
-  window.open('https://pf.kakao.com/_pPxnFxj/chat', '_blank');
+  // 카카오톡 채널 URL
+  window.open('http://pf.kakao.com/_pPxnFxj/chat', '_blank');
 }
 
 // 인재 정보 요청 폼 관련 기능들
