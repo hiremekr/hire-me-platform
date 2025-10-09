@@ -204,6 +204,11 @@ async function submitForm(formId, apiEndpoint) {
 
 // 페이지 로드 시 실행
 document.addEventListener('DOMContentLoaded', function() {
+  // 인재 정보 요청 페이지인 경우 자동으로 인재 정보 표시
+  if (window.location.pathname.includes('/company/request')) {
+    displaySelectedTalent();
+  }
+  
   // 모바일 메뉴 버튼 이벤트 리스너 추가
   const mobileMenuBtn = document.getElementById('mobile-menu-btn');
   if (mobileMenuBtn) {
@@ -312,7 +317,90 @@ window.addEventListener('resize', function() {
 // 카카오톡 상담 연결
 function openKakaoTalk() {
   // 실제 서비스에서는 카카오톡 채널 URL로 변경
-  window.open('https://pf.kakao.com/_your_channel_id', '_blank');
+  window.open('https://pf.kakao.com/_pPxnFxj/chat', '_blank');
+}
+
+// 인재 정보 요청 폼 관련 기능들
+// URL 파라미터에서 talent_id와 talent_name 읽기
+function getParamsFromURL() {
+  const urlParams = new URLSearchParams(window.location.search);
+  return {
+    talentId: urlParams.get('talent_id'),
+    talentName: urlParams.get('talent_name')
+  };
+}
+
+// 선택된 인재 정보 표시 및 폼에 이름 자동 입력
+function displaySelectedTalent() {
+  const params = getParamsFromURL();
+  const { talentId, talentName } = params;
+  
+  console.log('URL 파라미터:', params); // 디버그용
+  
+  if (!talentId) {
+    console.log('talent_id가 없습니다.');
+    return;
+  }
+
+  // 관심 인재명 필드에 이름 입력
+  const interestedTalentField = document.getElementById('interested-talent');
+  if (interestedTalentField && talentName) {
+    const decodedName = decodeURIComponent(talentName);
+    interestedTalentField.value = decodedName;
+    console.log('인재명 자동 입력:', decodedName);
+  } else {
+    console.log('인재명 필드를 찾을 수 없거나 talentName이 없습니다:', {
+      field: !!interestedTalentField,
+      talentName: talentName
+    });
+  }
+  
+  // 후보자 데이터를 사용해서 상세 정보 표시
+  if (window.candidatesData) {
+    const selectedTalent = window.candidatesData.find(c => c.id == talentId);
+    if (selectedTalent) {
+      // UI 요소에 정보 표시
+      const flagElement = document.getElementById('talent-flag');
+      const basicInfoElement = document.getElementById('talent-basic-info');
+      const residenceElement = document.getElementById('talent-residence');
+      const visaElement = document.getElementById('talent-visa');
+      const experienceElement = document.getElementById('talent-experience');
+      const koreanElement = document.getElementById('talent-korean');
+      const locationElement = document.getElementById('talent-location');
+      
+      if (flagElement) flagElement.textContent = selectedTalent.flag;
+      if (basicInfoElement) basicInfoElement.textContent = 
+        selectedTalent.nationality + ' / ' + selectedTalent.gender + ' / ' + selectedTalent.age + '세';
+      if (residenceElement) residenceElement.textContent = 
+        '한국거주 약 ' + selectedTalent.yearsInKorea + '년';
+      if (visaElement) visaElement.textContent = 
+        '희망비자 ' + selectedTalent.desiredVisa;
+      if (experienceElement) experienceElement.textContent = selectedTalent.experience;
+      if (koreanElement) koreanElement.textContent = selectedTalent.koreanLevel;
+      if (locationElement) locationElement.textContent = 
+        selectedTalent.desiredLocation.join(', ');
+      
+      console.log('인재 상세 정보 표시 완료:', selectedTalent.name);
+    }
+  }
+  
+  // 인재 정보 섹션 표시
+  const selectedTalentInfo = document.getElementById('selected-talent-info');
+  if (selectedTalentInfo) {
+    selectedTalentInfo.style.display = 'block';
+  }
+  
+  // 숨겨진 input 필드에 talent_id 저장 (폼 제출시 사용)
+  let hiddenInput = document.createElement('input');
+  hiddenInput.type = 'hidden';
+  hiddenInput.name = 'talentId';
+  hiddenInput.value = talentId;
+  
+  const form = document.getElementById('talent-request-form');
+  if (form) {
+    form.appendChild(hiddenInput);
+    console.log('talentId 숨겨진 필드 추가:', talentId);
+  }
 }
 
 // 빠른 매칭 신청 폼 처리
