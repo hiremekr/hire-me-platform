@@ -10,19 +10,21 @@
 
 ## 🌐 **배포된 서비스 URL** ✅
 
-### **🚀 실제 서비스 (Cloudflare Pages)**
-- **자동 배포 (GitHub 연동)**: https://hire-me-platform1.pages.dev ✅
-- **수동 배포**: https://hire-me-platform.pages.dev
-- **특정 배포**: https://6907270c.hire-me-platform.pages.dev
+### **🚀 실제 서비스 (커스텀 도메인)**
+- **메인 서비스**: https://hireme.kr ✅ **NEW!**
+- **이전 배포 (GitHub 연동)**: https://hire-me-platform1.pages.dev
+- **이전 배포 (수동)**: https://hire-me-platform.pages.dev
 
-### 주요 기능 URL (자동 배포 사이트)
-- **홈페이지**: https://hire-me-platform1.pages.dev/
-- **구직의뢰**: https://hire-me-platform1.pages.dev/apply
-- **E-7-4R 신청**: https://hire-me-platform1.pages.dev/apply/e74r
-- **F-2-R 신청**: https://hire-me-platform1.pages.dev/apply/f-2-r
-- **기업채용**: https://hire-me-platform1.pages.dev/company
-- **인재풀**: https://hire-me-platform1.pages.dev/company/talents
-- **기업 상세 신청**: https://hire-me-platform1.pages.dev/company/apply
+### 주요 기능 URL (hireme.kr 도메인)
+- **홈페이지**: https://hireme.kr/
+- **구직의뢰**: https://hireme.kr/apply
+- **E-7-4R 신청**: https://hireme.kr/apply/e74r
+- **F-2-R 신청**: https://hireme.kr/apply/f-2-r
+- **기업채용**: https://hireme.kr/company
+- **인재풀**: https://hireme.kr/company/talents
+- **기업 상세 신청**: https://hireme.kr/company/apply
+- **구직 완료**: https://hireme.kr/apply/success
+- **기업 요청 완료**: https://hireme.kr/company/success
 
 ### **개발/테스트 URL**
 - **샌드박스**: https://3000-ih9zoa9oftxqirxv6bfzv-6532622b.e2b.dev
@@ -270,6 +272,7 @@ npx wrangler pages project create hire-me-platform --production-branch main
 ## 📋 배포 현황 및 향후 개선사항
 
 ### ✅ **2025년 10월 9일 배포 완료** 
+- **커스텀 도메인**: https://hireme.kr ✅ **NEW!**
 - **실제 서비스**: https://hire-me-platform.pages.dev ✅
 - **Cloudflare Pages**: 전 세계 CDN 배포 완료 ✅
 - **모바일 최적화**: textarea 너비 문제 해결 ✅
@@ -316,6 +319,7 @@ npx wrangler pages project create hire-me-platform --production-branch main
 
 **🚀 배포 완료**: 2025년 10월 9일  
 **⚡ 배포 상태**: ✅ **실제 서비스 운영 중**
+- **커스텀 도메인**: https://hireme.kr (메인 서비스) ✅ **NEW!**
 - **자동 배포**: https://hire-me-platform1.pages.dev (GitHub 연동) ✅
 - **수동 배포**: https://hire-me-platform.pages.dev (CLI 배포)  
 **📱 모바일 최적화**: ✅ **완료** (textarea 너비 20% 축소)  
@@ -323,6 +327,7 @@ npx wrangler pages project create hire-me-platform --production-branch main
 **📧 폼 제출 시스템**: ✅ **완료** (Formspree 연동, 파일 업로드 지원)  
 
 **주요 개선사항**: 
+- **커스텀 도메인 연결**: hireme.kr 도메인으로 전문적인 브랜딩 완성 ✅ **NEW!**
 - **Cloudflare Pages 실제 배포**: 글로벌 CDN으로 전 세계 접속 가능 ✅
 - **모바일 UX 최적화**: textarea 오버플로우 문제 해결 ✅ 
 - **성능 최적화**: Google Drive API 제거로 로딩 속도 개선 ✅

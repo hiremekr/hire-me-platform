@@ -57,6 +57,7 @@ export const JobApplicationForm = (props: JobApplicationFormProps) => {
               <input type="hidden" name="visa-type" value={visaType} />
               <input type="hidden" name="visa-name" value={visaName} />
               <input type="hidden" name="_subject" value={`새로운 구직 신청 - ${visaType}`} />
+              <input type="hidden" name="_next" value="https://hireme.kr/apply/success" />
               
               {/* 섹션 1: 개인 정보 */}
               <div class="form-section">
