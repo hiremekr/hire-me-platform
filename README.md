@@ -315,7 +315,7 @@ npx wrangler pages project create hire-me-platform --production-branch main
 ### 기술 지원
 - **카카오톡 상담**: http://pf.kakao.com/_pPxnFxj/chat ✅
 - **전화 문의**: 010-6326-5572
-- **이메일**: contact@hireme.co.kr
+- **이메일**: hireme.kr@gmail.com
 
 ---
 

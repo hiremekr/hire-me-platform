@@ -82,7 +82,7 @@ export const Footer = () => {
               </div>
               <div class="flex items-center">
                 <i class="fas fa-envelope mr-3 text-teal-blue"></i>
-                <span>contact@hireme.co.kr</span>
+                <span>hireme.kr@gmail.com</span>
               </div>
               <div class="flex items-center">
                 <i class="fab fa-telegram mr-3 text-yellow-400"></i>
