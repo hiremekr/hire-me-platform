@@ -31,6 +31,7 @@ export const Header = () => {
           <div class="md:hidden">
             <button 
               id="mobile-menu-btn"
+              onclick="toggleMobileMenu()"
               class="text-gray-700 hover:text-teal-blue focus:outline-none"
               type="button"
             >
