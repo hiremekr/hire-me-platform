@@ -42,8 +42,38 @@ export const TalentRequestPage = () => {
           </div>
 
           <div class="form-container">
-            <form id="talent-request-form" onsubmit="submitTalentRequest(event)">
+            <form 
+              id="talent-request-form" 
+              action="https://formspree.io/f/xjkaedgv"
+              method="POST"
+            >
               
+              {/* 인재 정보 */}
+              <div class="form-section">
+                <h3 class="text-xl font-bold text-navy mb-6">
+                  <i class="fas fa-user text-green mr-3"></i>
+                  관심 인재 정보
+                </h3>
+                
+                <div>
+                  <label for="interested-talent" class="block text-sm font-semibold text-navy mb-2">
+                    관심 인재명 *
+                  </label>
+                  <input 
+                    type="text" 
+                    id="interested-talent" 
+                    name="interestedTalent"
+                    class="form-input"
+                    placeholder="선택하신 인재의 이름이 자동으로 입력됩니다"
+                    required
+                    readonly
+                  />
+                  <p class="text-sm text-gray-500 mt-1">
+                    인재풀에서 선택하신 인재의 정보입니다
+                  </p>
+                </div>
+              </div>
+
               {/* 기업 기본 정보 */}
               <div class="form-section">
                 <h3 class="text-xl font-bold text-navy mb-6">
@@ -248,6 +278,10 @@ export const TalentRequestPage = () => {
                   인재 정보 요청하기
                 </button>
               </div>
+              
+              {/* Formspree 리다이렉트 설정 */}
+              <input type="hidden" name="_next" value="https://hire-me-platform1.pages.dev/apply/success" />
+              <input type="hidden" name="_subject" value="[HIRE ME] 기업 인재정보 요청" />
             </form>
           </div>
         </div>
@@ -257,15 +291,20 @@ export const TalentRequestPage = () => {
       
       {/* 인재 정보 표시 및 폼 처리 스크립트 */}
       <script>{`
-        // URL 파라미터에서 talent_id 읽기
-        function getTalentIdFromURL() {
+        // URL 파라미터에서 talent_id와 talent_name 읽기
+        function getParamsFromURL() {
           const urlParams = new URLSearchParams(window.location.search);
-          return urlParams.get('talent_id');
+          return {
+            talentId: urlParams.get('talent_id'),
+            talentName: urlParams.get('talent_name')
+          };
         }
 
         // 선택된 인재 정보 표시
         function displaySelectedTalent() {
-          const talentId = getTalentIdFromURL();
+          const params = getParamsFromURL();
+          const { talentId, talentName } = params;
+          
           if (!talentId) return;
 
           // 후보자 데이터 (서버에서 렌더링시 포함됨)
@@ -279,7 +318,7 @@ export const TalentRequestPage = () => {
           document.getElementById('talent-basic-info').textContent = 
             selectedTalent.nationality + ' / ' + selectedTalent.gender + ' / ' + selectedTalent.age + '세';
           document.getElementById('talent-residence').textContent = 
-            '한국거주 ' + selectedTalent.yearsInKorea + '년';
+            '한국거주 약 ' + selectedTalent.yearsInKorea + '년';
           document.getElementById('talent-visa').textContent = 
             '희망비자 ' + selectedTalent.desiredVisa;
           document.getElementById('talent-experience').textContent = selectedTalent.experience;
@@ -290,6 +329,12 @@ export const TalentRequestPage = () => {
           // 인재 정보 섹션 표시
           document.getElementById('selected-talent-info').style.display = 'block';
           
+          // 관심 인재명 필드에 이름 입력 (URL에서 받은 이름 또는 JSON에서 찾은 이름)
+          const displayName = talentName || selectedTalent.name;
+          if (displayName) {
+            document.getElementById('interested-talent').value = decodeURIComponent(displayName);
+          }
+          
           // 숨겨진 input 필드에 talent_id 저장 (폼 제출시 사용)
           let hiddenInput = document.createElement('input');
           hiddenInput.type = 'hidden';
@@ -298,75 +343,8 @@ export const TalentRequestPage = () => {
           document.getElementById('talent-request-form').appendChild(hiddenInput);
         }
 
-        // 인재 정보 요청 폼 제출
-        function submitTalentRequest(event) {
-          event.preventDefault();
-          
-          const formData = new FormData(event.target);
-          const data = Object.fromEntries(formData.entries());
-          
-          // 선택된 인재 정보 추가
-          const talentId = getTalentIdFromURL();
-          if (talentId) {
-            const candidates = ${JSON.stringify(candidates)};
-            const selectedTalent = candidates.find(c => c.id == talentId);
-            if (selectedTalent) {
-              data.selectedTalentInfo = {
-                id: selectedTalent.id,
-                nationality: selectedTalent.nationality,
-                gender: selectedTalent.gender,
-                age: selectedTalent.age,
-                experience: selectedTalent.experience,
-                koreanLevel: selectedTalent.koreanLevel,
-                desiredVisa: selectedTalent.desiredVisa,
-                yearsInKorea: selectedTalent.yearsInKorea,
-                desiredLocation: selectedTalent.desiredLocation.join(', ')
-              };
-            }
-          }
-
-          // 버튼 비활성화
-          const submitBtn = document.getElementById('talent-request-btn');
-          const originalText = submitBtn.textContent;
-          submitBtn.disabled = true;
-          submitBtn.textContent = '요청 중...';
-
-          console.log('인재 정보 요청 데이터:', data);
-
-          // EmailJS로 이메일 전송 (실제 구현시 사용)
-          /*
-          emailjs.send('service_id', 'template_id', {
-            company_name: data.companyName,
-            manager_name: data.managerName,
-            manager_phone: data.managerPhone,
-            manager_email: data.managerEmail,
-            job_title: data.jobTitle,
-            salary: data.salary,
-            job_description: data.jobDescription,
-            job_posting_link: data.jobPostingLink,
-            additional_request: data.additionalRequest,
-            talent_info: JSON.stringify(data.selectedTalentInfo, null, 2),
-            request_date: new Date().toLocaleString('ko-KR')
-          }).then(() => {
-            alert('인재 정보 요청이 성공적으로 전송되었습니다! 담당자가 빠르게 연락드리겠습니다.');
-            window.location.href = '/apply/success';
-          }).catch((error) => {
-            console.error('전송 실패:', error);
-            alert('요청 전송에 실패했습니다. 다시 시도해주세요.');
-          }).finally(() => {
-            submitBtn.disabled = false;
-            submitBtn.textContent = originalText;
-          });
-          */
-          
-          // 임시: 성공 메시지 표시 (실제 환경에서는 위의 EmailJS 코드 사용)
-          setTimeout(() => {
-            alert('인재 정보 요청이 접수되었습니다! 담당자가 빠르게 연락드리겠습니다.');
-            submitBtn.disabled = false;
-            submitBtn.textContent = originalText;
-            // window.location.href = '/apply/success'; // 성공 페이지로 이동
-          }, 1000);
-        }
+        // Formspree 폼 제출 처리 (기본 동작 사용)
+        // Formspree가 폼 제출을 처리하고 _next 파라미터로 지정된 페이지로 자동 리다이렉트
 
         // 페이지 로드시 실행
         document.addEventListener('DOMContentLoaded', function() {

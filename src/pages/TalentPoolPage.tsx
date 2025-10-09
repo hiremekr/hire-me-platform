@@ -100,43 +100,32 @@ export const TalentPoolPage = () => {
                 onclick={`requestTalentInfo(${candidate.id})`}
               >
                 
-                {/* PC 버전 - 롤링 배너 스타일 */}
+                {/* PC 버전 - 6줄 구조 */}
                 <div class="hidden md:block p-6">
                   <div class="text-center mb-6">
                     <div class="text-4xl mb-3">{candidate.flag}</div>
-                    <h4 class="text-xl font-bold text-navy">
-                      {candidate.nationality} / {candidate.gender} / {candidate.age}세
-                    </h4>
                   </div>
                   
-                  <div class="space-y-3 mb-8 text-sm">
-                    <div class="flex items-center">
-                      <i class="fas fa-map-marker-alt text-teal-blue mr-3 w-4"></i>
-                      <span><strong>한국 거주:</strong> {candidate.yearsInKorea}년</span>
+                  <div class="space-y-2 mb-6 text-sm">
+                    <div class="text-center font-bold text-navy text-base">
+                      {candidate.nationality} / {candidate.gender} / {candidate.age}세
                     </div>
-                    <div class="flex items-center">
-                      <i class="fas fa-briefcase text-teal-blue mr-3 w-4"></i>
-                      <span><strong>경력:</strong> {candidate.experience}</span>
-                    </div>
-                    <div class="flex items-center">
-                      <i class="fas fa-comment text-teal-blue mr-3 w-4"></i>
-                      <span><strong>한국어:</strong> {candidate.koreanLevel}</span>
-                    </div>
-                    <div class="flex items-center">
-                      <i class="fas fa-id-card text-teal-blue mr-3 w-4"></i>
-                      <span><strong>희망비자:</strong> {candidate.desiredVisa}</span>
-                    </div>
+                    <div>이름: {candidate.name}</div>
+                    <div>한국 거주: 약 {candidate.yearsInKorea}년</div>
+                    <div>경력: {candidate.experience}</div>
+                    <div>한국어: {candidate.koreanLevel}</div>
+                    <div>희망비자: {candidate.desiredVisa}</div>
                   </div>
                   
                   <button 
-                    onclick="requestTalentInfo({candidate.id})"
+                    onclick="requestTalentInfo({candidate.id}, '{candidate.name}')"
                     class="block w-full text-center py-3 px-6 rounded-xl font-bold transition-all bg-teal-blue text-white hover:bg-opacity-90"
                   >
-                    이 인재 정보 요청 →
+                    인재 정보 요청
                   </button>
                 </div>
 
-                {/* 모바일 버전 - 5줄 형식 */}
+                {/* 모바일 버전 - 6줄 형식 */}
                 <div class="block md:hidden">
                   {/* 모바일 카드 헤더 - 국기만 중앙 배치 */}
                   <div class="bg-gradient-to-r from-teal-blue to-green p-3">
@@ -145,11 +134,12 @@ export const TalentPoolPage = () => {
                     </div>
                   </div>
 
-                  {/* 모바일 카드 내용 - 5줄 형식 */}
+                  {/* 모바일 카드 내용 - 6줄 형식 */}
                   <div class="p-3">
                     <div class="text-xs space-y-1 mb-3">
-                      <div class="font-bold text-center text-navy mb-2">{candidate.nationality}/{candidate.gender}/{candidate.age}세</div>
-                      <div>한국거주: {candidate.yearsInKorea}년</div>
+                      <div class="font-bold text-center text-navy mb-2">{candidate.nationality} / {candidate.gender} / {candidate.age}세</div>
+                      <div>이름: {candidate.name}</div>
+                      <div>한국 거주: 약 {candidate.yearsInKorea}년</div>
                       <div>경력: {candidate.experience}</div>
                       <div>한국어: {candidate.koreanLevel}</div>
                       <div>희망비자: {candidate.desiredVisa}</div>
@@ -157,10 +147,10 @@ export const TalentPoolPage = () => {
                     
                     {/* 모바일 액션 버튼 */}
                     <button 
-                      onclick="requestTalentInfo({candidate.id})"
+                      onclick="requestTalentInfo({candidate.id}, '{candidate.name}')"
                       class="block w-full bg-teal-blue text-white py-2 rounded text-sm text-center hover:bg-opacity-90 hover:no-underline"
                     >
-                      정보 요청
+                      인재 정보 요청
                     </button>
                   </div>
                 </div>
@@ -207,9 +197,9 @@ export const TalentPoolPage = () => {
 }
 
 // 인재 정보 요청 함수
-function requestTalentInfo(talentId) {
-  // 모달 또는 폼 페이지로 이동
-  window.location.href = `/company/request?talent_id=${talentId}`;
+function requestTalentInfo(talentId, talentName) {
+  // 모달 또는 폼 페이지로 이동 (인재명 정보 포함)
+  window.location.href = `/company/request?talent_id=${talentId}&talent_name=${encodeURIComponent(talentName)}`;
 }
 
 // 필터링 함수
