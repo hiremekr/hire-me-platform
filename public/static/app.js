@@ -204,9 +204,34 @@ async function submitForm(formId, apiEndpoint) {
 
 // 페이지 로드 시 실행
 document.addEventListener('DOMContentLoaded', function() {
+  console.log('🚀 페이지 로드 완료:', window.location.pathname);
+  
   // 인재 정보 요청 페이지인 경우 자동으로 인재 정보 표시
   if (window.location.pathname.includes('/company/request')) {
+    console.log('📋 인재요청 페이지 감지 - displaySelectedTalent 실행');
+    
+    // 즉시 실행
     displaySelectedTalent();
+    
+    // 1초 후 한 번 더 시도 (안전장치)
+    setTimeout(() => {
+      const field = document.getElementById('interested-talent');
+      if (field && !field.value) {
+        console.log('🔄 1초 후 재시도 실행');
+        displaySelectedTalent();
+      }
+    }, 1000);
+    
+    // 3초 후 마지막 시도
+    setTimeout(() => {
+      const field = document.getElementById('interested-talent');
+      if (field && !field.value) {
+        console.log('🔄 3초 후 최종 재시도');
+        displaySelectedTalent();
+      }
+    }, 3000);
+  } else {
+    console.log('📄 다른 페이지:', window.location.pathname);
   }
   
   // 모바일 메뉴 버튼 이벤트 리스너 추가
@@ -335,24 +360,68 @@ function displaySelectedTalent() {
   const params = getParamsFromURL();
   const { talentId, talentName } = params;
   
-  console.log('URL 파라미터:', params); // 디버그용
+  // 강화된 디버그 로깅
+  console.log('=== 인재 정보 자동 입력 디버그 ===');
+  console.log('현재 URL:', window.location.href);
+  console.log('URL 파라미터:', params);
+  console.log('talentId:', talentId);
+  console.log('talentName:', talentName);
   
   if (!talentId) {
     console.log('talent_id가 없습니다.');
     return;
   }
 
-  // 관심 인재명 필드에 이름 입력
+  // 관심 인재명 필드에 이름 입력 (강화된 버전)
   const interestedTalentField = document.getElementById('interested-talent');
-  if (interestedTalentField && talentName) {
-    const decodedName = decodeURIComponent(talentName);
-    interestedTalentField.value = decodedName;
-    console.log('인재명 자동 입력:', decodedName);
-  } else {
-    console.log('인재명 필드를 찾을 수 없거나 talentName이 없습니다:', {
-      field: !!interestedTalentField,
-      talentName: talentName
-    });
+  
+  if (interestedTalentField) {
+    let nameToSet = '';
+    
+    // 방법 1: URL에서 talent_name 가져오기
+    if (talentName) {
+      try {
+        nameToSet = decodeURIComponent(talentName);
+        console.log('✅ URL에서 인재명 획득:', nameToSet);
+      } catch (e) {
+        console.log('URL 디코딩 실패, 원본 사용:', talentName);
+        nameToSet = talentName;
+      }
+    }
+    
+    // 방법 2: candidatesData에서 이름 찾기 (URL에 이름이 없을 때)
+    if (!nameToSet && talentId && window.candidatesData) {
+      const selectedTalent = window.candidatesData.find(c => c.id == talentId);
+      if (selectedTalent && selectedTalent.name) {
+        nameToSet = selectedTalent.name;
+        console.log('✅ 데이터에서 인재명 획득:', nameToSet);
+      }
+    }
+    
+    // 방법 3: 최후 수단 - 약간의 지연 후 재시도
+    if (!nameToSet && talentId) {
+      setTimeout(() => {
+        if (window.candidatesData) {
+          const talent = window.candidatesData.find(c => c.id == talentId);
+          if (talent && talent.name && !interestedTalentField.value) {
+            interestedTalentField.value = talent.name;
+            console.log('✅ 지연 후 인재명 입력 성공:', talent.name);
+          }
+        }
+      }, 500); // 0.5초 후 재시도
+    }
+    
+    // 이름이 있으면 필드에 입력
+    if (nameToSet) {
+      interestedTalentField.value = nameToSet;
+      console.log('✅ 최종 인재명 입력:', nameToSet);
+      
+      // 필드 스타일 변경으로 사용자에게 입력됨을 알림
+      interestedTalentField.style.backgroundColor = '#f0fff4';
+      interestedTalentField.style.borderColor = '#48bb78';
+    } else {
+      console.log('❌ 인재명을 찾을 수 없음 - talentId:', talentId);
+    }
   }
   
   // 후보자 데이터를 사용해서 상세 정보 표시
