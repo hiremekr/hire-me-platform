@@ -6,7 +6,17 @@ export const Footer = () => {
           {/* 회사 정보 */}
           <div class="lg:col-span-2">
             <div class="flex items-center mb-6">
-              <h2 class="text-3xl font-bold text-white">HIRE ME</h2>
+              <div class="hireme-logo-navy">
+                <span>H</span><span class="exclaim">!</span><span>RE</span>
+                <span class="space"></span>
+                <span>ME</span>
+                <svg class="globe-svg" viewBox="0 0 100 100">
+                  <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="3.5"/>
+                  <ellipse cx="50" cy="50" rx="20" ry="40" fill="none" stroke="currentColor" stroke-width="3" opacity="0.7"/>
+                  <ellipse cx="50" cy="50" rx="40" ry="20" fill="none" stroke="currentColor" stroke-width="3" opacity="0.7"/>
+                  <path d="M 65 24 L 68 32 L 76 32 L 70 38 L 72 46 L 65 41 L 58 46 L 60 38 L 54 32 L 62 32 Z" fill="#FF7A5C"/>
+                </svg>
+              </div>
             </div>
             <p class="text-gray-300 mb-4 leading-relaxed">
               외국인 구직자와 기업을 연결하는 전문 취업 매칭 플랫폼입니다.<br />

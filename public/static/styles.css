@@ -555,3 +555,31 @@ body {
   background: linear-gradient(90deg, var(--teal-blue), var(--green));
   transition: width 0.3s ease;
 }
+
+/* Footer 네이비 배경용 로고 스타일 */
+.hireme-logo-navy {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  font-size: 32px; /* Header 로고 크기와 유사하게 조정 */
+  font-weight: 700;
+  letter-spacing: -1.5px;
+  line-height: 1;
+  color: #ffffff; /* 흰색 텍스트 */
+}
+
+.hireme-logo-navy .exclaim {
+  color: #FF7A5C;
+}
+
+.hireme-logo-navy .space {
+  width: 8px; /* 크기에 맞게 조정 */
+}
+
+.hireme-logo-navy .globe-svg {
+  width: 36px; /* 폰트 크기에 맞게 조정 */
+  height: 36px;
+  margin-left: 6px;
+  position: relative;
+  top: 1px;
+}
