@@ -51,6 +51,7 @@ export const JobApplicationForm = (props: JobApplicationFormProps) => {
               method="POST" 
               enctype="multipart/form-data"
               id="job-application-form"
+              onsubmit="submitJobApplication(event)"
             >
               
               {/* 숨겨진 필드: 비자 타입 구분 */}
@@ -594,6 +595,23 @@ export const JobApplicationForm = (props: JobApplicationFormProps) => {
                 >
                   신청하기
                 </button>
+              </div>
+              
+              {/* 필수 사항 안내 */}
+              <div class="bg-red-50 border border-red-200 rounded-lg p-4 mt-6">
+                <h4 class="text-red-800 font-semibold mb-2">
+                  <i class="fas fa-exclamation-triangle mr-2"></i>
+                  신청 전 확인사항 / Requirements Check
+                </h4>
+                <ul class="text-sm text-red-700 space-y-1">
+                  <li>✓ <strong>이름, 전화번호, 국적</strong>을 모두 입력하세요 / Enter name, phone, nationality</li>
+                  <li>✓ <strong>4개 동의사항</strong>을 모두 체크하세요 / Check all 4 agreements</li>
+                  <li>✓ 신청하기 버튼을 눌러주세요 / Click submit button</li>
+                </ul>
+                <p class="text-xs text-red-600 mt-2">
+                  💡 버튼이 작동하지 않으면 위 사항들을 다시 확인해주세요.<br/>
+                  💡 If the button doesn't work, please check the above items again.
+                </p>
               </div>
             </form>
           </div>
