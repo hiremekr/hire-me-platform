@@ -561,7 +561,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0;
-  font-size: 32px; /* Header 로고 크기와 유사하게 조정 */
+  font-size: 30px; /* Header 로고와 비슷한 크기로 조정 */
   font-weight: 700;
   letter-spacing: -1.5px;
   line-height: 1;
@@ -569,17 +569,19 @@ body {
 }
 
 .hireme-logo-navy .exclaim {
-  color: #FF7A5C;
+  color: #FF7A5C !important; /* 느낌표는 주황색 */
 }
 
 .hireme-logo-navy .space {
-  width: 8px; /* 크기에 맞게 조정 */
+  width: 0.21em; /* 폰트 크기에 비례하도록 em 단위 사용 */
+  display: inline-block;
 }
 
 .hireme-logo-navy .globe-svg {
-  width: 36px; /* 폰트 크기에 맞게 조정 */
-  height: 36px;
-  margin-left: 6px;
+  width: 1.04em; /* 폰트 크기에 비례 */
+  height: 1.04em;
+  margin-left: 0.15em;
+  flex-shrink: 0;
   position: relative;
-  top: 1px;
+  top: 0.02em;
 }
