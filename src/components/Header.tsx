@@ -6,7 +6,11 @@ export const Header = () => {
           {/* 로고 */}
           <div class="flex items-center">
             <a href="/" class="flex items-center">
-              <span class="text-2xl font-bold text-navy">HIRE ME</span>
+              <img 
+                src="/static/hireme-logo.png" 
+                alt="HIRE ME" 
+                class="h-10 w-auto"
+              />
             </a>
           </div>
           
