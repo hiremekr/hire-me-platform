@@ -51,7 +51,7 @@ export const JobApplicationForm = (props: JobApplicationFormProps) => {
               method="POST" 
               enctype="multipart/form-data"
               id="job-application-form"
-              onsubmit={`submitJobApplication(event, '${visaType}')`}
+
             >
               
               {/* 숨겨진 필드: 비자 타입 구분 */}

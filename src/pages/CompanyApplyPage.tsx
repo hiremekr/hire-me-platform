@@ -92,7 +92,7 @@ export const CompanyApplyPage = () => {
               action="https://formspree.io/f/xjkaedgv"
               method="POST"
               enctype="multipart/form-data"
-              onsubmit="submitCompanyApplication(event)"
+
             >
               
               {/* 숨겨진 필드: 폼 타입 구분 */}
