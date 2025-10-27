@@ -500,58 +500,113 @@ async function submitQuickApplication(event) {
   }
 }
 
-// 기업 상세 신청 폼 처리
+// 기업 신청 폼 처리 - Formspree 우선, 폴백 시스템 포함
 async function submitCompanyApplication(event) {
-  event.preventDefault();
+  // 기본 form validation만 수행하고 실제 제출은 Formspree가 처리
+  const form = event.target;
+  const formData = new FormData(form);
   
-  const formData = new FormData(event.target);
-  const data = {};
+  // 필수 항목 검증
+  const managerName = formData.get('managerName');
+  const businessNumber = formData.get('businessNumber');
+  const managerPhone = formData.get('managerPhone');
+  const managerEmail = formData.get('managerEmail');
   
-  for (let [key, value] of formData.entries()) {
-    if (data[key]) {
-      if (Array.isArray(data[key])) {
-        data[key].push(value);
-      } else {
-        data[key] = [data[key], value];
-      }
-    } else {
-      data[key] = value;
-    }
+  if (!managerName || !managerName.trim()) {
+    event.preventDefault();
+    showAlert('담당자명을 입력해주세요.', 'error');
+    return false;
+  }
+  
+  if (!businessNumber || !businessNumber.trim()) {
+    event.preventDefault();
+    showAlert('사업자등록번호를 입력해주세요.', 'error');
+    return false;
+  }
+  
+  if (!managerPhone || !managerPhone.trim()) {
+    event.preventDefault();
+    showAlert('담당자 전화번호를 입력해주세요.', 'error');
+    return false;
+  }
+  
+  if (!managerEmail || !managerEmail.trim()) {
+    event.preventDefault();
+    showAlert('담당자 이메일을 입력해주세요.', 'error');
+    return false;
   }
   
   // 필수 체크박스 검증
   const agreements = formData.getAll('agreements');
   if (agreements.length < 4) {
+    event.preventDefault();
     showAlert('모든 필수 동의 항목을 체크해주세요.', 'error');
-    return;
+    return false;
   }
   
   // 사업자등록번호 형식 검증
-  const businessNumber = data.businessNumber;
   if (businessNumber && !validateBusinessNumber(businessNumber)) {
+    event.preventDefault();
     showAlert('사업자등록번호 형식이 올바르지 않습니다. (000-00-00000)', 'error');
-    return;
+    return false;
   }
   
+  // 이메일 형식 검증
+  if (managerEmail && !validateEmail(managerEmail)) {
+    event.preventDefault();
+    showAlert('올바른 이메일 형식을 입력해주세요.', 'error');
+    return false;
+  }
+  
+  // Validation 통과시 로딩 표시하고 Formspree 제출 허용
+  showLoading('company-submit-btn');
+  
+  // 성공 메시지 표시 (Formspree 리디렉션 전)
+  setTimeout(() => {
+    showAlert('기업 채용 신청이 제출되었습니다!<br />담당자가 영업일 기준 1-2일 내에 연락드리겠습니다.', 'success');
+  }, 500);
+  
+  // Formspree 제출을 허용 (preventDefault 호출하지 않음)
+  return true;
+}
+
+// 기업 폼 폴백 시스템
+async function submitCompanyApplicationFallback(formData) {
   try {
-    showLoading('company-submit-btn');
+    const data = { formType: 'company-application' };
     
-    // 이메일 전송
-    await sendEmailNotification(data, '기업 채용 신청');
+    // FormData를 객체로 변환
+    for (let [key, value] of formData.entries()) {
+      if (data[key]) {
+        if (Array.isArray(data[key])) {
+          data[key].push(value);
+        } else {
+          data[key] = [data[key], value];
+        }
+      } else {
+        data[key] = value;
+      }
+    }
     
-    showAlert('신청이 완료되었습니다!<br />담당자가 영업일 기준 1-2일 내에 연락드리겠습니다.', 'success');
-    event.target.reset();
+    // 1. 로컬스토리지에 백업 저장
+    saveToLocalBackup(data, '기업 채용 신청');
     
-    // 성공 후 페이지 이동 또는 리셋
+    // 2. 실제 백업 이메일 전송
+    await sendRealBackupEmail(data, '기업 채용 신청');
+    
+    showAlert('기업 채용 신청이 백업 시스템을 통해 완료되었습니다!<br />담당자가 영업일 기준 1-2일 내에 연락드리겠습니다.', 'success');
+    
     setTimeout(() => {
-      window.location.href = '/company';
+      window.location.href = '/company/success';
     }, 3000);
     
   } catch (error) {
-    console.error('Error:', error);
-    showAlert('신청 중 오류가 발생했습니다. 다시 시도해주세요.', 'error');
-  } finally {
-    hideLoading('company-submit-btn', '신청 제출하기');
+    console.error('Company Fallback Error:', error);
+    
+    // 최종 안전장치: 데이터 다운로드 제공
+    offerDataDownload(formData, '기업 채용 신청');
+    
+    showAlert(`기업 신청 데이터를 로컬에 저장했습니다.<br />직접 연락 부탁드립니다: 010-6326-5572<br />또는 저장된 데이터를 다운로드하여 이메일로 전송해주세요.`, 'error');
   }
 }
 
@@ -1097,10 +1152,18 @@ function setupFormMonitoring() {
           console.warn('Formspree submission may have failed, executing fallback');
           
           const formData = new FormData(form);
-          const visaType = formData.get('visa-type') || 'Unknown';
+          const formType = formData.get('form-type');
           
-          hideLoading('job-submit-btn', '신청하기');
-          submitJobApplicationFallback(formData, visaType);
+          if (formType === 'company-application') {
+            // 기업 폼 폴백
+            hideLoading('company-submit-btn', '신청 제출하기');
+            submitCompanyApplicationFallback(formData);
+          } else {
+            // 구직 폼 폴백
+            const visaType = formData.get('visa-type') || 'Unknown';
+            hideLoading('job-submit-btn', '신청하기');
+            submitJobApplicationFallback(formData, visaType);
+          }
         }
       }, 5000);
     });

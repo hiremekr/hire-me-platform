@@ -87,7 +87,18 @@ export const CompanyApplyPage = () => {
               기업 채용 정보 신청
             </h2>
             
-            <form id="company-application-form" onsubmit="submitCompanyApplication(event)">
+            <form 
+              id="company-application-form" 
+              action="https://formspree.io/f/xjkaedgv"
+              method="POST"
+              enctype="multipart/form-data"
+              onsubmit="submitCompanyApplication(event)"
+            >
+              
+              {/* 숨겨진 필드: 폼 타입 구분 */}
+              <input type="hidden" name="form-type" value="company-application" />
+              <input type="hidden" name="_subject" value="새로운 기업 채용 신청" />
+              <input type="hidden" name="_next" value="https://hireme.kr/company/success" />
               
               {/* 섹션 1: 기업 기본 정보 */}
               <div class="form-section">
