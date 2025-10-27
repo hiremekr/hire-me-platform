@@ -770,8 +770,25 @@ async function submitJobApplication(event, visaType) {
     visaType: visaType,
     eventType: event.type,
     formAction: event.target.action,
-    userAgent: navigator.userAgent.includes('Mobile') ? 'Mobile' : 'Desktop'
+    formMethod: event.target.method,
+    formEnctype: event.target.enctype,
+    formId: event.target.id,
+    userAgent: navigator.userAgent.includes('Mobile') ? 'Mobile' : 'Desktop',
+    isMobile: /iPhone|iPad|iPod|Android/i.test(navigator.userAgent),
+    screenWidth: window.innerWidth,
+    touchSupported: 'ontouchstart' in window
   });
+  
+  // 모바일에서 추가 확인
+  if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+    console.log('📱 모바일 환경 감지 - 추가 체크:', {
+      formData: Object.fromEntries(new FormData(event.target).entries()),
+      hiddenFields: Array.from(event.target.querySelectorAll('input[type="hidden"]')).map(input => ({
+        name: input.name,
+        value: input.value
+      }))
+    });
+  }
   
   // 기본 form validation만 수행하고 실제 제출은 Formspree가 처리
   const form = event.target;
@@ -826,11 +843,29 @@ async function submitJobApplication(event, visaType) {
   
   showLoading('job-submit-btn');
   
+  // 모바일에서 추가 모니터링
+  if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+    // 3초 후 페이지 변화 확인
+    setTimeout(() => {
+      console.log('📱 모바일 Formspree 제출 3초 후 상태:', {
+        currentURL: window.location.href,
+        isSuccessPage: window.location.pathname.includes('success'),
+        timestamp: new Date().toISOString()
+      });
+      
+      // 여전히 같은 페이지면 문제 있을 수 있음
+      if (!window.location.pathname.includes('success')) {
+        console.warn('⚠️ 모바일에서 Formspree 제출 후 페이지 이동 없음 - 잠재적 문제');
+      }
+    }, 3000);
+  }
+  
   // 성공 메시지 표시 (Formspree 리디렉션 전)
   setTimeout(() => {
     showAlert(`${visaType || '구직'} 신청이 제출되었습니다!<br />전문 상담사가 영업일 기준 1-2일 내에 연락드리겠습니다.`, 'success');
   }, 500);
   
+  console.log('🎯 Formspree 제출 허용 - return true');
   // Formspree 제출을 허용 (preventDefault 호출하지 않음)
   return true;
 }
