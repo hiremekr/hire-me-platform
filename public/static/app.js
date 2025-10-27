@@ -766,6 +766,13 @@ function simulateEmailSend(formData, emailType) {
 
 // 구직 신청 폼 처리 - Formspree 우선, 폴백 시스템 포함
 async function submitJobApplication(event, visaType) {
+  console.log('🚀 submitJobApplication 호출됨:', {
+    visaType: visaType,
+    eventType: event.type,
+    formAction: event.target.action,
+    userAgent: navigator.userAgent.includes('Mobile') ? 'Mobile' : 'Desktop'
+  });
+  
   // 기본 form validation만 수행하고 실제 제출은 Formspree가 처리
   const form = event.target;
   const formData = new FormData(form);
@@ -810,6 +817,13 @@ async function submitJobApplication(event, visaType) {
   }
   
   // Validation 통과시 로딩 표시하고 Formspree 제출 허용
+  console.log('✅ Validation 통과 - Formspree 제출 진행', {
+    action: form.action,
+    method: form.method,
+    visaType: visaType,
+    isMobile: navigator.userAgent.includes('Mobile')
+  });
+  
   showLoading('job-submit-btn');
   
   // 성공 메시지 표시 (Formspree 리디렉션 전)
