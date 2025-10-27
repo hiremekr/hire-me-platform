@@ -148,7 +148,28 @@ export const CompanyPage = () => {
           </div>
 
           <div class="bg-light-gray rounded-2xl p-8 max-w-2xl mx-auto">
-            <form id="quick-application-form" onsubmit="submitQuickApplication(event)">
+            <form 
+              id="quick-application-form" 
+              action="https://formspree.io/f/xjkaedgv"
+              method="POST"
+              enctype="multipart/form-data"
+            >
+              
+              {/* Formspree 설정 */}
+              <input type="hidden" name="form-type" value="quick-matching-request" />
+              <input type="hidden" name="_subject" value="빠른 매칭 신청" />
+              <script dangerouslySetInnerHTML={{
+                __html: `
+                  document.addEventListener('DOMContentLoaded', function() {
+                    const nextInput = document.querySelector('#quick-application-form input[name="_next"]');
+                    if (nextInput) {
+                      nextInput.value = window.location.origin + '/company/success';
+                    }
+                  });
+                `
+              }}></script>
+              <input type="hidden" name="_next" value="/company/success" />
+              
               <div class="space-y-6">
                 
                 <div>
