@@ -511,8 +511,8 @@ export const JobApplicationForm = (props: JobApplicationFormProps) => {
                     </div>
                   )}
                   
-                  {/* 희망 급여 - E-7-4R 외 다른 비자 유형 */}
-                  {!visaType.includes('E-7-4R') && (
+                  {/* 희망 급여 - E-7-4R, E-7-4 외 다른 비자 유형 */}
+                  {!visaType.includes('E-7-4R') && visaType !== 'E-7-4' && (
                     <div>
                       <label for="expected-salary" class="block text-sm font-semibold text-navy mb-2">
                         희망 급여 / EXPECTED SALARY
