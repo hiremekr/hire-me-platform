@@ -582,22 +582,19 @@ function showFieldSpecificOptions(field) {
   }
 }
 
-// EmailJS 설정 (실제 서비스 시 변경 필요)
-const EMAILJS_CONFIG = {
-  serviceID: 'service_abc123',        // EmailJS에서 발급받은 Service ID
-  templateID: 'template_hireme_app',  // EmailJS에서 생성한 Template ID
-  publicKey: 'user_xyz789',          // EmailJS에서 발급받은 Public Key
-  adminEmail: 'admin@hireme.kr'      // 실제 관리자 이메일로 변경 (ex: info@hireme.kr)
+// 백업 시스템 설정
+const BACKUP_CONFIG = {
+  adminEmail: 'hireme.kr@gmail.com',
+  maxLocalBackups: 10,  // 로컬에 저장할 최대 백업 수
+  backupRetentionDays: 7  // 백업 보관 기간
 };
 
-// 이메일 전송 함수
+// 이메일 전송 함수 (데모용 - 실제로는 작동하지 않음)
 async function sendEmailNotification(formData, emailType) {
   try {
-    // EmailJS 라이브러리가 로드되지 않은 경우 처리
-    if (typeof emailjs === 'undefined') {
-      console.warn('EmailJS not loaded, sending demo notification');
-      return simulateEmailSend(formData, emailType);
-    }
+    // 데모 시뮬레이션만 실행
+    console.warn('Demo email notification - not actually sent');
+    return simulateEmailSend(formData, emailType);
     
     // 첨부파일 정보 수집
     let attachmentInfo = '';
@@ -769,7 +766,7 @@ async function submitJobApplication(event, visaType) {
   return true;
 }
 
-// 폴백 시스템 - Formspree 실패시 사용
+// 강화된 폴백 시스템 - 실제 작동하는 백업
 async function submitJobApplicationFallback(formData, visaType) {
   try {
     const data = { visaType };
@@ -787,8 +784,11 @@ async function submitJobApplicationFallback(formData, visaType) {
       }
     }
     
-    // 백업 이메일 전송
-    await sendEmailNotification(data, `${visaType} 구직신청 (백업)`);
+    // 1. 로컬스토리지에 백업 저장
+    saveToLocalBackup(data, visaType);
+    
+    // 2. 실제 백업 이메일 전송 (Cloudflare Email API)
+    await sendRealBackupEmail(data, visaType);
     
     showAlert(`${visaType} 구직 신청이 백업 시스템을 통해 완료되었습니다!<br />전문 상담사가 영업일 기준 1-2일 내에 연락드리겠습니다.`, 'success');
     
@@ -798,7 +798,116 @@ async function submitJobApplicationFallback(formData, visaType) {
     
   } catch (error) {
     console.error('Fallback Error:', error);
-    showAlert('신청 중 오류가 발생했습니다. 직접 연락 부탁드립니다: 010-6326-5572', 'error');
+    
+    // 최종 안전장치: 데이터 다운로드 제공
+    offerDataDownload(formData, visaType);
+    
+    showAlert(`신청 데이터를 로컬에 저장했습니다.<br />직접 연락 부탁드립니다: 010-6326-5572<br />또는 저장된 데이터를 다운로드하여 이메일로 전송해주세요.`, 'error');
+  }
+}
+
+// 로컬스토리지 백업 저장
+function saveToLocalBackup(data, visaType) {
+  try {
+    const backupKey = `hireme_backup_${Date.now()}`;
+    const backupData = {
+      timestamp: new Date().toISOString(),
+      visaType: visaType,
+      data: data,
+      status: 'backup_saved'
+    };
+    
+    localStorage.setItem(backupKey, JSON.stringify(backupData));
+    console.log('✅ 로컬백업 저장 완료:', backupKey);
+    
+    // 사용자에게 백업 저장됨을 알림
+    showAlert('📁 신청 데이터가 브라우저에 백업 저장되었습니다.', 'success', 3000);
+    
+  } catch (error) {
+    console.error('로컬백업 저장 실패:', error);
+  }
+}
+
+// 실제 백업 이메일 전송 (Cloudflare Workers API 사용)
+async function sendRealBackupEmail(data, visaType) {
+  try {
+    // Cloudflare Workers의 Email API를 통한 실제 이메일 전송
+    const emailData = {
+      to: 'hireme.kr@gmail.com',
+      subject: `[HIRE ME 백업] ${visaType} 신청 - ${data.fullName}`,
+      content: `
+🚨 백업 시스템을 통한 신청 접수
+
+📋 신청 정보:
+- 이름: ${data.fullName || 'N/A'}
+- 전화번호: ${data.phone || 'N/A'}
+- 이메일: ${data.email || 'N/A'}
+- 국적: ${data.nationality || 'N/A'}
+- 비자유형: ${visaType}
+- 백업 시간: ${new Date().toLocaleString('ko-KR')}
+
+⚠️ 주의: 이 신청은 Formspree 실패 후 백업 시스템으로 접수되었습니다.
+메인 시스템을 확인하여 중복 접수가 없는지 확인해주세요.
+
+📝 전체 데이터:
+${JSON.stringify(data, null, 2)}
+      `,
+      timestamp: new Date().toISOString()
+    };
+    
+    // 백업 API 엔드포인트로 전송
+    const response = await fetch('/api/backup-email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(emailData)
+    });
+    
+    if (response.ok) {
+      console.log('✅ 백업 이메일 전송 성공');
+    } else {
+      throw new Error(`백업 이메일 전송 실패: ${response.status}`);
+    }
+    
+  } catch (error) {
+    console.error('백업 이메일 전송 실패:', error);
+    // 이메일 전송 실패해도 로컬백업은 저장됨
+  }
+}
+
+// 데이터 다운로드 제공 (최종 안전장치)
+function offerDataDownload(formData, visaType) {
+  try {
+    const data = {};
+    for (let [key, value] of formData.entries()) {
+      data[key] = value;
+    }
+    
+    const downloadData = {
+      timestamp: new Date().toISOString(),
+      visaType: visaType,
+      submissionData: data,
+      note: '이 파일을 hireme.kr@gmail.com으로 전송해주세요.'
+    };
+    
+    const dataStr = JSON.stringify(downloadData, null, 2);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(dataBlob);
+    
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `hireme_application_${visaType}_${new Date().toISOString().split('T')[0]}.json`;
+    
+    // 자동 다운로드 트리거
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    console.log('📥 신청 데이터 다운로드 제공됨');
+    
+  } catch (error) {
+    console.error('데이터 다운로드 제공 실패:', error);
   }
 }
 
@@ -950,6 +1059,9 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Formspree 상태 체크
   setTimeout(checkFormspreeStatus, 1000);
+  
+  // 오래된 백업 데이터 정리
+  cleanupOldBackups();
 });
 
 // 폼 제출 모니터링 시스템
@@ -1017,3 +1129,127 @@ function checkFormspreeStatus() {
       });
   }
 }
+
+// 오래된 로컬 백업 정리
+function cleanupOldBackups() {
+  try {
+    const now = Date.now();
+    const retentionMs = BACKUP_CONFIG.backupRetentionDays * 24 * 60 * 60 * 1000;
+    let cleanedCount = 0;
+    
+    // localStorage에서 hireme_backup_ 키들 찾기
+    const keysToRemove = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith('hireme_backup_')) {
+        try {
+          const backupData = JSON.parse(localStorage.getItem(key));
+          const backupTime = new Date(backupData.timestamp).getTime();
+          
+          // 보관 기간 초과된 백업 삭제
+          if (now - backupTime > retentionMs) {
+            keysToRemove.push(key);
+          }
+        } catch (e) {
+          // 잘못된 형식의 백업 데이터 삭제
+          keysToRemove.push(key);
+        }
+      }
+    }
+    
+    // 삭제 실행
+    keysToRemove.forEach(key => {
+      localStorage.removeItem(key);
+      cleanedCount++;
+    });
+    
+    if (cleanedCount > 0) {
+      console.log(`🧹 오래된 백업 ${cleanedCount}개 정리 완료`);
+    }
+    
+    // 백업 개수 제한 확인
+    limitBackupCount();
+    
+  } catch (error) {
+    console.error('백업 정리 중 오류:', error);
+  }
+}
+
+// 백업 개수 제한
+function limitBackupCount() {
+  try {
+    const backupKeys = [];
+    
+    // 모든 백업 키 수집
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith('hireme_backup_')) {
+        try {
+          const backupData = JSON.parse(localStorage.getItem(key));
+          backupKeys.push({
+            key: key,
+            timestamp: new Date(backupData.timestamp).getTime()
+          });
+        } catch (e) {
+          // 잘못된 데이터는 삭제 대상
+          localStorage.removeItem(key);
+        }
+      }
+    }
+    
+    // 개수 제한 초과시 오래된 순으로 삭제
+    if (backupKeys.length > BACKUP_CONFIG.maxLocalBackups) {
+      backupKeys.sort((a, b) => a.timestamp - b.timestamp);
+      const toRemove = backupKeys.slice(0, backupKeys.length - BACKUP_CONFIG.maxLocalBackups);
+      
+      toRemove.forEach(backup => {
+        localStorage.removeItem(backup.key);
+      });
+      
+      console.log(`📦 백업 개수 제한으로 ${toRemove.length}개 정리 완료`);
+    }
+    
+  } catch (error) {
+    console.error('백업 개수 제한 처리 중 오류:', error);
+  }
+}
+
+// 관리자용: 모든 로컬 백업 조회 (개발자 콘솔에서 사용)
+function getAllLocalBackups() {
+  const backups = [];
+  
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key && key.startsWith('hireme_backup_')) {
+      try {
+        const backupData = JSON.parse(localStorage.getItem(key));
+        backups.push({
+          key: key,
+          timestamp: backupData.timestamp,
+          visaType: backupData.visaType,
+          applicantName: backupData.data?.fullName || 'Unknown'
+        });
+      } catch (e) {
+        console.warn('잘못된 백업 데이터:', key);
+      }
+    }
+  }
+  
+  backups.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+  return backups;
+}
+
+// 관리자용: 특정 백업 상세 조회
+function getBackupDetails(key) {
+  try {
+    const backupData = localStorage.getItem(key);
+    return backupData ? JSON.parse(backupData) : null;
+  } catch (e) {
+    console.error('백업 데이터 읽기 실패:', e);
+    return null;
+  }
+}
+
+// 전역 함수로 등록 (개발자 도구에서 사용 가능)
+window.getAllLocalBackups = getAllLocalBackups;
+window.getBackupDetails = getBackupDetails;

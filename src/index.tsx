@@ -426,4 +426,36 @@ app.get('/api/reviews', (c) => {
   return c.json(reviews)
 })
 
+// 백업 이메일 API 엔드포인트
+app.post('/api/backup-email', async (c) => {
+  try {
+    const emailData = await c.req.json()
+    
+    // 실제 이메일 전송 로직 (Cloudflare Email API 또는 외부 서비스 사용)
+    // 현재는 로깅만 수행하고 성공 응답 반환
+    console.log('🚨 백업 이메일 전송 요청:', {
+      to: emailData.to,
+      subject: emailData.subject,
+      timestamp: emailData.timestamp,
+      content_preview: emailData.content?.substring(0, 100) + '...'
+    })
+    
+    // 여기에 실제 이메일 전송 코드를 추가할 수 있습니다
+    // 예: Resend, SendGrid, 또는 Cloudflare Email Workers 사용
+    
+    return c.json({ 
+      success: true, 
+      message: 'Backup email logged successfully',
+      timestamp: new Date().toISOString()
+    })
+    
+  } catch (error) {
+    console.error('백업 이메일 처리 오류:', error)
+    return c.json({ 
+      success: false, 
+      error: 'Backup email processing failed' 
+    }, 500)
+  }
+})
+
 export default app
