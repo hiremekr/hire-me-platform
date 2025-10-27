@@ -18,8 +18,8 @@ export const JobApplicationForm = (props: JobApplicationFormProps) => {
   const getFormspreeUrl = () => {
     if (formspreeUrl) return formspreeUrl
     
-    // 모든 폼에서 동일한 엔드포인트 사용 (비자 타입은 hidden field로 구분)
-    return 'https://formspree.io/f/xjkaedgv'
+    // 구직신청 전용 엔드포인트 사용 (비자 타입은 hidden field로 구분)
+    return 'https://formspree.io/f/xanpdpdz'
   }
   
   return (
