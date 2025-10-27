@@ -283,7 +283,10 @@ npx wrangler pages project create hire-me-platform --production-branch main
 - **카카오톡 링크**: 실제 채널 연동 완료 (URL 수정: http://pf.kakao.com/_pPxnFxj/chat) ✅
 
 ### ✅ **폼 제출 시스템 (실제 운영 중)**
-- **Formspree 연동**: https://formspree.io/f/xanpdpdz ✅
+- **Formspree 연동 완료**: 모든 폼이 Formspree로 통합 운영 ✅ **NEW!**
+  - **구직 신청 폼**: https://formspree.io/f/xanpdpdz ✅
+  - **기업 신청 폼**: https://formspree.io/f/xjkaedgv ✅ **NEW!**
+- **EmailJS 완전 제거**: JavaScript 의존성 없는 순수 HTML 폼 ✅ **NEW!**
 - **파일 업로드**: 이력서, 사진, 한국어 능력 증명서 첨부 가능 ✅
 - **이메일 전달**: hireme.kr@gmail.com로 자동 전송 ✅
 - **성공 페이지**: 제출 후 자동 리다이렉션 ✅
@@ -328,7 +331,7 @@ npx wrangler pages project create hire-me-platform --production-branch main
 - **수동 배포**: https://hire-me-platform.pages.dev (CLI 배포)  
 **📱 모바일 최적화**: ✅ **완료** (textarea 너비 20% 축소)  
 **🔄 성능 최적화**: ✅ **완료** (Google Drive API 롤백)  
-**📧 폼 제출 시스템**: ✅ **완료** (Formspree 연동, 파일 업로드 지원)  
+**📧 폼 제출 시스템**: ✅ **완료** (Formspree 통합, EmailJS 완전 제거) ✅ **NEW!**  
 
 **주요 개선사항**: 
 - **커스텀 도메인 연결**: hireme.kr 도메인으로 전문적인 브랜딩 완성 ✅ **NEW!**
@@ -336,7 +339,7 @@ npx wrangler pages project create hire-me-platform --production-branch main
 - **모바일 UX 최적화**: textarea 오버플로우 문제 해결 ✅ 
 - **성능 최적화**: Google Drive API 제거로 로딩 속도 개선 ✅
 - **카카오톡 링크 수정**: 올바른 URL로 연동 완료 (http://pf.kakao.com/_pPxnFxj/chat) ✅
-- **폼 제출 시스템**: Formspree 연동으로 실제 이메일 전송 ✅
+- **폼 제출 시스템**: Formspree 완전 통합, EmailJS 의존성 제거 ✅ **NEW!**
 - **성공 페이지 개선**: 불필요한 연락처/상담시간 정보 제거 ✅
 - **GitHub 연동**: 코드 변경사항 자동 배포 시스템 ✅ (https://github.com/hiremekr/hire-me-platform)
 - **인재풀 시스템**: 24명 인재 데이터베이스 + 실시간 필터링
