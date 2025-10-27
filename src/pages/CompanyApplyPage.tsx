@@ -98,7 +98,17 @@ export const CompanyApplyPage = () => {
               {/* 숨겨진 필드: 폼 타입 구분 */}
               <input type="hidden" name="form-type" value="company-application" />
               <input type="hidden" name="_subject" value="새로운 기업 채용 신청" />
-              <input type="hidden" name="_next" value="https://hireme.kr/company/success" />
+              <script dangerouslySetInnerHTML={{
+                __html: `
+                  document.addEventListener('DOMContentLoaded', function() {
+                    const nextInput = document.querySelector('input[name="_next"][value*="company"]');
+                    if (nextInput) {
+                      nextInput.value = window.location.origin + '/company/success';
+                    }
+                  });
+                `
+              }}></script>
+              <input type="hidden" name="_next" value="/company/success" />
               
               {/* 섹션 1: 기업 기본 정보 */}
               <div class="form-section">

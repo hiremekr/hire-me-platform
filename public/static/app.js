@@ -865,8 +865,10 @@ async function submitJobApplication(event, visaType) {
     showAlert(`${visaType || '구직'} 신청이 제출되었습니다!<br />전문 상담사가 영업일 기준 1-2일 내에 연락드리겠습니다.`, 'success');
   }, 500);
   
-  console.log('🎯 Formspree 제출 허용 - return true');
-  // Formspree 제출을 허용 (preventDefault 호출하지 않음)
+  console.log('🎯 Formspree 제출 허용 - 직접 제출 진행');
+  
+  // JavaScript validation만 수행하고 실제 폼 제출은 브라우저에 맡김
+  // preventDefault를 호출하지 않아서 일반적인 form submit이 진행됨
   return true;
 }
 

@@ -280,7 +280,17 @@ export const TalentRequestPage = () => {
               </div>
               
               {/* Formspree 리다이렉트 설정 */}
-              <input type="hidden" name="_next" value="https://hireme.kr/company/success" />
+              <script dangerouslySetInnerHTML={{
+                __html: `
+                  document.addEventListener('DOMContentLoaded', function() {
+                    const nextInput = document.querySelector('input[name="_next"][value*="company"]');
+                    if (nextInput) {
+                      nextInput.value = window.location.origin + '/company/success';
+                    }
+                  });
+                `
+              }}></script>
+              <input type="hidden" name="_next" value="/company/success" />
               <input type="hidden" name="_subject" value="[HIRE ME] 기업 인재정보 요청" />
             </form>
           </div>
