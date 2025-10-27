@@ -712,74 +712,93 @@ function simulateEmailSend(formData, emailType) {
   return Promise.resolve({ status: 200, text: 'Demo email sent' });
 }
 
-// 구직 신청 폼 처리
+// 구직 신청 폼 처리 - Formspree 우선, 폴백 시스템 포함
 async function submitJobApplication(event, visaType) {
-  event.preventDefault();
+  // 기본 form validation만 수행하고 실제 제출은 Formspree가 처리
+  const form = event.target;
+  const formData = new FormData(form);
   
-  const formData = new FormData(event.target);
-  const data = { visaType };
+  // 필수 항목 검증
+  const fullName = formData.get('fullName');
+  const phone = formData.get('phone');
+  const nationality = formData.get('nationality');
+  const email = formData.get('email');
   
-  // FormData를 객체로 변환
-  for (let [key, value] of formData.entries()) {
-    if (data[key]) {
-      if (Array.isArray(data[key])) {
-        data[key].push(value);
-      } else {
-        data[key] = [data[key], value];
-      }
-    } else {
-      data[key] = value;
-    }
-  }
-  
-  // 필수 항목 검증 (이름, 전화번호, 국적만)
-  if (!data.fullName || !data.fullName.trim()) {
+  if (!fullName || !fullName.trim()) {
+    event.preventDefault();
     showAlert('이름을 입력해주세요. / Please enter your name.', 'error');
-    return;
+    return false;
   }
   
-  if (!data.phone || !data.phone.trim()) {
+  if (!phone || !phone.trim()) {
+    event.preventDefault();
     showAlert('전화번호를 입력해주세요. / Please enter your phone number.', 'error');
-    return;
+    return false;
   }
   
-  if (!data.nationality || !data.nationality.trim()) {
+  if (!nationality || !nationality.trim()) {
+    event.preventDefault();
     showAlert('국적을 선택해주세요. / Please select your nationality.', 'error');
-    return;
+    return false;
   }
   
   // 필수 동의 항목 검증
   const agreements = formData.getAll('agreements');
   if (agreements.length < 4) {
+    event.preventDefault();
     showAlert('모든 필수 동의 항목을 체크해주세요. / Please check all required agreements.', 'error');
-    return;
+    return false;
   }
   
   // 이메일이 입력된 경우에만 형식 검증
-  if (data.email && data.email.trim() && !validateEmail(data.email)) {
+  if (email && email.trim() && !validateEmail(email)) {
+    event.preventDefault();
     showAlert('올바른 이메일 형식을 입력해주세요. / Please enter a valid email format.', 'error');
-    return;
+    return false;
   }
   
+  // Validation 통과시 로딩 표시하고 Formspree 제출 허용
+  showLoading('job-submit-btn');
+  
+  // 성공 메시지 표시 (Formspree 리디렉션 전)
+  setTimeout(() => {
+    showAlert(`${visaType || '구직'} 신청이 제출되었습니다!<br />전문 상담사가 영업일 기준 1-2일 내에 연락드리겠습니다.`, 'success');
+  }, 500);
+  
+  // Formspree 제출을 허용 (preventDefault 호출하지 않음)
+  return true;
+}
+
+// 폴백 시스템 - Formspree 실패시 사용
+async function submitJobApplicationFallback(formData, visaType) {
   try {
-    showLoading('job-submit-btn');
+    const data = { visaType };
     
-    // 이메일 전송
-    await sendEmailNotification(data, `${visaType} 구직신청`);
+    // FormData를 객체로 변환
+    for (let [key, value] of formData.entries()) {
+      if (data[key]) {
+        if (Array.isArray(data[key])) {
+          data[key].push(value);
+        } else {
+          data[key] = [data[key], value];
+        }
+      } else {
+        data[key] = value;
+      }
+    }
     
-    showAlert(`${visaType} 구직 신청이 완료되었습니다!<br />전문 상담사가 영업일 기준 1-2일 내에 연락드리겠습니다.`, 'success');
+    // 백업 이메일 전송
+    await sendEmailNotification(data, `${visaType} 구직신청 (백업)`);
     
-    // 성공 후 처리
-    event.target.reset();
+    showAlert(`${visaType} 구직 신청이 백업 시스템을 통해 완료되었습니다!<br />전문 상담사가 영업일 기준 1-2일 내에 연락드리겠습니다.`, 'success');
+    
     setTimeout(() => {
       window.location.href = '/apply/success';
     }, 3000);
     
   } catch (error) {
-    console.error('Error:', error);
-    showAlert('신청 중 오류가 발생했습니다. 다시 시도해주세요.', 'error');
-  } finally {
-    hideLoading('job-submit-btn', '신청하기');
+    console.error('Fallback Error:', error);
+    showAlert('신청 중 오류가 발생했습니다. 직접 연락 부탁드립니다: 010-6326-5572', 'error');
   }
 }
 
@@ -925,4 +944,76 @@ document.addEventListener('DOMContentLoaded', function() {
       // 향후 서버에서 받은 데이터로 동적으로 설정 가능
     });
   }
+  
+  // 폼 제출 모니터링 시스템 초기화
+  setupFormMonitoring();
+  
+  // Formspree 상태 체크
+  setTimeout(checkFormspreeStatus, 1000);
 });
+
+// 폼 제출 모니터링 시스템
+let formSubmissionAttempts = 0;
+let lastSubmissionTime = 0;
+
+function setupFormMonitoring() {
+  const forms = document.querySelectorAll('form[action*="formspree"]');
+  
+  forms.forEach(form => {
+    // 폼 제출 시도 기록
+    form.addEventListener('submit', function(event) {
+      formSubmissionAttempts++;
+      lastSubmissionTime = Date.now();
+      
+      console.log(`Form submission attempt ${formSubmissionAttempts}:`, {
+        action: form.action,
+        method: form.method,
+        timestamp: new Date().toISOString()
+      });
+    });
+    
+    // Formspree 제출 후 5초간 페이지 변화 없으면 폴백 실행
+    form.addEventListener('submit', function(event) {
+      const currentPath = window.location.pathname;
+      
+      setTimeout(() => {
+        // 페이지가 여전히 같은 위치이고 success 페이지가 아니면 폴백 실행
+        if (window.location.pathname === currentPath && 
+            !window.location.pathname.includes('success') &&
+            Date.now() - lastSubmissionTime > 4500) {
+          
+          console.warn('Formspree submission may have failed, executing fallback');
+          
+          const formData = new FormData(form);
+          const visaType = formData.get('visa-type') || 'Unknown';
+          
+          hideLoading('job-submit-btn', '신청하기');
+          submitJobApplicationFallback(formData, visaType);
+        }
+      }, 5000);
+    });
+  });
+}
+
+// 페이지별 Formspree 상태 체크
+function checkFormspreeStatus() {
+  const forms = document.querySelectorAll('form[action*="formspree"]');
+  
+  if (forms.length > 0) {
+    const formspreeUrl = forms[0].action;
+    console.log('Checking Formspree endpoint:', formspreeUrl);
+    
+    // 간단한 HEAD 요청으로 엔드포인트 상태 확인
+    fetch(formspreeUrl.replace('/f/', '/ajax/'), { method: 'HEAD' })
+      .then(response => {
+        if (response.ok) {
+          console.log('✅ Formspree endpoint is accessible');
+        } else {
+          console.warn('⚠️ Formspree endpoint returned:', response.status);
+        }
+      })
+      .catch(error => {
+        console.warn('⚠️ Formspree endpoint check failed:', error.message);
+      });
+  }
+}
