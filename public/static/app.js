@@ -1170,7 +1170,7 @@ document.addEventListener('DOMContentLoaded', function() {
   cleanupOldBackups();
 });
 
-// 폼 제출 모니터링 시스템
+// 폼 제출 모니터링 시스템 (간소화 버전 - 폴백 시스템 제거)
 let formSubmissionAttempts = 0;
 let lastSubmissionTime = 0;
 
@@ -1178,45 +1178,20 @@ function setupFormMonitoring() {
   const forms = document.querySelectorAll('form[action*="formspree"]');
   
   forms.forEach(form => {
-    // 폼 제출 시도 기록
+    // 폼 제출 시도 기록만 수행 (폴백 시스템 제거)
     form.addEventListener('submit', function(event) {
       formSubmissionAttempts++;
       lastSubmissionTime = Date.now();
       
-      console.log(`Form submission attempt ${formSubmissionAttempts}:`, {
+      console.log(`✅ Formspree form submission ${formSubmissionAttempts}:`, {
         action: form.action,
         method: form.method,
-        timestamp: new Date().toISOString()
+        formId: form.id,
+        timestamp: new Date().toISOString(),
+        userAgent: navigator.userAgent
       });
-    });
-    
-    // Formspree 제출 후 5초간 페이지 변화 없으면 폴백 실행
-    form.addEventListener('submit', function(event) {
-      const currentPath = window.location.pathname;
       
-      setTimeout(() => {
-        // 페이지가 여전히 같은 위치이고 success 페이지가 아니면 폴백 실행
-        if (window.location.pathname === currentPath && 
-            !window.location.pathname.includes('success') &&
-            Date.now() - lastSubmissionTime > 4500) {
-          
-          console.warn('Formspree submission may have failed, executing fallback');
-          
-          const formData = new FormData(form);
-          const formType = formData.get('form-type');
-          
-          if (formType === 'company-application') {
-            // 기업 폼 폴백
-            hideLoading('company-submit-btn', '신청 제출하기');
-            submitCompanyApplicationFallback(formData);
-          } else {
-            // 구직 폼 폴백
-            const visaType = formData.get('visa-type') || 'Unknown';
-            hideLoading('job-submit-btn', '신청하기');
-            submitJobApplicationFallback(formData, visaType);
-          }
-        }
-      }, 5000);
+      // Formspree로 정상 제출되도록 허용 (event.preventDefault 호출 안 함)
     });
   });
 }
