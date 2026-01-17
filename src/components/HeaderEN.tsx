@@ -38,14 +38,17 @@ export const HeaderEN = () => {
           </nav>
           
           {/* Mobile Menu Button */}
-          <div class="md:hidden">
+          <div class="md:hidden flex items-center">
             <button 
               id="mobile-menu-btn"
               onclick="toggleMobileMenu()"
-              class="text-gray-700 hover:text-teal-blue focus:outline-none"
+              class="text-gray-700 hover:text-teal-blue focus:outline-none p-2"
               type="button"
+              aria-label="Open menu"
             >
-              <i class="fas fa-bars text-xl"></i>
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+              </svg>
             </button>
           </div>
         </div>

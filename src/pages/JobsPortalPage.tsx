@@ -155,19 +155,25 @@ export const JobsPortalPage = () => {
 
           {/* Category Tabs */}
           <div class="flex justify-center mb-12">
-            <div class="inline-flex bg-white rounded-full shadow-md p-1 space-x-1">
-              <button class="px-6 py-2 rounded-full bg-navy text-white font-medium transition-all">
+            {/* 모바일: 전체(상단) + 3개(하단), 데스크탑: 가로 배치 */}
+            <div class="flex flex-col sm:flex-row gap-2 sm:bg-white sm:rounded-full sm:shadow-md sm:p-1 sm:space-x-1 sm:gap-0">
+              {/* 전체 버튼 - 모바일에서 전체 너비 */}
+              <button class="w-full sm:w-auto px-4 py-2 sm:px-6 rounded-full bg-navy text-white font-medium text-sm sm:text-base transition-all shadow-md sm:shadow-none">
                 전체
               </button>
-              <button class="px-6 py-2 rounded-full text-gray-600 hover:bg-gray-100 font-medium transition-all">
-                취업비자
-              </button>
-              <button class="px-6 py-2 rounded-full text-gray-600 hover:bg-gray-100 font-medium transition-all">
-                인턴십
-              </button>
-              <button class="px-6 py-2 rounded-full text-gray-600 hover:bg-gray-100 font-medium transition-all">
-                아르바이트
-              </button>
+              
+              {/* 나머지 3개 버튼 - 모바일에서 가로 3등분 */}
+              <div class="grid grid-cols-3 gap-2 sm:contents">
+                <button class="px-3 py-2 sm:px-6 rounded-full text-gray-600 hover:bg-gray-100 font-medium text-sm sm:text-base transition-all bg-white shadow-sm sm:shadow-none">
+                  취업비자
+                </button>
+                <button class="px-3 py-2 sm:px-6 rounded-full text-gray-600 hover:bg-gray-100 font-medium text-sm sm:text-base transition-all bg-white shadow-sm sm:shadow-none">
+                  인턴십
+                </button>
+                <button class="px-3 py-2 sm:px-6 rounded-full text-gray-600 hover:bg-gray-100 font-medium text-sm sm:text-base transition-all bg-white shadow-sm sm:shadow-none">
+                  아르바이트
+                </button>
+              </div>
             </div>
           </div>
         </div>
