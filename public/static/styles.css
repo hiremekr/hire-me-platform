@@ -83,9 +83,22 @@ body {
   min-height: 100vh;
 }
 
+/* 부드러운 스크롤 효과 */
+html {
+  scroll-behavior: smooth;
+}
+
 /* 스크롤 유도 애니메이션 */
 .scroll-indicator {
   animation: bounce 2s infinite;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.scroll-indicator:hover {
+  color: var(--navy);
+  transform: scale(1.1);
 }
 
 @keyframes bounce {

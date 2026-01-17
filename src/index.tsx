@@ -59,14 +59,14 @@ app.get('/', (c) => {
           </p>
           
           {/* 스크롤 유도 아이콘 */}
-          <div class="scroll-indicator">
+          <a href="#services" class="scroll-indicator block">
             <i class="fas fa-chevron-down text-3xl text-teal-blue"></i>
-          </div>
+          </a>
         </div>
       </section>
       
       {/* 서비스 소개 CTA Cards */}
-      <section class="py-32 px-4 sm:px-6 lg:px-8">
+      <section id="services" class="py-32 px-4 sm:px-6 lg:px-8">
         <div class="max-w-6xl mx-auto">
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             
