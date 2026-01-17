@@ -22,6 +22,9 @@ export const HeaderEN = () => {
             <a href="/company" class="text-gray-700 hover:text-teal-blue font-medium transition-colors">
               For Companies
             </a>
+            <a href="/jobs-portal" class="text-gray-700 hover:text-teal-blue font-medium transition-colors">
+              Jobs Portal
+            </a>
             <div class="flex items-center space-x-2">
               <i class="fas fa-globe text-gray-500"></i>
               <select 
@@ -55,6 +58,9 @@ export const HeaderEN = () => {
             </a>
             <a href="/company" class="block px-3 py-2 text-gray-700 hover:text-teal-blue font-medium">
               For Companies
+            </a>
+            <a href="/jobs-portal" class="block px-3 py-2 text-gray-700 hover:text-teal-blue font-medium">
+              Jobs Portal
             </a>
             <div class="px-3 py-2">
               <select 

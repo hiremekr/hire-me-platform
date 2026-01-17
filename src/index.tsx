@@ -17,6 +17,7 @@ import { SuccessPage } from './pages/SuccessPage'
 import { CompanySuccessPage } from './pages/CompanySuccessPage'
 import { TalentPoolPage } from './pages/TalentPoolPage'
 import { TalentRequestPage } from './pages/TalentRequestPage'
+import { JobsPortalPage } from './pages/JobsPortalPage'
 import { HomePageEN } from './pages/HomePageEN'
 import { ApplyPageEN } from './pages/ApplyPageEN'
 import { F2RSelectionPageEN } from './pages/F2RSelectionPageEN'
@@ -325,6 +326,14 @@ app.get('/apply', (c) => {
   return c.render(
     <ApplyPage />,
     { title: '구직의뢰 - HIRE ME' }
+  )
+})
+
+// 채용전문관 페이지
+app.get('/jobs-portal', (c) => {
+  return c.render(
+    <JobsPortalPage />,
+    { title: '채용전문관 - HIRE ME' }
   )
 })
 

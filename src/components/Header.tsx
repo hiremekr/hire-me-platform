@@ -22,6 +22,9 @@ export const Header = () => {
             <a href="/company" class="text-gray-700 hover:text-teal-blue font-medium transition-colors">
               기업채용
             </a>
+            <a href="/jobs-portal" class="text-gray-700 hover:text-teal-blue font-medium transition-colors">
+              채용전문관
+            </a>
             <div class="flex items-center space-x-2">
               <i class="fas fa-globe text-gray-500"></i>
               <select 
@@ -55,6 +58,9 @@ export const Header = () => {
             </a>
             <a href="/company" class="block px-3 py-2 text-gray-700 hover:text-teal-blue font-medium">
               기업채용
+            </a>
+            <a href="/jobs-portal" class="block px-3 py-2 text-gray-700 hover:text-teal-blue font-medium">
+              채용전문관
             </a>
             <div class="px-3 py-2">
               <select 
