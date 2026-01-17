@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>외국인 이력서 작성 - HIRE ME</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @media print {
+            .no-print { display: none !important; }
+            .print-only { display: block !important; }
+            body { background: white !important; }
+            .container { max-width: 100% !important; padding: 0 !important; }
+        }
+        .print-only { display: none; }
+        
+        /* Custom input styling */
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="date"],
+        textarea,
+        select {
+            border-bottom: 1px solid #cbd5e0;
+            padding: 0.25rem 0;
+            transition: border-color 0.2s;
+        }
+        
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        input[type="date"]:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-bottom-color: #3b82f6;
+        }
+        
+        .section-title {
+            border-bottom: 2px solid #1e40af;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        /* Photo upload area */
+        .photo-upload {
+            width: 120px;
+            height: 160px;
+            border: 2px dashed #cbd5e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .photo-upload:hover {
+            border-color: #3b82f6;
+            background-color: #f0f9ff;
+        }
+        
+        .photo-preview {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header - No Print -->
+    <header class="no-print bg-white shadow-sm border-b">
+        <div class="max-w-6xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <a href="/" class="text-2xl font-bold text-blue-600">HIRE ME</a>
+                    <span class="text-gray-400">|</span>
+                    <span class="text-gray-700">외국인 이력서 작성</span>
+                </div>
+                <div class="flex space-x-2">
+                    <button onclick="window.print()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                        <i class="fas fa-print mr-2"></i>인쇄하기
+                    </button>
+                    <button onclick="downloadPDF()" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
+                        <i class="fas fa-download mr-2"></i>PDF 저장
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Instructions - No Print -->
+    <div class="no-print max-w-6xl mx-auto px-4 py-6">
+        <div class="bg-blue-50 border-l-4 border-blue-600 p-4 rounded">
+            <h3 class="font-bold text-blue-900 mb-2">
+                <i class="fas fa-info-circle mr-2"></i>작성 안내
+            </h3>
+            <ul class="text-sm text-blue-800 space-y-1">
+                <li>• 각 항목을 한국어 또는 영어로 작성해주세요.</li>
+                <li>• 사진은 선택사항이지만, 증명사진을 업로드하면 더 전문적입니다.</li>
+                <li>• 작성 후 '인쇄하기' 또는 'PDF 저장' 버튼을 눌러 저장하세요.</li>
+                <li>• 모든 정보는 브라우저에만 저장되며, 서버로 전송되지 않습니다.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Resume Content -->
+    <div class="max-w-4xl mx-auto bg-white shadow-lg my-8 p-8" id="resumeContent">
+        <!-- Print Only Header -->
+        <div class="print-only text-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-900">이 력 서</h1>
+            <p class="text-sm text-gray-500 mt-2">RESUME / CURRICULUM VITAE</p>
+        </div>
+
+        <!-- Personal Information Section -->
+        <div class="mb-8">
+            <div class="flex justify-between items-start mb-6">
+                <div class="flex-1">
+                    <h2 class="section-title text-xl font-bold text-gray-900">
+                        <i class="fas fa-user text-blue-600 mr-2"></i>인적사항 / Personal Information
+                    </h2>
+                </div>
+                <!-- Photo Upload -->
+                <div class="ml-4">
+                    <label for="photoInput" class="photo-upload">
+                        <div id="photoPreview" class="text-center text-gray-400">
+                            <i class="fas fa-camera text-2xl mb-2"></i>
+                            <p class="text-xs">사진 업로드<br>Photo</p>
+                        </div>
+                    </label>
+                    <input type="file" id="photoInput" accept="image/*" class="hidden">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">성명 (한글) / Name (Korean)</label>
+                    <input type="text" class="w-full" placeholder="홍길동">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">성명 (영문) / Name (English)</label>
+                    <input type="text" class="w-full" placeholder="HONG Gil-dong">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">생년월일 / Date of Birth</label>
+                    <input type="date" class="w-full">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">국적 / Nationality</label>
+                    <input type="text" class="w-full" placeholder="Vietnam">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">성별 / Gender</label>
+                    <select class="w-full">
+                        <option value="">선택 / Select</option>
+                        <option value="male">남성 / Male</option>
+                        <option value="female">여성 / Female</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">연락처 / Phone</label>
+                    <input type="tel" class="w-full" placeholder="010-0000-0000">
+                </div>
+                <div class="col-span-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">이메일 / Email</label>
+                    <input type="email" class="w-full" placeholder="example@email.com">
+                </div>
+                <div class="col-span-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">주소 / Address</label>
+                    <input type="text" class="w-full" placeholder="서울시 강남구...">
+                </div>
+            </div>
+        </div>
+
+        <!-- Visa Status Section -->
+        <div class="mb-8">
+            <h2 class="section-title text-xl font-bold text-gray-900">
+                <i class="fas fa-passport text-blue-600 mr-2"></i>비자 정보 / Visa Information
+            </h2>
+            <div class="grid grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">현재 비자 / Current Visa</label>
+                    <select class="w-full">
+                        <option value="">선택 / Select</option>
+                        <option value="F-2-R">F-2-R (거주)</option>
+                        <option value="E-7">E-7 (특정활동)</option>
+                        <option value="E-9">E-9 (비전문취업)</option>
+                        <option value="D-2">D-2 (유학)</option>
+                        <option value="D-10">D-10 (구직)</option>
+                        <option value="H-2">H-2 (방문취업)</option>
+                        <option value="F-4">F-4 (재외동포)</option>
+                        <option value="F-5">F-5 (영주)</option>
+                        <option value="F-6">F-6 (결혼이민)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">비자 만료일 / Visa Expiry Date</label>
+                    <input type="date" class="w-full">
+                </div>
+            </div>
+        </div>
+
+        <!-- Education Section -->
+        <div class="mb-8">
+            <h2 class="section-title text-xl font-bold text-gray-900">
+                <i class="fas fa-graduation-cap text-blue-600 mr-2"></i>학력 / Education
+            </h2>
+            <div id="educationList" class="space-y-4">
+                <div class="education-item border rounded-lg p-4">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">학교명 / School Name</label>
+                            <input type="text" class="w-full" placeholder="University Name">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">전공 / Major</label>
+                            <input type="text" class="w-full" placeholder="Computer Science">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">학위 / Degree</label>
+                            <select class="w-full">
+                                <option value="">선택 / Select</option>
+                                <option value="bachelor">학사 / Bachelor</option>
+                                <option value="master">석사 / Master</option>
+                                <option value="phd">박사 / PhD</option>
+                                <option value="diploma">전문학사 / Diploma</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">기간 / Period</label>
+                            <input type="text" class="w-full" placeholder="2018.03 - 2022.02">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button onclick="addEducation()" class="no-print mt-4 px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition">
+                <i class="fas fa-plus mr-2"></i>학력 추가
+            </button>
+        </div>
+
+        <!-- Work Experience Section -->
+        <div class="mb-8">
+            <h2 class="section-title text-xl font-bold text-gray-900">
+                <i class="fas fa-briefcase text-blue-600 mr-2"></i>경력 / Work Experience
+            </h2>
+            <div id="experienceList" class="space-y-4">
+                <div class="experience-item border rounded-lg p-4">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">회사명 / Company Name</label>
+                            <input type="text" class="w-full" placeholder="Company Name">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">직책 / Position</label>
+                            <input type="text" class="w-full" placeholder="Software Engineer">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">기간 / Period</label>
+                            <input type="text" class="w-full" placeholder="2022.03 - 2024.12">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">위치 / Location</label>
+                            <input type="text" class="w-full" placeholder="Seoul, Korea">
+                        </div>
+                        <div class="col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">주요 업무 / Key Responsibilities</label>
+                            <textarea rows="3" class="w-full border rounded p-2" placeholder="주요 업무 내용을 입력하세요..."></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button onclick="addExperience()" class="no-print mt-4 px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition">
+                <i class="fas fa-plus mr-2"></i>경력 추가
+            </button>
+        </div>
+
+        <!-- Skills Section -->
+        <div class="mb-8">
+            <h2 class="section-title text-xl font-bold text-gray-900">
+                <i class="fas fa-code text-blue-600 mr-2"></i>기술 및 자격 / Skills & Qualifications
+            </h2>
+            <div class="grid grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">언어 능력 / Language Skills</label>
+                    <textarea rows="3" class="w-full border rounded p-2" placeholder="Korean: Advanced&#10;English: Intermediate&#10;Vietnamese: Native"></textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">기술 스킬 / Technical Skills</label>
+                    <textarea rows="3" class="w-full border rounded p-2" placeholder="JavaScript, React, Node.js&#10;Python, Django&#10;SQL, MongoDB"></textarea>
+                </div>
+                <div class="col-span-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">자격증 / Certifications</label>
+                    <textarea rows="2" class="w-full border rounded p-2" placeholder="정보처리기사 (2023)&#10;TOPIK Level 6 (2022)"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Self Introduction Section -->
+        <div class="mb-8">
+            <h2 class="section-title text-xl font-bold text-gray-900">
+                <i class="fas fa-file-alt text-blue-600 mr-2"></i>자기소개 / Self Introduction
+            </h2>
+            <textarea rows="6" class="w-full border rounded p-3" placeholder="자기소개를 작성해주세요...&#10;&#10;Please write your self introduction..."></textarea>
+        </div>
+
+        <!-- Footer - Print Only -->
+        <div class="print-only mt-12 pt-6 border-t text-center text-sm text-gray-500">
+            <p>위 내용은 사실과 다름이 없음을 확인합니다.</p>
+            <p class="mt-1">I hereby certify that the above information is true and accurate.</p>
+            <div class="mt-8">
+                <p>작성일자 / Date: <span id="currentDate"></span></p>
+                <p class="mt-4">서명 / Signature: _______________________</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer - No Print -->
+    <footer class="no-print bg-gray-900 text-white py-8 mt-12">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+            <p class="text-gray-400">© 2025 HIRE ME - 외국인 취업 지원 플랫폼</p>
+            <div class="mt-4 space-x-4">
+                <a href="/" class="text-gray-400 hover:text-white transition">홈으로</a>
+                <a href="/apply" class="text-gray-400 hover:text-white transition">구직 신청</a>
+                <a href="/company" class="text-gray-400 hover:text-white transition">기업 채용</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Photo upload handler
+        document.getElementById('photoInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const preview = document.getElementById('photoPreview');
+                    preview.innerHTML = `<img src="${event.target.result}" class="photo-preview" alt="Profile Photo">`;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Add education entry
+        function addEducation() {
+            const template = `
+                <div class="education-item border rounded-lg p-4">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">학교명 / School Name</label>
+                            <input type="text" class="w-full" placeholder="University Name">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">전공 / Major</label>
+                            <input type="text" class="w-full" placeholder="Computer Science">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">학위 / Degree</label>
+                            <select class="w-full">
+                                <option value="">선택 / Select</option>
+                                <option value="bachelor">학사 / Bachelor</option>
+                                <option value="master">석사 / Master</option>
+                                <option value="phd">박사 / PhD</option>
+                                <option value="diploma">전문학사 / Diploma</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">기간 / Period</label>
+                            <input type="text" class="w-full" placeholder="2018.03 - 2022.02">
+                        </div>
+                    </div>
+                    <button onclick="this.parentElement.remove()" class="no-print mt-2 text-red-600 hover:text-red-800 text-sm">
+                        <i class="fas fa-trash mr-1"></i>삭제
+                    </button>
+                </div>
+            `;
+            document.getElementById('educationList').insertAdjacentHTML('beforeend', template);
+        }
+
+        // Add experience entry
+        function addExperience() {
+            const template = `
+                <div class="experience-item border rounded-lg p-4">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">회사명 / Company Name</label>
+                            <input type="text" class="w-full" placeholder="Company Name">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">직책 / Position</label>
+                            <input type="text" class="w-full" placeholder="Software Engineer">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">기간 / Period</label>
+                            <input type="text" class="w-full" placeholder="2022.03 - 2024.12">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">위치 / Location</label>
+                            <input type="text" class="w-full" placeholder="Seoul, Korea">
+                        </div>
+                        <div class="col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">주요 업무 / Key Responsibilities</label>
+                            <textarea rows="3" class="w-full border rounded p-2" placeholder="주요 업무 내용을 입력하세요..."></textarea>
+                        </div>
+                    </div>
+                    <button onclick="this.parentElement.remove()" class="no-print mt-2 text-red-600 hover:text-red-800 text-sm">
+                        <i class="fas fa-trash mr-1"></i>삭제
+                    </button>
+                </div>
+            `;
+            document.getElementById('experienceList').insertAdjacentHTML('beforeend', template);
+        }
+
+        // Set current date
+        document.getElementById('currentDate').textContent = new Date().toLocaleDateString('ko-KR');
+
+        // Download as PDF (uses print dialog)
+        function downloadPDF() {
+            window.print();
+        }
+
+        // Auto-save to localStorage
+        let saveTimeout;
+        document.addEventListener('input', function() {
+            clearTimeout(saveTimeout);
+            saveTimeout = setTimeout(() => {
+                const formData = {
+                    lastSaved: new Date().toISOString(),
+                    content: document.getElementById('resumeContent').innerHTML
+                };
+                localStorage.setItem('resumeDraft', JSON.stringify(formData));
+                console.log('자동 저장됨');
+            }, 2000);
+        });
+
+        // Load saved draft
+        window.addEventListener('load', function() {
+            const saved = localStorage.getItem('resumeDraft');
+            if (saved) {
+                try {
+                    const data = JSON.parse(saved);
+                    if (confirm('저장된 이력서 초안이 있습니다. 불러오시겠습니까?')) {
+                        document.getElementById('resumeContent').innerHTML = data.content;
+                    }
+                } catch (e) {
+                    console.error('저장된 데이터 로드 실패:', e);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
