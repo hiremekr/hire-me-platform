@@ -1,11 +1,11 @@
-export const Header = () => {
+export const HeaderEN = () => {
   return (
     <header class="fixed top-0 w-full bg-white shadow-md z-50">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16">
-          {/* 로고 */}
+          {/* Logo */}
           <div class="flex items-center">
-            <a href="/" class="flex items-center">
+            <a href="/en" class="flex items-center">
               <img 
                 src="/static/hireme-logo.png" 
                 alt="HIRE ME" 
@@ -14,13 +14,13 @@ export const Header = () => {
             </a>
           </div>
           
-          {/* 네비게이션 메뉴 */}
+          {/* Navigation Menu */}
           <nav class="hidden md:flex items-center space-x-8">
-            <a href="/apply" class="text-gray-700 hover:text-teal-blue font-medium transition-colors">
-              구직의뢰
+            <a href="/en/apply" class="text-gray-700 hover:text-teal-blue font-medium transition-colors">
+              Job Application
             </a>
             <a href="/company" class="text-gray-700 hover:text-teal-blue font-medium transition-colors">
-              기업채용
+              For Companies
             </a>
             <div class="flex items-center space-x-2">
               <i class="fas fa-globe text-gray-500"></i>
@@ -28,13 +28,13 @@ export const Header = () => {
                 class="bg-transparent text-gray-700 text-sm focus:outline-none"
                 onchange="location.href=this.value"
               >
-                <option value="/" selected>한국어</option>
-                <option value="/en">English</option>
+                <option value="/">한국어</option>
+                <option value="/en" selected>English</option>
               </select>
             </div>
           </nav>
           
-          {/* 모바일 메뉴 버튼 */}
+          {/* Mobile Menu Button */}
           <div class="md:hidden">
             <button 
               id="mobile-menu-btn"
@@ -47,22 +47,22 @@ export const Header = () => {
           </div>
         </div>
         
-        {/* 모바일 메뉴 */}
+        {/* Mobile Menu */}
         <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
           <div class="px-2 pt-2 pb-3 space-y-1">
-            <a href="/apply" class="block px-3 py-2 text-gray-700 hover:text-teal-blue font-medium">
-              구직의뢰
+            <a href="/en/apply" class="block px-3 py-2 text-gray-700 hover:text-teal-blue font-medium">
+              Job Application
             </a>
             <a href="/company" class="block px-3 py-2 text-gray-700 hover:text-teal-blue font-medium">
-              기업채용
+              For Companies
             </a>
             <div class="px-3 py-2">
               <select 
                 class="bg-transparent text-gray-700 text-sm focus:outline-none"
                 onchange="location.href=this.value"
               >
-                <option value="/" selected>한국어</option>
-                <option value="/en">English</option>
+                <option value="/">한국어</option>
+                <option value="/en" selected>English</option>
               </select>
             </div>
           </div>
