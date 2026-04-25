@@ -1,451 +1,1087 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>외국인 이력서 작성 - HIRE ME</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
-    <style>
-        @media print {
-            .no-print { display: none !important; }
-            .print-only { display: block !important; }
-            body { background: white !important; }
-            .container { max-width: 100% !important; padding: 0 !important; }
-        }
-        .print-only { display: none; }
-        
-        /* Custom input styling */
-        input[type="text"],
-        input[type="email"],
-        input[type="tel"],
-        input[type="date"],
-        textarea,
-        select {
-            border-bottom: 1px solid #cbd5e0;
-            padding: 0.25rem 0;
-            transition: border-color 0.2s;
-        }
-        
-        input[type="text"]:focus,
-        input[type="email"]:focus,
-        input[type="tel"]:focus,
-        input[type="date"]:focus,
-        textarea:focus,
-        select:focus {
-            outline: none;
-            border-bottom-color: #3b82f6;
-        }
-        
-        .section-title {
-            border-bottom: 2px solid #1e40af;
-            padding-bottom: 0.5rem;
-            margin-bottom: 1rem;
-        }
-        
-        /* Photo upload area */
-        .photo-upload {
-            width: 120px;
-            height: 160px;
-            border: 2px dashed #cbd5e0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .photo-upload:hover {
-            border-color: #3b82f6;
-            background-color: #f0f9ff;
-        }
-        
-        .photo-preview {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#1a3a6e">
+<title>외국인 인재 이력서 | 행정사사무소 늘좋은</title>
+<style>
+/* ═══════════════════════════════════════════════
+   원본 파이썬(reportlab) 코드와 정확히 일치:
+   - C_BG     = #F2F2F2 (회색 헤더)
+   - C_VISA   = #DDDDDD (지원비자 라벨)
+   - C_ALT    = #F9F9F9 (경력 짝수행)
+   - C_BORDER = #CCCCCC (모든 테두리)
+   - C_HR     = #999999 (푸터 위 선)
+   - C_SKILL  = #F5F5F5 (핵심기술 우측)
+   - 폰트: 나눔고딕 (NG, NGB, NGEB)
+   - A4 15mm 여백 → 본문 폭 180mm
+   ═══════════════════════════════════════════════ */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+@font-face {
+  font-family: 'NanumGothicWeb';
+  src: local('NanumGothic'), local('Nanum Gothic'), local('맑은 고딕'), local('Malgun Gothic');
+}
+
+body {
+  font-family: 'NanumGothicWeb', 'Nanum Gothic', 'NanumGothic', '맑은 고딕', 'Malgun Gothic', sans-serif;
+  background: #e8eaf0;
+  min-height: 100vh;
+  color: #1a1a1a;
+}
+
+/* ═══ 앱 헤더 ═══ */
+.app-header {
+  background: #1a3a6e;
+  color: #fff;
+  padding: 12px 28px;
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  font-weight: 700;
+}
+.app-header span {
+  font-size: 12px;
+  font-weight: 400;
+  opacity: 0.75;
+  margin-left: auto;
+}
+
+/* ═══ 작업 영역 ═══ */
+.workspace {
+  display: flex;
+  gap: 24px;
+  padding: 20px 28px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* ─── 왼쪽 입력 패널 ─── */
+.form-panel {
+  width: 380px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.card {
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid #d5dae6;
+  overflow: hidden;
+}
+.card-head {
+  background: #1a3a6e;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 8px 14px;
+}
+.card-body {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.fl {
+  font-size: 11px;
+  font-weight: 600;
+  color: #5a6a80;
+  display: block;
+  margin-bottom: 3px;
+}
+input[type=text], textarea, select {
+  width: 100%;
+  padding: 7px 9px;
+  border: 1px solid #cdd3df;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 13px;
+  color: #222;
+  background: #f8faff;
+  outline: none;
+}
+input:focus, textarea:focus, select:focus {
+  border-color: #1a3a6e;
+  background: #fff;
+}
+textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
+.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+.cr-head { display: grid; grid-template-columns: 22% 28% 1fr; gap: 5px; }
+.cr-head span { font-size: 10px; font-weight: 700; color: #5a6a80; text-align: center; }
+.cr-row { display: grid; grid-template-columns: 22% 28% 1fr; gap: 5px; margin-top: 4px; }
+.cr-row input { font-size: 12px; padding: 6px 7px; }
+
+/* 사진 업로드 */
+.photo-zone { display: flex; align-items: center; gap: 14px; }
+.photo-box {
+  width: 80px; height: 100px;
+  border: 2px dashed #cdd3df;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; overflow: hidden; background: #f5f7fb; flex-shrink: 0;
+}
+.photo-box:hover { border-color: #1a3a6e; }
+.photo-box img { width: 100%; height: 100%; object-fit: cover; display: none; }
+.photo-box .ph-txt { font-size: 10px; color: #aaa; text-align: center; line-height: 1.6; }
+#photoInput { display: none; }
+.photo-info { font-size: 11px; color: #6a7a90; line-height: 1.8; }
+
+/* 조직명 설정 */
+.org-settings {
+  padding: 10px 14px;
+  background: #fafbfe;
+  border-top: 1px solid #e5e9f2;
+}
+.org-settings .fl { color: #8a95a8; }
+
+/* 버튼 */
+.btns { display: flex; gap: 8px; }
+.btn-pdf {
+  flex: 1;
+  background: #1a3a6e;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.btn-pdf:hover { background: #0f2650; }
+.btn-rst {
+  background: #fff;
+  color: #6a7a90;
+  border: 1px solid #cdd3df;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-family: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+/* ─── 오른쪽 미리보기 ─── */
+.preview-area { flex: 1; min-width: 0; }
+.prev-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #6a7a90;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.prev-label::before {
+  content: '';
+  display: inline-block;
+  width: 3px; height: 14px;
+  background: #c8a84b;
+  border-radius: 2px;
+}
+
+/* ═══════════════════════════════════════
+   A4 페이지 — reportlab 원본 재현
+   A4 크기: 210mm × 297mm
+   여백: 상하좌우 15mm → 본문 180mm
+   ═══════════════════════════════════════ */
+.a4-shadow {
+  background: #fff;
+  box-shadow: 0 4px 28px rgba(0,0,0,0.15);
+  width: 210mm;
+  min-height: 297mm;
+  margin: 0 auto;
+  padding: 15mm;
+}
+
+.resume {
+  width: 100%;
+  color: #1a1a1a;
+}
+
+/* ── 타이틀 박스 ── */
+.r-title {
+  border: 1px solid #cccccc;
+  background: #f2f2f2;
+  text-align: center;
+  padding: 11pt 0;
+  font-size: 20pt;
+  font-weight: 900;
+  color: #1a1a1a;
+  letter-spacing: 2px;
+  line-height: 1.1;
+}
+
+/* ── 섹션 헤더 (① ② ③) ── */
+.sec-hdr {
+  border: 1px solid #cccccc;
+  background: #f2f2f2;
+  padding: 5pt 9pt;
+  font-size: 11pt;
+  font-weight: 700;
+  color: #222222;
+  margin-top: 4mm;
+  margin-bottom: 2mm;
+}
+
+/* ═══ ① 기본정보 테이블 ═══ */
+.info-tbl {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #cccccc;
+  table-layout: fixed;
+}
+.info-tbl td {
+  border: 0.5px solid #cccccc;
+  vertical-align: middle;
+  padding: 2pt;
+  height: 10.5mm;
+}
+/* 사진 셀 (rowspan 6) */
+.info-tbl .photo-cell {
+  width: 30%;
+  background: #f2f2f2;
+  text-align: center;
+  vertical-align: middle;
+  padding: 2mm;
+}
+.info-tbl .photo-cell img {
+  max-width: 100%;
+  max-height: calc(10.5mm * 6 - 4mm);
+  display: block;
+  margin: 0 auto;
+}
+.info-tbl .photo-cell .no-photo {
+  font-size: 10.5pt;
+  color: #BBBBBB;
+  font-weight: 400;
+}
+/* 라벨 셀 */
+.info-tbl .lbl-cell {
+  width: 18%;
+  background: #f2f2f2;
+  text-align: center;
+  font-size: 10.5pt;
+  font-weight: 700;
+  color: #222222;
+}
+.info-tbl .lbl-cell.visa-lbl {
+  background: #dddddd;
+  color: #111111;
+}
+/* 값 셀 */
+.info-tbl .val-cell {
+  width: 52%;
+  background: #ffffff;
+  text-align: left;
+  padding-left: 7pt;
+  font-size: 12pt;
+  font-weight: 700;
+  color: #222222;
+}
+.info-tbl .val-cell.visa-val {
+  font-size: 12pt;
+  font-weight: 900;
+  color: #000000;
+}
+
+/* ═══ ② 경력 테이블 ═══ */
+.career-tbl {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #cccccc;
+  table-layout: fixed;
+}
+.career-tbl th {
+  background: #f2f2f2;
+  border: 0.5px solid #cccccc;
+  font-size: 10.5pt;
+  font-weight: 700;
+  color: #222222;
+  padding: 2pt;
+  height: 9mm;
+  text-align: center;
+}
+.career-tbl td {
+  border: 0.5px solid #cccccc;
+  font-size: 10.5pt;
+  color: #222222;
+  padding: 3pt;
+  height: 13mm;
+  vertical-align: middle;
+}
+.career-tbl td.period-cell { text-align: center; width: 22%; }
+.career-tbl td.company-cell { text-align: center; width: 28%; }
+.career-tbl td.duty-cell { text-align: left; padding-left: 7pt; width: 50%; }
+.career-tbl tr.row-alt td { background: #f9f9f9; }
+.career-tbl tr.row-white td { background: #ffffff; }
+
+/* 핵심보유기술 */
+.skill-tbl {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #cccccc;
+  table-layout: fixed;
+  margin-top: 1mm;
+}
+.skill-tbl td {
+  border: 0.5px solid #cccccc;
+  height: 9mm;
+  padding: 2pt;
+  font-size: 10.5pt;
+  font-weight: 700;
+  color: #222222;
+  vertical-align: middle;
+}
+.skill-tbl .skill-lbl {
+  width: 22%;
+  background: #f2f2f2;
+  text-align: center;
+}
+.skill-tbl .skill-val {
+  width: 78%;
+  background: #f5f5f5;
+  text-align: left;
+  padding-left: 7pt;
+}
+
+/* ═══ ③ 인터뷰 요약 ═══ */
+.itv-tbl {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #cccccc;
+  table-layout: fixed;
+}
+.itv-tbl td {
+  border: 0.5px solid #cccccc;
+  padding: 3pt 7pt;
+  height: 14mm;
+  font-size: 10.5pt;
+  color: #222222;
+  vertical-align: middle;
+}
+.itv-tbl .itv-lbl {
+  width: 20%;
+  background: #f2f2f2;
+  text-align: center;
+  font-weight: 700;
+}
+.itv-tbl .itv-val {
+  width: 80%;
+  background: #ffffff;
+  text-align: left;
+  line-height: 1.35;
+}
+
+/* ═══ 푸터 ═══ */
+.r-footer {
+  margin-top: 5mm;
+  border-top: 1px solid #999999;
+  padding-top: 3mm;
+  text-align: right;
+  line-height: 1.45;
+}
+.r-footer .org-primary {
+  font-size: 11pt;
+  font-weight: 900;
+  color: #111111;
+}
+.r-footer .org-secondary {
+  font-size: 8pt;
+  color: #888888;
+}
+
+/* ═══════════════════════════════════════
+   🔒 숨김 연락처
+   - 흰 배경에 흰 글씨 → 시각적으로 안 보임
+   - 드래그하면 파란 하이라이트로 번호 보임
+   - 인쇄해도 흰색이라 안 나옴
+   ═══════════════════════════════════════ */
+.hidden-phone {
+  margin-top: 6mm;
+  font-size: 9pt;
+  font-weight: 600;
+  color: #ffffff;
+  background: #ffffff;
+  text-align: left;
+  line-height: 1.4;
+  letter-spacing: 0.3px;
+  -webkit-user-select: text;
+  user-select: text;
+  cursor: text;
+}
+/* 드래그(선택) 시 진한 파란 배경에 흰 글씨로 또렷하게 보이게 */
+.hidden-phone::selection {
+  background: #1a3a6e;
+  color: #ffffff;
+}
+.hidden-phone::-moz-selection {
+  background: #1a3a6e;
+  color: #ffffff;
+}
+
+/* ═══════════════════════════════════════
+   인쇄 — A4 정확히 한 페이지
+   ═══════════════════════════════════════ */
+@media print {
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  body { background: #fff !important; }
+  .app-header, .form-panel, .prev-label, .preview-toggle { display: none !important; }
+  .workspace {
+    display: block !important;
+    padding: 0 !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+  }
+  /* 인쇄 시에는 모바일에서도 미리보기 강제 표시 */
+  .preview-area, .preview-area.mobile-show {
+    display: block !important;
+    width: 100% !important;
+  }
+  .a4-shadow {
+    box-shadow: none !important;
+    width: 210mm !important;
+    min-height: 297mm !important;
+    margin: 0 !important;
+    padding: 15mm !important;
+    border-radius: 0 !important;
+  }
+  /* 모바일 축소 폰트 무시하고 원본 크기 유지 */
+  .resume { font-size: 12pt !important; }
+  .r-title { font-size: 20pt !important; padding: 11pt 0 !important; }
+  .sec-hdr { font-size: 11pt !important; padding: 5pt 9pt !important; }
+  .info-tbl td { font-size: 10.5pt !important; padding: 2pt !important; height: 10.5mm !important; }
+  .info-tbl .photo-cell { padding: 2mm !important; }
+  .info-tbl .photo-cell img {
+    max-width: 100% !important;
+    max-height: calc(10.5mm * 6 - 4mm) !important;
+    width: auto !important;
+    height: auto !important;
+  }
+  .info-tbl .val-cell { font-size: 12pt !important; padding-left: 7pt !important; }
+  .career-tbl th, .career-tbl td { font-size: 10.5pt !important; padding: 2pt !important; }
+  .career-tbl td { height: 13mm !important; }
+  .career-tbl th { height: 9mm !important; }
+  .skill-tbl td { font-size: 10.5pt !important; height: 9mm !important; padding: 2pt !important; }
+  .itv-tbl td { font-size: 10.5pt !important; padding: 3pt 7pt !important; height: 14mm !important; }
+
+  /* 인쇄 시 배경색 보존 */
+  .r-title,
+  .sec-hdr,
+  .info-tbl .photo-cell,
+  .info-tbl .lbl-cell,
+  .info-tbl .lbl-cell.visa-lbl,
+  .career-tbl th,
+  .career-tbl tr.row-alt td,
+  .skill-tbl .skill-lbl,
+  .skill-tbl .skill-val,
+  .itv-tbl .itv-lbl {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  /* 숨김 연락처: PDF/인쇄에서도 흰 글씨 유지 */
+  .hidden-phone {
+    color: #ffffff !important;
+    background: #ffffff !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
+
+/* 화면에서 A4 너비 대응 */
+@media (max-width: 1300px) {
+  .a4-shadow { transform-origin: top left; }
+}
+
+/* ═══════════════════════════════════════
+   📱 모바일 반응형 (768px 이하)
+   ═══════════════════════════════════════ */
+@media (max-width: 768px) {
+  body {
+    background: #f5f6fa;
+  }
+
+  /* 헤더 단순화 */
+  .app-header {
+    padding: 12px 16px;
+    font-size: 14px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  .app-header span {
+    font-size: 11px;
+    margin-left: 0;
+  }
+
+  /* 워크스페이스: 좌우 → 위아래 */
+  .workspace {
+    flex-direction: column;
+    padding: 12px;
+    gap: 14px;
+  }
+
+  /* 입력 패널: 화면 전체 폭 */
+  .form-panel {
+    width: 100%;
+    flex-shrink: 1;
+  }
+
+  /* 입력 칸 손가락에 맞게 키우기 */
+  input[type=text], textarea, select {
+    padding: 12px 12px;
+    font-size: 16px; /* 16px 미만이면 iOS에서 줌인됨 */
+    border-radius: 8px;
+  }
+  textarea {
+    min-height: 80px;
+  }
+
+  /* 카드 내부 여백 */
+  .card-body {
+    padding: 14px 14px;
+    gap: 12px;
+  }
+  .card-head {
+    font-size: 13px;
+    padding: 10px 14px;
+  }
+
+  /* 경력 입력 — 1행씩 세로로 펼침 */
+  .cr-head {
+    display: none; /* 모바일에선 헤더 숨김 */
+  }
+  .cr-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin-top: 0;
+    padding: 12px;
+    background: #f8faff;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    border: 1px solid #e5e9f2;
+  }
+  .cr-row::before {
+    content: '경력 ' attr(data-row);
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    color: #5a6a80;
+    margin-bottom: 4px;
+  }
+  .cr-row input {
+    font-size: 15px !important;
+    padding: 10px !important;
+  }
+  /* 모바일 경력 입력에 placeholder 한 번 더 보이게 */
+  .cr-row input::placeholder {
+    color: #9aa3b5;
+  }
+
+  /* 사진 영역 */
+  .photo-zone {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  .photo-box {
+    width: 110px; height: 140px;
+  }
+  .photo-info {
+    text-align: center;
+    font-size: 12px;
+  }
+
+  /* 미리보기 영역: 모바일에선 기본 숨김, 토글로 펼침 */
+  .preview-area {
+    display: none;
+  }
+  .preview-area.mobile-show {
+    display: block;
+  }
+
+  /* A4 미리보기를 모바일 폭에 맞게 축소 */
+  .a4-shadow {
+    width: 100% !important;
+    min-height: auto !important;
+    padding: 6mm 5mm !important;
+    transform: none !important;
+    border-radius: 6px;
+  }
+  .resume {
+    font-size: 9pt !important;
+  }
+  .r-title {
+    font-size: 14pt !important;
+    padding: 6pt 0 !important;
+  }
+  .sec-hdr {
+    font-size: 9pt !important;
+    padding: 4pt 7pt !important;
+  }
+  .info-tbl td {
+    font-size: 9pt !important;
+    padding: 4pt 5pt !important;
+    height: auto !important;
+  }
+  .info-tbl .photo-cell { padding: 4pt !important; }
+  .info-tbl .photo-cell img { width: 60px; height: 78px; }
+  .info-tbl .val-cell { font-size: 10pt !important; padding: 4pt 5pt !important; }
+  .career-tbl th, .career-tbl td {
+    font-size: 9pt !important;
+    padding: 3pt 4pt !important;
+    height: auto !important;
+  }
+  .career-tbl td { min-height: 9mm !important; }
+  .skill-tbl td { font-size: 9pt !important; height: auto !important; padding: 3pt 5pt !important; }
+  .itv-tbl td {
+    font-size: 9pt !important;
+    padding: 3pt 5pt !important;
+    height: auto !important;
+  }
+
+  /* 미리보기 토글 버튼 */
+  .preview-toggle {
+    display: flex !important;
+    width: 100%;
+    padding: 14px;
+    background: #fff;
+    border: 2px solid #1a3a6e;
+    color: #1a3a6e;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 6px;
+  }
+
+  /* 메인 PDF 버튼 더 크게 */
+  .btn-pdf {
+    padding: 16px;
+    font-size: 16px;
+    border-radius: 10px;
+  }
+  .btn-rst {
+    padding: 16px;
+    font-size: 14px;
+    border-radius: 10px;
+  }
+  .btns {
+    gap: 10px;
+    position: sticky;
+    bottom: 12px;
+    background: #f5f6fa;
+    padding-top: 6px;
+    z-index: 10;
+  }
+}
+
+/* PC에서는 미리보기 토글 버튼 숨김 */
+@media (min-width: 769px) {
+  .preview-toggle { display: none !important; }
+}
+</style>
 </head>
-<body class="bg-gray-50">
-    <!-- Header - No Print -->
-    <header class="no-print bg-white shadow-sm border-b">
-        <div class="max-w-6xl mx-auto px-4 py-4">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-4">
-                    <a href="/" class="text-2xl font-bold text-blue-600">HIRE ME</a>
-                    <span class="text-gray-400">|</span>
-                    <span class="text-gray-700">외국인 이력서 작성</span>
-                </div>
-                <div class="flex space-x-2">
-                    <button onclick="window.print()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
-                        <i class="fas fa-print mr-2"></i>인쇄하기
-                    </button>
-                    <button onclick="downloadPDF()" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
-                        <i class="fas fa-download mr-2"></i>PDF 저장
-                    </button>
-                </div>
-            </div>
-        </div>
-    </header>
+<body>
 
-    <!-- Instructions - No Print -->
-    <div class="no-print max-w-6xl mx-auto px-4 py-6">
-        <div class="bg-blue-50 border-l-4 border-blue-600 p-4 rounded">
-            <h3 class="font-bold text-blue-900 mb-2">
-                <i class="fas fa-info-circle mr-2"></i>작성 안내
-            </h3>
-            <ul class="text-sm text-blue-800 space-y-1">
-                <li>• 각 항목을 한국어 또는 영어로 작성해주세요.</li>
-                <li>• 사진은 선택사항이지만, 증명사진을 업로드하면 더 전문적입니다.</li>
-                <li>• 작성 후 '인쇄하기' 또는 'PDF 저장' 버튼을 눌러 저장하세요.</li>
-                <li>• 모든 정보는 브라우저에만 저장되며, 서버로 전송되지 않습니다.</li>
-            </ul>
+<div class="app-header">
+  🌏 외국인 인재 이력서 작성 프로그램
+  <span>행정사사무소 늘좋은 | K-외국인일자리지원센터</span>
+</div>
+
+<div class="workspace">
+
+  <!-- ═══ 입력 패널 ═══ -->
+  <div class="form-panel">
+
+    <!-- 사진 -->
+    <div class="card">
+      <div class="card-head">📷 증명사진</div>
+      <div class="card-body">
+        <div class="photo-zone">
+          <div class="photo-box" onclick="document.getElementById('photoInput').click()">
+            <img id="thumbImg">
+            <div class="ph-txt" id="thumbTxt">클릭하여<br>사진 선택</div>
+          </div>
+          <div class="photo-info">
+            • JPG / PNG 권장<br>
+            • 증명사진 규격<br>
+            • 클릭 → 파일 선택
+          </div>
         </div>
+        <input type="file" id="photoInput" accept="image/*">
+      </div>
     </div>
 
-    <!-- Resume Content -->
-    <div class="max-w-4xl mx-auto bg-white shadow-lg my-8 p-8" id="resumeContent">
-        <!-- Print Only Header -->
-        <div class="print-only text-center mb-8">
-            <h1 class="text-3xl font-bold text-gray-900">이 력 서</h1>
-            <p class="text-sm text-gray-500 mt-2">RESUME / CURRICULUM VITAE</p>
+    <!-- ① 기본정보 -->
+    <div class="card">
+      <div class="card-head">① 기본 정보</div>
+      <div class="card-body">
+        <div>
+          <span class="fl">성명 (예: 홍길동 (HONG GIL DONG))</span>
+          <input type="text" id="name" placeholder="예: 산자야 (SHRESTHA SANJAYA)" oninput="upd()">
         </div>
-
-        <!-- Personal Information Section -->
-        <div class="mb-8">
-            <div class="flex justify-between items-start mb-6">
-                <div class="flex-1">
-                    <h2 class="section-title text-xl font-bold text-gray-900">
-                        <i class="fas fa-user text-blue-600 mr-2"></i>인적사항 / Personal Information
-                    </h2>
-                </div>
-                <!-- Photo Upload -->
-                <div class="ml-4">
-                    <label for="photoInput" class="photo-upload">
-                        <div id="photoPreview" class="text-center text-gray-400">
-                            <i class="fas fa-camera text-2xl mb-2"></i>
-                            <p class="text-xs">사진 업로드<br>Photo</p>
-                        </div>
-                    </label>
-                    <input type="file" id="photoInput" accept="image/*" class="hidden">
-                </div>
-            </div>
-
-            <div class="grid grid-cols-2 gap-6">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">성명 (한글) / Name (Korean)</label>
-                    <input type="text" class="w-full" placeholder="홍길동">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">성명 (영문) / Name (English)</label>
-                    <input type="text" class="w-full" placeholder="HONG Gil-dong">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">생년월일 / Date of Birth</label>
-                    <input type="date" class="w-full">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">국적 / Nationality</label>
-                    <input type="text" class="w-full" placeholder="Vietnam">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">성별 / Gender</label>
-                    <select class="w-full">
-                        <option value="">선택 / Select</option>
-                        <option value="male">남성 / Male</option>
-                        <option value="female">여성 / Female</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">연락처 / Phone</label>
-                    <input type="tel" class="w-full" placeholder="010-0000-0000">
-                </div>
-                <div class="col-span-2">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">이메일 / Email</label>
-                    <input type="email" class="w-full" placeholder="example@email.com">
-                </div>
-                <div class="col-span-2">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">주소 / Address</label>
-                    <input type="text" class="w-full" placeholder="서울시 강남구...">
-                </div>
-            </div>
+        <div>
+          <span class="fl">나이 / 생년월일</span>
+          <input type="text" id="age" placeholder="예: 1996년 5월 5일" oninput="upd()">
         </div>
-
-        <!-- Visa Status Section -->
-        <div class="mb-8">
-            <h2 class="section-title text-xl font-bold text-gray-900">
-                <i class="fas fa-passport text-blue-600 mr-2"></i>비자 정보 / Visa Information
-            </h2>
-            <div class="grid grid-cols-2 gap-6">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">현재 비자 / Current Visa</label>
-                    <select class="w-full">
-                        <option value="">선택 / Select</option>
-                        <option value="F-2-R">F-2-R (거주)</option>
-                        <option value="E-7">E-7 (특정활동)</option>
-                        <option value="E-9">E-9 (비전문취업)</option>
-                        <option value="D-2">D-2 (유학)</option>
-                        <option value="D-10">D-10 (구직)</option>
-                        <option value="H-2">H-2 (방문취업)</option>
-                        <option value="F-4">F-4 (재외동포)</option>
-                        <option value="F-5">F-5 (영주)</option>
-                        <option value="F-6">F-6 (결혼이민)</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">비자 만료일 / Visa Expiry Date</label>
-                    <input type="date" class="w-full">
-                </div>
-            </div>
+        <div class="g2">
+          <div>
+            <span class="fl">국적</span>
+            <input type="text" id="nation" placeholder="예: 네팔(NEPAL)" oninput="upd()">
+          </div>
+          <div>
+            <span class="fl">거주지</span>
+            <input type="text" id="addr" placeholder="예: 전북 익산시" oninput="upd()">
+          </div>
         </div>
-
-        <!-- Education Section -->
-        <div class="mb-8">
-            <h2 class="section-title text-xl font-bold text-gray-900">
-                <i class="fas fa-graduation-cap text-blue-600 mr-2"></i>학력 / Education
-            </h2>
-            <div id="educationList" class="space-y-4">
-                <div class="education-item border rounded-lg p-4">
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">학교명 / School Name</label>
-                            <input type="text" class="w-full" placeholder="University Name">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">전공 / Major</label>
-                            <input type="text" class="w-full" placeholder="Computer Science">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">학위 / Degree</label>
-                            <select class="w-full">
-                                <option value="">선택 / Select</option>
-                                <option value="bachelor">학사 / Bachelor</option>
-                                <option value="master">석사 / Master</option>
-                                <option value="phd">박사 / PhD</option>
-                                <option value="diploma">전문학사 / Diploma</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">기간 / Period</label>
-                            <input type="text" class="w-full" placeholder="2018.03 - 2022.02">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <button onclick="addEducation()" class="no-print mt-4 px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition">
-                <i class="fas fa-plus mr-2"></i>학력 추가
-            </button>
+        <div class="g2">
+          <div>
+            <span class="fl">최종학력</span>
+            <input type="text" id="edu" placeholder="예: 고등학교 졸업(네팔)" oninput="upd()">
+          </div>
+          <div>
+            <span class="fl">지원 비자</span>
+            <input type="text" id="visa" placeholder="예: E-7-4R" oninput="upd()">
+          </div>
         </div>
-
-        <!-- Work Experience Section -->
-        <div class="mb-8">
-            <h2 class="section-title text-xl font-bold text-gray-900">
-                <i class="fas fa-briefcase text-blue-600 mr-2"></i>경력 / Work Experience
-            </h2>
-            <div id="experienceList" class="space-y-4">
-                <div class="experience-item border rounded-lg p-4">
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">회사명 / Company Name</label>
-                            <input type="text" class="w-full" placeholder="Company Name">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">직책 / Position</label>
-                            <input type="text" class="w-full" placeholder="Software Engineer">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">기간 / Period</label>
-                            <input type="text" class="w-full" placeholder="2022.03 - 2024.12">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">위치 / Location</label>
-                            <input type="text" class="w-full" placeholder="Seoul, Korea">
-                        </div>
-                        <div class="col-span-2">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">주요 업무 / Key Responsibilities</label>
-                            <textarea rows="3" class="w-full border rounded p-2" placeholder="주요 업무 내용을 입력하세요..."></textarea>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <button onclick="addExperience()" class="no-print mt-4 px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition">
-                <i class="fas fa-plus mr-2"></i>경력 추가
-            </button>
-        </div>
-
-        <!-- Skills Section -->
-        <div class="mb-8">
-            <h2 class="section-title text-xl font-bold text-gray-900">
-                <i class="fas fa-code text-blue-600 mr-2"></i>기술 및 자격 / Skills & Qualifications
-            </h2>
-            <div class="grid grid-cols-2 gap-6">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">언어 능력 / Language Skills</label>
-                    <textarea rows="3" class="w-full border rounded p-2" placeholder="Korean: Advanced&#10;English: Intermediate&#10;Vietnamese: Native"></textarea>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">기술 스킬 / Technical Skills</label>
-                    <textarea rows="3" class="w-full border rounded p-2" placeholder="JavaScript, React, Node.js&#10;Python, Django&#10;SQL, MongoDB"></textarea>
-                </div>
-                <div class="col-span-2">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">자격증 / Certifications</label>
-                    <textarea rows="2" class="w-full border rounded p-2" placeholder="정보처리기사 (2023)&#10;TOPIK Level 6 (2022)"></textarea>
-                </div>
-            </div>
-        </div>
-
-        <!-- Self Introduction Section -->
-        <div class="mb-8">
-            <h2 class="section-title text-xl font-bold text-gray-900">
-                <i class="fas fa-file-alt text-blue-600 mr-2"></i>자기소개 / Self Introduction
-            </h2>
-            <textarea rows="6" class="w-full border rounded p-3" placeholder="자기소개를 작성해주세요...&#10;&#10;Please write your self introduction..."></textarea>
-        </div>
-
-        <!-- Footer - Print Only -->
-        <div class="print-only mt-12 pt-6 border-t text-center text-sm text-gray-500">
-            <p>위 내용은 사실과 다름이 없음을 확인합니다.</p>
-            <p class="mt-1">I hereby certify that the above information is true and accurate.</p>
-            <div class="mt-8">
-                <p>작성일자 / Date: <span id="currentDate"></span></p>
-                <p class="mt-4">서명 / Signature: _______________________</p>
-            </div>
-        </div>
+      </div>
     </div>
 
-    <!-- Footer - No Print -->
-    <footer class="no-print bg-gray-900 text-white py-8 mt-12">
-        <div class="max-w-6xl mx-auto px-4 text-center">
-            <p class="text-gray-400">© 2025 HIRE ME - 외국인 취업 지원 플랫폼</p>
-            <div class="mt-4 space-x-4">
-                <a href="/" class="text-gray-400 hover:text-white transition">홈으로</a>
-                <a href="/apply" class="text-gray-400 hover:text-white transition">구직 신청</a>
-                <a href="/company" class="text-gray-400 hover:text-white transition">기업 채용</a>
-            </div>
+    <!-- ② 경력 -->
+    <div class="card">
+      <div class="card-head">② 주요 경력 및 보유 기술</div>
+      <div class="card-body">
+        <div class="cr-head">
+          <span>근무기간</span>
+          <span>근무처/직책</span>
+          <span>담당업무</span>
         </div>
-    </footer>
+        <div id="crWrap"></div>
+        <div style="margin-top:4px">
+          <span class="fl">핵심 보유 기술</span>
+          <input type="text" id="skills" placeholder="예: 1종 보통 운전면허증 / 지게차 경력 5년" oninput="upd()">
+        </div>
+      </div>
+    </div>
 
-    <script>
-        // Photo upload handler
-        document.getElementById('photoInput').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    const preview = document.getElementById('photoPreview');
-                    preview.innerHTML = `<img src="${event.target.result}" class="photo-preview" alt="Profile Photo">`;
-                };
-                reader.readAsDataURL(file);
-            }
-        });
+    <!-- ③ 상담 -->
+    <div class="card">
+      <div class="card-head">③ 행정사 상담 및 인터뷰 요약</div>
+      <div class="card-body">
+        <div>
+          <span class="fl">비자 검토 의견</span>
+          <textarea id="iv0" placeholder="예: E-9 비자 소지자입니다. E7-4R 비자 변환 요건 충족합니다." oninput="upd()"></textarea>
+        </div>
+        <div>
+          <span class="fl">한국어 능력</span>
+          <textarea id="iv1" placeholder="예: 사회통합프로그램 5단계 이수중입니다." oninput="upd()"></textarea>
+        </div>
+        <div>
+          <span class="fl">인성 및 태도</span>
+          <textarea id="iv2" placeholder="예: 적극적인 성격입니다. 한국어 능력이 매우 높습니다." oninput="upd()"></textarea>
+        </div>
+      </div>
+    </div>
 
-        // Add education entry
-        function addEducation() {
-            const template = `
-                <div class="education-item border rounded-lg p-4">
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">학교명 / School Name</label>
-                            <input type="text" class="w-full" placeholder="University Name">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">전공 / Major</label>
-                            <input type="text" class="w-full" placeholder="Computer Science">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">학위 / Degree</label>
-                            <select class="w-full">
-                                <option value="">선택 / Select</option>
-                                <option value="bachelor">학사 / Bachelor</option>
-                                <option value="master">석사 / Master</option>
-                                <option value="phd">박사 / PhD</option>
-                                <option value="diploma">전문학사 / Diploma</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">기간 / Period</label>
-                            <input type="text" class="w-full" placeholder="2018.03 - 2022.02">
-                        </div>
-                    </div>
-                    <button onclick="this.parentElement.remove()" class="no-print mt-2 text-red-600 hover:text-red-800 text-sm">
-                        <i class="fas fa-trash mr-1"></i>삭제
-                    </button>
-                </div>
-            `;
-            document.getElementById('educationList').insertAdjacentHTML('beforeend', template);
-        }
+    <!-- 🔒 숨김 연락처 (드래그/복사로만 보임) -->
+    <div class="card" style="border-color:#ffd699">
+      <div class="card-head" style="background:#e67e22">🔒 숨김 연락처 (드래그할 때만 보임)</div>
+      <div class="card-body">
+        <div style="background:#fff7e6;padding:8px 10px;border-radius:6px;font-size:11px;color:#8a5800;line-height:1.6;margin-bottom:6px">
+          💡 PDF에 흰 글씨로 들어가서 <strong>마우스로 드래그할 때만</strong> 보입니다.<br>
+          기업이 받아도 시각적으로 안 보이고, 프린트해도 안 보입니다.
+        </div>
+        <div>
+          <span class="fl">외국인 본인 연락처</span>
+          <input type="text" id="hiddenPhone" placeholder="예: 010-1234-5678" oninput="upd()">
+        </div>
+      </div>
+    </div>
 
-        // Add experience entry
-        function addExperience() {
-            const template = `
-                <div class="experience-item border rounded-lg p-4">
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">회사명 / Company Name</label>
-                            <input type="text" class="w-full" placeholder="Company Name">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">직책 / Position</label>
-                            <input type="text" class="w-full" placeholder="Software Engineer">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">기간 / Period</label>
-                            <input type="text" class="w-full" placeholder="2022.03 - 2024.12">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">위치 / Location</label>
-                            <input type="text" class="w-full" placeholder="Seoul, Korea">
-                        </div>
-                        <div class="col-span-2">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">주요 업무 / Key Responsibilities</label>
-                            <textarea rows="3" class="w-full border rounded p-2" placeholder="주요 업무 내용을 입력하세요..."></textarea>
-                        </div>
-                    </div>
-                    <button onclick="this.parentElement.remove()" class="no-print mt-2 text-red-600 hover:text-red-800 text-sm">
-                        <i class="fas fa-trash mr-1"></i>삭제
-                    </button>
-                </div>
-            `;
-            document.getElementById('experienceList').insertAdjacentHTML('beforeend', template);
-        }
+    <!-- 미리보기 토글 (모바일 전용) -->
+    <button class="preview-toggle" onclick="togglePreview()" id="prevToggleBtn" style="display:none">
+      👁 미리보기 펼치기
+    </button>
 
-        // Set current date
-        document.getElementById('currentDate').textContent = new Date().toLocaleDateString('ko-KR');
+    <!-- 버튼 -->
+    <div class="btns">
+      <button class="btn-pdf" onclick="doPrint()">🖨️ PDF 저장 / 인쇄</button>
+      <button class="btn-rst" onclick="doReset()">초기화</button>
+    </div>
+  </div>
 
-        // Download as PDF (uses print dialog)
-        function downloadPDF() {
-            window.print();
-        }
+  <!-- ═══ 미리보기 (A4) ═══ -->
+  <div class="preview-area" id="previewArea">
+    <div class="prev-label">실시간 미리보기 (A4 비율)</div>
+    <div class="a4-shadow">
+      <div class="resume">
 
-        // Auto-save to localStorage
-        let saveTimeout;
-        document.addEventListener('input', function() {
-            clearTimeout(saveTimeout);
-            saveTimeout = setTimeout(() => {
-                const formData = {
-                    lastSaved: new Date().toISOString(),
-                    content: document.getElementById('resumeContent').innerHTML
-                };
-                localStorage.setItem('resumeDraft', JSON.stringify(formData));
-                console.log('자동 저장됨');
-            }, 2000);
-        });
+        <!-- 타이틀 -->
+        <div class="r-title">외국인 인재 이력서</div>
 
-        // Load saved draft
-        window.addEventListener('load', function() {
-            const saved = localStorage.getItem('resumeDraft');
-            if (saved) {
-                try {
-                    const data = JSON.parse(saved);
-                    if (confirm('저장된 이력서 초안이 있습니다. 불러오시겠습니까?')) {
-                        document.getElementById('resumeContent').innerHTML = data.content;
-                    }
-                } catch (e) {
-                    console.error('저장된 데이터 로드 실패:', e);
-                }
-            }
-        });
-    </script>
+        <!-- ① 기본 정보 -->
+        <div class="sec-hdr">① 기본 정보</div>
+        <table class="info-tbl">
+          <tr>
+            <td class="photo-cell" rowspan="6">
+              <img id="rPhoto" src="" alt="사진">
+              <div class="no-photo" id="rNoPhoto">사 진</div>
+            </td>
+            <td class="lbl-cell">성&nbsp;&nbsp;명</td>
+            <td class="val-cell" id="r_name">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="lbl-cell">나&nbsp;&nbsp;이</td>
+            <td class="val-cell" id="r_age">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="lbl-cell">국&nbsp;&nbsp;적</td>
+            <td class="val-cell" id="r_nation">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="lbl-cell">거 주 지</td>
+            <td class="val-cell" id="r_addr">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="lbl-cell">최종학력</td>
+            <td class="val-cell" id="r_edu">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="lbl-cell visa-lbl">지원비자</td>
+            <td class="val-cell visa-val" id="r_visa">&nbsp;</td>
+          </tr>
+        </table>
+
+        <!-- ② 경력 -->
+        <div class="sec-hdr">② 주요 경력 및 보유 기술</div>
+        <table class="career-tbl">
+          <thead>
+            <tr>
+              <th style="width:22%">근무기간</th>
+              <th style="width:28%">근무처 / 직책</th>
+              <th style="width:50%">담당업무</th>
+            </tr>
+          </thead>
+          <tbody id="r_career"></tbody>
+        </table>
+        <table class="skill-tbl">
+          <tr>
+            <td class="skill-lbl">핵심 보유 기술</td>
+            <td class="skill-val" id="r_skills">&nbsp;</td>
+          </tr>
+        </table>
+
+        <!-- ③ 상담 -->
+        <div class="sec-hdr">③ 행정사 상담 및 인터뷰 요약</div>
+        <table class="itv-tbl">
+          <tr>
+            <td class="itv-lbl">비자 검토 의견</td>
+            <td class="itv-val" id="r_iv0">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="itv-lbl">한국어 능력</td>
+            <td class="itv-val" id="r_iv1">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="itv-lbl">인성 및 태도</td>
+            <td class="itv-val" id="r_iv2">&nbsp;</td>
+          </tr>
+        </table>
+
+        <!-- 푸터 -->
+        <div class="r-footer">
+          <div class="org-primary" id="r_orgBig">K-외국인일자리지원센터</div>
+          <div class="org-secondary" id="r_orgSmall">행정사사무소 늘좋은</div>
+        </div>
+
+        <!-- 🔒 숨김 연락처 (흰 글씨, 드래그할 때만 선택됨) -->
+        <div class="hidden-phone" id="r_hiddenPhone">&nbsp;</div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ═══ 경력 4행 초기 생성 ═══
+const N = 4;
+(function(){
+  const w = document.getElementById('crWrap');
+  for (let i = 0; i < N; i++) {
+    const d = document.createElement('div');
+    d.className = 'cr-row';
+    d.setAttribute('data-row', (i + 1));
+    d.innerHTML =
+      `<input type="text" id="cp${i}" placeholder="근무기간 (예: 2020.01~2023.12)" oninput="upd()">` +
+      `<input type="text" id="cc${i}" placeholder="근무처/직책" oninput="upd()">` +
+      `<input type="text" id="ct${i}" placeholder="담당업무" oninput="upd()">`;
+    w.appendChild(d);
+  }
+})();
+
+// ═══ 모바일 미리보기 토글 ═══
+function togglePreview(){
+  const area = document.getElementById('previewArea');
+  const btn = document.getElementById('prevToggleBtn');
+  if (area.classList.contains('mobile-show')) {
+    area.classList.remove('mobile-show');
+    btn.innerHTML = '👁 미리보기 펼치기';
+  } else {
+    area.classList.add('mobile-show');
+    btn.innerHTML = '🔼 미리보기 접기';
+    // 펼치면 미리보기로 스크롤
+    setTimeout(() => area.scrollIntoView({behavior: 'smooth', block: 'start'}), 100);
+  }
+}
+
+// ═══ 모바일 환경에서 토글 버튼 표시 ═══
+(function(){
+  function checkMobile(){
+    const isMobile = window.innerWidth <= 768;
+    const btn = document.getElementById('prevToggleBtn');
+    if (btn) btn.style.display = isMobile ? 'flex' : 'none';
+  }
+  checkMobile();
+  window.addEventListener('resize', checkMobile);
+})();
+
+// ═══ 사진 업로드 ═══
+document.getElementById('photoInput').addEventListener('change', function(){
+  const f = this.files[0];
+  if (!f) return;
+  const r = new FileReader();
+  r.onload = function(e){
+    const src = e.target.result;
+    const ti = document.getElementById('thumbImg');
+    ti.src = src;
+    ti.style.display = 'block';
+    document.getElementById('thumbTxt').style.display = 'none';
+    const ri = document.getElementById('rPhoto');
+    ri.src = src;
+    ri.style.display = 'block';
+    document.getElementById('rNoPhoto').style.display = 'none';
+  };
+  r.readAsDataURL(f);
+});
+
+function g(id){ return document.getElementById(id).value.trim(); }
+function gv(id){ return document.getElementById(id); }
+
+// ═══ 실시간 업데이트 ═══
+function upd(){
+  // ① 기본정보
+  gv('r_name').textContent   = g('name')   || '\u00A0';
+  gv('r_age').textContent    = g('age')    || '\u00A0';
+  gv('r_nation').textContent = g('nation') || '\u00A0';
+  gv('r_addr').textContent   = g('addr')   || '\u00A0';
+  gv('r_edu').textContent    = g('edu')    || '\u00A0';
+  gv('r_visa').textContent   = g('visa')   || '\u00A0';
+
+  // ② 경력 — 4행 고정, 짝수행은 #F9F9F9
+  const tb = gv('r_career');
+  tb.innerHTML = '';
+  for (let i = 0; i < N; i++) {
+    const tr = document.createElement('tr');
+    tr.className = (i % 2 === 0) ? 'row-alt' : 'row-white';
+    const p = g('cp'+i), c = g('cc'+i), d = g('ct'+i);
+    tr.innerHTML =
+      `<td class="period-cell">${escHTML(p)}</td>` +
+      `<td class="company-cell">${escHTML(c)}</td>` +
+      `<td class="duty-cell">${escHTML(d)}</td>`;
+    tb.appendChild(tr);
+  }
+  gv('r_skills').textContent = g('skills') || '\u00A0';
+
+  // ③ 상담
+  gv('r_iv0').innerHTML = escHTML(g('iv0')).replace(/\n/g,'<br>') || '&nbsp;';
+  gv('r_iv1').innerHTML = escHTML(g('iv1')).replace(/\n/g,'<br>') || '&nbsp;';
+  gv('r_iv2').innerHTML = escHTML(g('iv2')).replace(/\n/g,'<br>') || '&nbsp;';
+
+  // 🔒 숨김 연락처 (흰 글씨로 PDF에 박힘 - 드래그하면 선택됨)
+  const hp = g('hiddenPhone');
+  gv('r_hiddenPhone').textContent = hp || '\u00A0';
+}
+
+function escHTML(s){
+  return (s||'')
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;');
+}
+
+// ═══ PDF 저장 / 인쇄 ═══
+// PDF 파일명 = 외국인 이름 + 날짜 (예: 산자야_이력서_260425)
+function doPrint(){
+  // 입력된 이름에서 한글 부분만 추출 (괄호 안 영문 제외)
+  const fullName = g('name');
+  let baseName = '외국인_인재';
+
+  if (fullName) {
+    // "산자야 (SHRESTHA SANJAYA)" → "산자야"만 추출
+    const koPart = fullName.split('(')[0].trim();
+    if (koPart) {
+      baseName = koPart;
+    }
+  }
+
+  // 오늘 날짜 YYMMDD 형식 (예: 260425)
+  const now = new Date();
+  const yy = String(now.getFullYear()).slice(2);
+  const mm = String(now.getMonth() + 1).padStart(2, '0');
+  const dd = String(now.getDate()).padStart(2, '0');
+  const dateStr = yy + mm + dd;
+
+  const fileName = baseName + '_이력서_' + dateStr;
+
+  // 원래 title 백업 후 변경
+  const originalTitle = document.title;
+  document.title = fileName;
+
+  // 인쇄 실행
+  window.print();
+
+  // 인쇄 후 원래 title 복원 (1초 후)
+  setTimeout(() => {
+    document.title = originalTitle;
+  }, 1000);
+}
+
+// ═══ 초기화 ═══
+function doReset(){
+  if (!confirm('모든 내용을 초기화할까요?')) return;
+  ['name','age','nation','addr','edu','visa','skills','iv0','iv1','iv2','hiddenPhone']
+    .forEach(id => { gv(id).value = ''; });
+  for (let i = 0; i < N; i++) {
+    ['cp','cc','ct'].forEach(p => { gv(p+i).value = ''; });
+  }
+  const ti = gv('thumbImg'); ti.src = ''; ti.style.display = 'none';
+  gv('thumbTxt').style.display = 'block';
+  const ri = gv('rPhoto'); ri.src = ''; ri.style.display = 'none';
+  gv('rNoPhoto').style.display = 'block';
+  upd();
+}
+
+// 초기 렌더
+upd();
+</script>
 </body>
 </html>
