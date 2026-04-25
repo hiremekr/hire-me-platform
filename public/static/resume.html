@@ -488,15 +488,21 @@ textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
   .a4-shadow {
     box-shadow: none !important;
     width: 210mm !important;
-    min-height: 297mm !important;
+    min-height: 296mm !important;
+    height: auto !important;
     margin: 0 !important;
-    padding: 22mm 15mm 15mm 15mm !important;  /* 상단 여백 조정 (정상 PDF 매칭) */
+    padding: 15mm !important;
     border-radius: 0 !important;
+    overflow: hidden !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid-page !important;
+    page-break-after: avoid !important;
+    break-after: avoid-page !important;
   }
   /* 모바일 축소 폰트 무시하고 원본 크기 유지 */
-  .resume { font-size: 12pt !important; }
-  .r-title { font-size: 20pt !important; padding: 11pt 0 !important; line-height: 28pt !important; }
-  .sec-hdr { font-size: 11pt !important; padding: 5pt 9pt !important; line-height: 13pt !important; }
+  .resume { position: relative !important; font-size: 12pt !important; }
+  .r-title { font-size: 20pt !important; padding: 11pt 0 !important; line-height: 1.1 !important; }
+  .sec-hdr { font-size: 11pt !important; padding: 5pt 9pt !important; line-height: 1.1 !important; }
   .info-tbl td { font-size: 10.5pt !important; padding: 2pt !important; height: 10.5mm !important; }
   .info-tbl .photo-cell { padding: 2mm !important; }
   .info-tbl .photo-cell img {
@@ -512,7 +518,7 @@ textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
   .skill-tbl td { font-size: 10.5pt !important; padding: 2pt !important; }
   .skill-tbl .cell-strut-skill { min-height: 9mm !important; }
   .itv-tbl td { font-size: 10.5pt !important; padding: 3pt 7pt !important; }
-  .itv-tbl .cell-strut-itv { min-height: 14mm !important; }
+  .itv-tbl .cell-strut-itv { min-height: 13mm !important; }
 
   /* 인쇄 시 배경색 보존 */
   .r-title,
@@ -530,10 +536,21 @@ textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
   }
   /* 숨김 연락처: PDF/인쇄에서도 흰 글씨 유지 */
   .hidden-phone {
-    color: #ffffff !important;
-    background: #ffffff !important;
+    position: absolute !important;
+    left: 0 !important;
+    bottom: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 0.1pt !important;
+    line-height: 0 !important;
+    color: transparent !important;
+    background: transparent !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    max-width: 45mm !important;
+    max-height: 1px !important;
   }
 }
 
@@ -733,8 +750,114 @@ textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
 }
 
 /* PC에서는 미리보기 토글 버튼 숨김 */
-@media (min-width: 769px) {
+@media screen and (min-width: 769px) {
   .preview-toggle { display: none !important; }
+}
+
+/* ═══════════════════════════════════════
+   인쇄 안정화 최종 보정
+   - 모바일/PC 모두 V7과 같은 출력 폭 우선
+   - screen 전용 반응형이 print에 개입하지 못하도록 마지막에 한 번 더 고정
+   ═══════════════════════════════════════ */
+@media print {
+  html, body {
+    width: auto !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  .workspace,
+  .preview-area,
+  .preview-area.mobile-show {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    page-break-after: avoid !important;
+    break-after: avoid-page !important;
+  }
+
+  .a4-shadow {
+    width: 210mm !important;
+    min-width: 210mm !important;
+    max-width: 210mm !important;
+    min-height: 296mm !important;
+    height: auto !important;
+    margin: 0 auto !important;
+    padding: 15mm !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    transform: none !important;
+    overflow: hidden !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid-page !important;
+    page-break-after: avoid !important;
+    break-after: avoid-page !important;
+  }
+
+  .resume {
+    position: relative !important;
+    width: 100% !important;
+    font-size: 12pt !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid-page !important;
+  }
+  .r-title { font-size: 20pt !important; padding: 11pt 0 !important; line-height: 1.1 !important; }
+  .sec-hdr { font-size: 11pt !important; padding: 5pt 9pt !important; line-height: 1.1 !important; }
+
+  .info-tbl td { font-size: 10.5pt !important; padding: 2pt !important; height: 10.5mm !important; }
+  .info-tbl .photo-cell { padding: 2mm !important; }
+  .info-tbl .photo-cell img {
+    max-width: 100% !important;
+    max-height: calc(10.5mm * 6 - 4mm) !important;
+    width: auto !important;
+    height: auto !important;
+  }
+  .info-tbl .val-cell { font-size: 12pt !important; padding-left: 7pt !important; }
+
+  .career-tbl th,
+  .career-tbl td {
+    font-size: 10.5pt !important;
+    padding: 2pt !important;
+    height: auto !important;
+  }
+  .career-tbl th { height: 9mm !important; min-height: 9mm !important; }
+  .career-tbl .cell-strut { min-height: 13mm !important; }
+
+  .skill-tbl td {
+    font-size: 10.5pt !important;
+    padding: 2pt !important;
+    height: auto !important;
+  }
+  .skill-tbl .cell-strut-skill { min-height: 9mm !important; }
+
+  .itv-tbl td {
+    font-size: 10.5pt !important;
+    padding: 3pt 7pt !important;
+    height: auto !important;
+  }
+  .itv-tbl .cell-strut-itv { min-height: 13mm !important; }
+
+  .r-footer {
+    margin-top: 3mm !important;
+    padding-top: 2mm !important;
+    line-height: 1.15 !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid-page !important;
+  }
+  .r-footer .org-primary,
+  .r-footer .org-secondary {
+    white-space: nowrap !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid-page !important;
+  }
+  .r-footer .org-primary { font-size: 10.5pt !important; }
+  .r-footer .org-secondary { font-size: 7.5pt !important; }
 }
 </style>
 </head>
