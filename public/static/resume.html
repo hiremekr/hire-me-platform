@@ -312,7 +312,14 @@ textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
   color: #222222;
   padding: 3pt;
   height: 13mm;
+  min-height: 13mm;
   vertical-align: middle;
+}
+/* 빈 셀도 높이 유지 */
+.career-tbl td:empty::after,
+.career-tbl td:has(:only-child:empty)::after {
+  content: '\00a0';
+  display: inline-block;
 }
 .career-tbl td.period-cell { text-align: center; width: 22%; }
 .career-tbl td.company-cell { text-align: center; width: 28%; }
@@ -360,9 +367,15 @@ textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
   border: 0.5px solid #cccccc;
   padding: 3pt 7pt;
   height: 14mm;
+  min-height: 14mm;
   font-size: 10.5pt;
   color: #222222;
   vertical-align: middle;
+}
+/* 빈 셀도 높이 유지 */
+.itv-tbl td:empty::after {
+  content: '\00a0';
+  display: inline-block;
 }
 .itv-tbl .itv-lbl {
   width: 20%;
@@ -473,10 +486,10 @@ textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
   }
   .info-tbl .val-cell { font-size: 12pt !important; padding-left: 7pt !important; }
   .career-tbl th, .career-tbl td { font-size: 10.5pt !important; padding: 2pt !important; }
-  .career-tbl td { height: 13mm !important; }
-  .career-tbl th { height: 9mm !important; }
-  .skill-tbl td { font-size: 10.5pt !important; height: 9mm !important; padding: 2pt !important; }
-  .itv-tbl td { font-size: 10.5pt !important; padding: 3pt 7pt !important; height: 14mm !important; }
+  .career-tbl td { height: 13mm !important; min-height: 13mm !important; }
+  .career-tbl th { height: 9mm !important; min-height: 9mm !important; }
+  .skill-tbl td { font-size: 10.5pt !important; height: 9mm !important; min-height: 9mm !important; padding: 2pt !important; }
+  .itv-tbl td { font-size: 10.5pt !important; padding: 3pt 7pt !important; height: 14mm !important; min-height: 14mm !important; }
 
   /* 인쇄 시 배경색 보존 */
   .r-title,
@@ -1004,12 +1017,12 @@ function upd(){
     tr.className = (i % 2 === 0) ? 'row-alt' : 'row-white';
     const p = g('cp'+i), c = g('cc'+i), d = g('ct'+i);
     tr.innerHTML =
-      `<td class="period-cell">${escHTML(p)}</td>` +
-      `<td class="company-cell">${escHTML(c)}</td>` +
-      `<td class="duty-cell">${escHTML(d)}</td>`;
+      `<td class="period-cell">${escHTML(p) || '&nbsp;'}</td>` +
+      `<td class="company-cell">${escHTML(c) || '&nbsp;'}</td>` +
+      `<td class="duty-cell">${escHTML(d) || '&nbsp;'}</td>`;
     tb.appendChild(tr);
   }
-  gv('r_skills').textContent = g('skills') || '\u00A0';
+  gv('r_skills').innerHTML = escHTML(g('skills')) || '&nbsp;';
 
   // ③ 상담
   gv('r_iv0').innerHTML = escHTML(g('iv0')).replace(/\n/g,'<br>') || '&nbsp;';
