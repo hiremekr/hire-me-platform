@@ -7,33 +7,20 @@
 <meta name="theme-color" content="#1a3a6e">
 <title>외국인 인재 이력서 | 행정사사무소 늘좋은</title>
 <style>
-/* ═══════════════════════════════════════════════
-   원본 파이썬(reportlab) 코드와 정확히 일치:
-   - C_BG     = #F2F2F2 (회색 헤더)
-   - C_VISA   = #DDDDDD (지원비자 라벨)
-   - C_ALT    = #F9F9F9 (경력 짝수행)
-   - C_BORDER = #CCCCCC (모든 테두리)
-   - C_HR     = #999999 (푸터 위 선)
-   - C_SKILL  = #F5F5F5 (핵심기술 우측)
-   - 폰트: 나눔고딕 (NG, NGB, NGEB)
-   - A4 15mm 여백 → 본문 폭 180mm
-   ═══════════════════════════════════════════════ */
-
 * { box-sizing: border-box; margin: 0; padding: 0; }
-
+ 
 @font-face {
   font-family: 'NanumGothicWeb';
   src: local('NanumGothic'), local('Nanum Gothic'), local('맑은 고딕'), local('Malgun Gothic');
 }
-
+ 
 body {
   font-family: 'NanumGothicWeb', 'Nanum Gothic', 'NanumGothic', '맑은 고딕', 'Malgun Gothic', sans-serif;
   background: #e8eaf0;
   min-height: 100vh;
   color: #1a1a1a;
 }
-
-/* ═══ 앱 헤더 ═══ */
+ 
 .app-header {
   background: #1a3a6e;
   color: #fff;
@@ -49,8 +36,7 @@ body {
   opacity: 0.75;
   margin-left: auto;
 }
-
-/* ═══ 작업 영역 ═══ */
+ 
 .workspace {
   display: flex;
   gap: 24px;
@@ -58,8 +44,7 @@ body {
   max-width: 1400px;
   margin: 0 auto;
 }
-
-/* ─── 왼쪽 입력 패널 ─── */
+ 
 .form-panel {
   width: 380px;
   flex-shrink: 0;
@@ -110,13 +95,12 @@ input:focus, textarea:focus, select:focus {
 }
 textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
 .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-
+ 
 .cr-head { display: grid; grid-template-columns: 22% 28% 1fr; gap: 5px; }
 .cr-head span { font-size: 10px; font-weight: 700; color: #5a6a80; text-align: center; }
 .cr-row { display: grid; grid-template-columns: 22% 28% 1fr; gap: 5px; margin-top: 4px; }
 .cr-row input { font-size: 12px; padding: 6px 7px; }
-
-/* 사진 업로드 */
+ 
 .photo-zone { display: flex; align-items: center; gap: 14px; }
 .photo-box {
   width: 80px; height: 100px;
@@ -130,16 +114,7 @@ textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
 .photo-box .ph-txt { font-size: 10px; color: #aaa; text-align: center; line-height: 1.6; }
 #photoInput { display: none; }
 .photo-info { font-size: 11px; color: #6a7a90; line-height: 1.8; }
-
-/* 조직명 설정 */
-.org-settings {
-  padding: 10px 14px;
-  background: #fafbfe;
-  border-top: 1px solid #e5e9f2;
-}
-.org-settings .fl { color: #8a95a8; }
-
-/* 버튼 */
+ 
 .btns { display: flex; gap: 8px; }
 .btn-pdf {
   flex: 1;
@@ -164,8 +139,7 @@ textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
   font-size: 13px;
   cursor: pointer;
 }
-
-/* ─── 오른쪽 미리보기 ─── */
+ 
 .preview-area { flex: 1; min-width: 0; }
 .prev-label {
   font-size: 12px;
@@ -183,12 +157,7 @@ textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
   background: #c8a84b;
   border-radius: 2px;
 }
-
-/* ═══════════════════════════════════════
-   A4 페이지 — reportlab 원본 재현
-   A4 크기: 210mm × 297mm
-   여백: 상하좌우 15mm → 본문 180mm
-   ═══════════════════════════════════════ */
+ 
 .a4-shadow {
   background: #fff;
   box-shadow: 0 4px 28px rgba(0,0,0,0.15);
@@ -197,13 +166,12 @@ textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
   margin: 0 auto;
   padding: 15mm;
 }
-
+ 
 .resume {
   width: 100%;
   color: #1a1a1a;
 }
-
-/* ── 타이틀 박스 ── */
+ 
 .r-title {
   border: 1px solid #cccccc;
   background: #f2f2f2;
@@ -213,10 +181,9 @@ textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
   font-weight: 900;
   color: #1a1a1a;
   letter-spacing: 2px;
-  line-height: 28pt;  /* 원본 Python leading=28 매칭 */
+  line-height: 28pt;
 }
-
-/* ── 섹션 헤더 (① ② ③) ── */
+ 
 .sec-hdr {
   border: 1px solid #cccccc;
   background: #f2f2f2;
@@ -224,12 +191,11 @@ textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
   font-size: 11pt;
   font-weight: 700;
   color: #222222;
-  line-height: 13pt;  /* 원본 Python leading=13 매칭 */
+  line-height: 13pt;
   margin-top: 4mm;
   margin-bottom: 2mm;
 }
-
-/* ═══ ① 기본정보 테이블 ═══ */
+ 
 .info-tbl {
   width: 100%;
   border-collapse: collapse;
@@ -242,7 +208,6 @@ textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
   padding: 2pt;
   height: 10.5mm;
 }
-/* 사진 셀 (rowspan 6) */
 .info-tbl .photo-cell {
   width: 30%;
   background: #f2f2f2;
@@ -261,7 +226,6 @@ textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
   color: #BBBBBB;
   font-weight: 400;
 }
-/* 라벨 셀 */
 .info-tbl .lbl-cell {
   width: 18%;
   background: #f2f2f2;
@@ -274,7 +238,6 @@ textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
   background: #dddddd;
   color: #111111;
 }
-/* 값 셀 */
 .info-tbl .val-cell {
   width: 52%;
   background: #ffffff;
@@ -289,8 +252,7 @@ textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
   font-weight: 900;
   color: #000000;
 }
-
-/* ═══ ② 경력 테이블 ═══ */
+ 
 .career-tbl {
   width: 100%;
   border-collapse: collapse;
@@ -314,7 +276,6 @@ textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
   padding: 3pt;
   vertical-align: middle;
 }
-/* 셀 안에 강제 높이 박스 — 빈 칸이어도 짜그라들지 않음 */
 .career-tbl .cell-strut {
   min-height: 13mm;
   display: flex;
@@ -324,7 +285,6 @@ textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
 .career-tbl td.duty-cell .cell-strut { justify-content: flex-start; }
 .career-tbl td.period-cell .cell-strut,
 .career-tbl td.company-cell .cell-strut { justify-content: center; }
-/* 빈 셀도 높이 유지 */
 .career-tbl td:empty::after,
 .career-tbl td:has(:only-child:empty)::after {
   content: '\00a0';
@@ -335,8 +295,7 @@ textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
 .career-tbl td.duty-cell { text-align: left; padding-left: 7pt; width: 50%; }
 .career-tbl tr.row-alt td { background: #f9f9f9; }
 .career-tbl tr.row-white td { background: #ffffff; }
-
-/* 핵심보유기술 */
+ 
 .skill-tbl {
   width: 100%;
   border-collapse: collapse;
@@ -352,7 +311,6 @@ textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
   color: #222222;
   vertical-align: middle;
 }
-/* 셀 안에 강제 높이 박스 */
 .skill-tbl .cell-strut-skill {
   min-height: 9mm;
   display: flex;
@@ -370,8 +328,7 @@ textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
   text-align: left;
   padding-left: 7pt;
 }
-
-/* ═══ ③ 인터뷰 요약 ═══ */
+ 
 .itv-tbl {
   width: 100%;
   border-collapse: collapse;
@@ -385,7 +342,6 @@ textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
   color: #222222;
   vertical-align: middle;
 }
-/* 셀 안에 강제 높이 박스 — 빈 칸이어도 짜그라들지 않음 */
 .itv-tbl .cell-strut-itv {
   min-height: 14mm;
   display: flex;
@@ -393,7 +349,6 @@ textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
   width: 100%;
   line-height: 1.35;
 }
-/* 빈 셀도 높이 유지 */
 .itv-tbl td:empty::after {
   content: '\00a0';
   display: inline-block;
@@ -410,8 +365,7 @@ textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
   text-align: left;
   line-height: 1.35;
 }
-
-/* ═══ 푸터 ═══ */
+ 
 .r-footer {
   margin-top: 5mm;
   border-top: 1px solid #999999;
@@ -428,13 +382,7 @@ textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
   font-size: 8pt;
   color: #888888;
 }
-
-/* ═══════════════════════════════════════
-   🔒 숨김 연락처
-   - 흰 배경에 흰 글씨 → 시각적으로 안 보임
-   - 드래그하면 파란 하이라이트로 번호 보임
-   - 인쇄해도 흰색이라 안 나옴
-   ═══════════════════════════════════════ */
+ 
 .hidden-phone {
   margin-top: 6mm;
   font-size: 9pt;
@@ -448,176 +396,53 @@ textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
   user-select: text;
   cursor: text;
 }
-/* 드래그(선택) 시 진한 파란 배경에 흰 글씨로 또렷하게 보이게 */
-.hidden-phone::selection {
-  background: #1a3a6e;
-  color: #ffffff;
-}
-.hidden-phone::-moz-selection {
-  background: #1a3a6e;
-  color: #ffffff;
-}
-
-/* ═══════════════════════════════════════
-   인쇄 — A4 정확히 한 페이지
-   ═══════════════════════════════════════ */
-@media print {
-  @page {
-    size: A4;
-    margin: 0;
-  }
-
-  * {
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-  }
-
-  body { background: #fff !important; }
-  .app-header, .form-panel, .prev-label, .preview-toggle { display: none !important; }
-  .workspace {
-    display: block !important;
-    padding: 0 !important;
-    max-width: 100% !important;
-    margin: 0 !important;
-  }
-  /* 인쇄 시에는 모바일에서도 미리보기 강제 표시 */
-  .preview-area, .preview-area.mobile-show {
-    display: block !important;
-    width: 100% !important;
-  }
-  .a4-shadow {
-    box-shadow: none !important;
-    width: 210mm !important;
-    min-height: 296mm !important;
-    height: auto !important;
-    margin: 0 !important;
-    padding: 15mm !important;
-    border-radius: 0 !important;
-    overflow: hidden !important;
-    page-break-inside: avoid !important;
-    break-inside: avoid-page !important;
-    page-break-after: avoid !important;
-    break-after: avoid-page !important;
-  }
-  /* 모바일 축소 폰트 무시하고 원본 크기 유지 */
-  .resume { position: relative !important; font-size: 12pt !important; }
-  .r-title { font-size: 20pt !important; padding: 11pt 0 !important; line-height: 1.1 !important; }
-  .sec-hdr { font-size: 11pt !important; padding: 5pt 9pt !important; line-height: 1.1 !important; }
-  .info-tbl td { font-size: 10.5pt !important; padding: 2pt !important; height: 10.5mm !important; }
-  .info-tbl .photo-cell { padding: 2mm !important; }
-  .info-tbl .photo-cell img {
-    max-width: 100% !important;
-    max-height: calc(10.5mm * 6 - 4mm) !important;
-    width: auto !important;
-    height: auto !important;
-  }
-  .info-tbl .val-cell { font-size: 12pt !important; padding-left: 7pt !important; }
-  .career-tbl th, .career-tbl td { font-size: 10.5pt !important; padding: 2pt !important; }
-  .career-tbl th { height: 9mm !important; min-height: 9mm !important; }
-  .career-tbl .cell-strut { min-height: 13mm !important; }
-  .skill-tbl td { font-size: 10.5pt !important; padding: 2pt !important; }
-  .skill-tbl .cell-strut-skill { min-height: 9mm !important; }
-  .itv-tbl td { font-size: 10.5pt !important; padding: 3pt 7pt !important; }
-  .itv-tbl .cell-strut-itv { min-height: 13mm !important; }
-
-  /* 인쇄 시 배경색 보존 */
-  .r-title,
-  .sec-hdr,
-  .info-tbl .photo-cell,
-  .info-tbl .lbl-cell,
-  .info-tbl .lbl-cell.visa-lbl,
-  .career-tbl th,
-  .career-tbl tr.row-alt td,
-  .skill-tbl .skill-lbl,
-  .skill-tbl .skill-val,
-  .itv-tbl .itv-lbl {
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-  }
-  /* 숨김 연락처: PDF/인쇄에서도 흰 글씨 유지 */
-  .hidden-phone {
-    position: absolute !important;
-    left: 0 !important;
-    bottom: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    font-size: 0.1pt !important;
-    line-height: 0 !important;
-    color: transparent !important;
-    background: transparent !important;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-    white-space: nowrap !important;
-    overflow: hidden !important;
-    max-width: 45mm !important;
-    max-height: 1px !important;
-  }
-}
-
-/* 화면에서 A4 너비 대응 */
-@media (max-width: 1300px) {
-  .a4-shadow { transform-origin: top left; }
-}
-
+.hidden-phone::selection { background: #1a3a6e; color: #ffffff; }
+.hidden-phone::-moz-selection { background: #1a3a6e; color: #ffffff; }
+ 
 /* ═══════════════════════════════════════
    📱 모바일 반응형 (768px 이하)
+   — body.print-mode 클래스가 없을 때만 적용 (인쇄 시 무력화)
    ═══════════════════════════════════════ */
 @media screen and (max-width: 768px) {
-  body {
-    background: #f5f6fa;
-  }
-
-  /* 헤더 단순화 */
-  .app-header {
+  body:not(.print-mode) { background: #f5f6fa; }
+ 
+  body:not(.print-mode) .app-header {
     padding: 12px 16px;
     font-size: 14px;
     flex-direction: column;
     align-items: flex-start;
     gap: 4px;
   }
-  .app-header span {
+  body:not(.print-mode) .app-header span {
     font-size: 11px;
     margin-left: 0;
   }
-
-  /* 워크스페이스: 좌우 → 위아래 */
-  .workspace {
+ 
+  body:not(.print-mode) .workspace {
     flex-direction: column;
     padding: 12px;
     gap: 14px;
   }
-
-  /* 입력 패널: 화면 전체 폭 */
-  .form-panel {
+ 
+  body:not(.print-mode) .form-panel {
     width: 100%;
     flex-shrink: 1;
   }
-
-  /* 입력 칸 손가락에 맞게 키우기 */
-  input[type=text], textarea, select {
+ 
+  body:not(.print-mode) input[type=text],
+  body:not(.print-mode) textarea,
+  body:not(.print-mode) select {
     padding: 12px 12px;
-    font-size: 16px; /* 16px 미만이면 iOS에서 줌인됨 */
+    font-size: 16px;
     border-radius: 8px;
   }
-  textarea {
-    min-height: 80px;
-  }
-
-  /* 카드 내부 여백 */
-  .card-body {
-    padding: 14px 14px;
-    gap: 12px;
-  }
-  .card-head {
-    font-size: 13px;
-    padding: 10px 14px;
-  }
-
-  /* 경력 입력 — 1행씩 세로로 펼침 */
-  .cr-head {
-    display: none; /* 모바일에선 헤더 숨김 */
-  }
-  .cr-row {
+  body:not(.print-mode) textarea { min-height: 80px; }
+ 
+  body:not(.print-mode) .card-body { padding: 14px 14px; gap: 12px; }
+  body:not(.print-mode) .card-head { font-size: 13px; padding: 10px 14px; }
+ 
+  body:not(.print-mode) .cr-head { display: none; }
+  body:not(.print-mode) .cr-row {
     grid-template-columns: 1fr;
     gap: 8px;
     margin-top: 0;
@@ -627,7 +452,7 @@ textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
     margin-bottom: 8px;
     border: 1px solid #e5e9f2;
   }
-  .cr-row::before {
+  body:not(.print-mode) .cr-row::before {
     content: '경력 ' attr(data-row);
     display: block;
     font-size: 11px;
@@ -635,82 +460,62 @@ textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
     color: #5a6a80;
     margin-bottom: 4px;
   }
-  .cr-row input {
+  body:not(.print-mode) .cr-row input {
     font-size: 15px !important;
     padding: 10px !important;
   }
-  /* 모바일 경력 입력에 placeholder 한 번 더 보이게 */
-  .cr-row input::placeholder {
-    color: #9aa3b5;
-  }
-
-  /* 사진 영역 */
-  .photo-zone {
+  body:not(.print-mode) .cr-row input::placeholder { color: #9aa3b5; }
+ 
+  body:not(.print-mode) .photo-zone {
     flex-direction: column;
     align-items: center;
     gap: 12px;
   }
-  .photo-box {
-    width: 110px; height: 140px;
-  }
-  .photo-info {
-    text-align: center;
-    font-size: 12px;
-  }
-
-  /* 미리보기 영역: 모바일에선 기본 숨김, 토글로 펼침 */
-  .preview-area {
-    display: none;
-  }
-  .preview-area.mobile-show {
-    display: block;
-  }
-
-  /* A4 미리보기를 모바일 폭에 맞게 축소 */
-  .a4-shadow {
+  body:not(.print-mode) .photo-box { width: 110px; height: 140px; }
+  body:not(.print-mode) .photo-info { text-align: center; font-size: 12px; }
+ 
+  body:not(.print-mode) .preview-area { display: none; }
+  body:not(.print-mode) .preview-area.mobile-show { display: block; }
+ 
+  body:not(.print-mode) .a4-shadow {
     width: 100% !important;
     min-height: auto !important;
     padding: 6mm 5mm !important;
     transform: none !important;
     border-radius: 6px;
   }
-  .resume {
-    font-size: 9pt !important;
-  }
-  .r-title {
-    font-size: 14pt !important;
-    padding: 6pt 0 !important;
-  }
-  .sec-hdr {
-    font-size: 9pt !important;
-    padding: 4pt 7pt !important;
-  }
-  .info-tbl td {
+  body:not(.print-mode) .resume { font-size: 9pt !important; }
+  body:not(.print-mode) .r-title { font-size: 14pt !important; padding: 6pt 0 !important; }
+  body:not(.print-mode) .sec-hdr { font-size: 9pt !important; padding: 4pt 7pt !important; }
+  body:not(.print-mode) .info-tbl td {
     font-size: 9pt !important;
     padding: 4pt 5pt !important;
     height: auto !important;
   }
-  .info-tbl .photo-cell { padding: 4pt !important; }
-  .info-tbl .photo-cell img { width: 60px; height: 78px; }
-  .info-tbl .val-cell { font-size: 10pt !important; padding: 4pt 5pt !important; }
-  .career-tbl th, .career-tbl td {
+  body:not(.print-mode) .info-tbl .photo-cell { padding: 4pt !important; }
+  body:not(.print-mode) .info-tbl .photo-cell img { width: 60px; height: 78px; }
+  body:not(.print-mode) .info-tbl .val-cell { font-size: 10pt !important; padding: 4pt 5pt !important; }
+  body:not(.print-mode) .career-tbl th,
+  body:not(.print-mode) .career-tbl td {
     font-size: 9pt !important;
     padding: 3pt 4pt !important;
     height: auto !important;
   }
-  .career-tbl td { min-height: 9mm !important; }
-  .career-tbl .cell-strut { min-height: 8mm !important; }
-  .skill-tbl td { font-size: 9pt !important; height: auto !important; padding: 3pt 5pt !important; }
-  .skill-tbl .cell-strut-skill { min-height: 6mm !important; }
-  .itv-tbl td {
+  body:not(.print-mode) .career-tbl .cell-strut { min-height: 8mm !important; }
+  body:not(.print-mode) .skill-tbl td {
+    font-size: 9pt !important;
+    height: auto !important;
+    padding: 3pt 5pt !important;
+  }
+  body:not(.print-mode) .skill-tbl .cell-strut-skill { min-height: 6mm !important; }
+  body:not(.print-mode) .itv-tbl td {
     font-size: 9pt !important;
     padding: 3pt 5pt !important;
     height: auto !important;
   }
-  .itv-tbl .cell-strut-itv { min-height: 8mm !important; }
-
-  /* 미리보기 토글 버튼 */
-  .preview-toggle {
+  body:not(.print-mode) .itv-tbl .cell-strut-itv { min-height: 8mm !important; }
+ 
+  body:not(.print-mode) .preview-toggle {
     display: flex !important;
     width: 100%;
     padding: 14px;
@@ -727,19 +532,10 @@ textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
     gap: 6px;
     margin-top: 6px;
   }
-
-  /* 메인 PDF 버튼 더 크게 */
-  .btn-pdf {
-    padding: 16px;
-    font-size: 16px;
-    border-radius: 10px;
-  }
-  .btn-rst {
-    padding: 16px;
-    font-size: 14px;
-    border-radius: 10px;
-  }
-  .btns {
+ 
+  body:not(.print-mode) .btn-pdf { padding: 16px; font-size: 16px; border-radius: 10px; }
+  body:not(.print-mode) .btn-rst { padding: 16px; font-size: 14px; border-radius: 10px; }
+  body:not(.print-mode) .btns {
     gap: 10px;
     position: sticky;
     bottom: 12px;
@@ -748,49 +544,74 @@ textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
     z-index: 10;
   }
 }
-
-/* PC에서는 미리보기 토글 버튼 숨김 */
+ 
 @media screen and (min-width: 769px) {
   .preview-toggle { display: none !important; }
 }
-
+ 
 /* ═══════════════════════════════════════
-   인쇄 안정화 최종 보정
-   - 모바일/PC 모두 V7과 같은 출력 폭 우선
-   - screen 전용 반응형이 print에 개입하지 못하도록 마지막에 한 번 더 고정
+   인쇄 — A4 정확히 한 페이지
+   PC와 모바일 모두 동일하게 적용
    ═══════════════════════════════════════ */
 @media print {
+  @page {
+    size: A4;
+    margin: 0;
+  }
+ 
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+ 
   html, body {
-    width: auto !important;
-    min-width: 0 !important;
+    width: 210mm !important;
+    min-width: 210mm !important;
+    max-width: 210mm !important;
     margin: 0 !important;
     padding: 0 !important;
+    background: #fff !important;
     overflow: visible !important;
   }
-
-  .workspace,
+ 
+  /* 화면용 요소 숨기기 */
+  .app-header,
+  .form-panel,
+  .prev-label,
+  .preview-toggle { display: none !important; }
+ 
+  .workspace {
+    display: block !important;
+    width: 210mm !important;
+    max-width: 210mm !important;
+    min-width: 210mm !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    gap: 0 !important;
+  }
+ 
+  /* 미리보기 영역: 모바일이든 PC든 무조건 보이고 PC와 동일 폭 */
   .preview-area,
   .preview-area.mobile-show {
     display: block !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
+    width: 210mm !important;
+    max-width: 210mm !important;
+    min-width: 210mm !important;
+    flex: none !important;
     margin: 0 !important;
     padding: 0 !important;
-    overflow: visible !important;
-    page-break-after: avoid !important;
-    break-after: avoid-page !important;
   }
-
+ 
+  /* A4 박스: PC와 동일한 폭과 여백으로 (모바일 축소 무시) */
   .a4-shadow {
+    box-shadow: none !important;
     width: 210mm !important;
     min-width: 210mm !important;
     max-width: 210mm !important;
     min-height: 296mm !important;
     height: auto !important;
-    margin: 0 auto !important;
+    margin: 0 !important;
     padding: 15mm !important;
-    box-shadow: none !important;
     border-radius: 0 !important;
     transform: none !important;
     overflow: hidden !important;
@@ -799,7 +620,8 @@ textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
     page-break-after: avoid !important;
     break-after: avoid-page !important;
   }
-
+ 
+  /* 이력서 본문: PC 크기로 강제 (모바일 9pt 무시) */
   .resume {
     position: relative !important;
     width: 100% !important;
@@ -807,10 +629,23 @@ textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
     page-break-inside: avoid !important;
     break-inside: avoid-page !important;
   }
-  .r-title { font-size: 20pt !important; padding: 11pt 0 !important; line-height: 1.1 !important; }
-  .sec-hdr { font-size: 11pt !important; padding: 5pt 9pt !important; line-height: 1.1 !important; }
-
-  .info-tbl td { font-size: 10.5pt !important; padding: 2pt !important; height: 10.5mm !important; }
+ 
+  .r-title {
+    font-size: 20pt !important;
+    padding: 11pt 0 !important;
+    line-height: 28pt !important;
+  }
+  .sec-hdr {
+    font-size: 11pt !important;
+    padding: 5pt 9pt !important;
+    line-height: 13pt !important;
+  }
+ 
+  .info-tbl td {
+    font-size: 10.5pt !important;
+    padding: 2pt !important;
+    height: 10.5mm !important;
+  }
   .info-tbl .photo-cell { padding: 2mm !important; }
   .info-tbl .photo-cell img {
     max-width: 100% !important;
@@ -818,62 +653,100 @@ textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
     width: auto !important;
     height: auto !important;
   }
-  .info-tbl .val-cell { font-size: 12pt !important; padding-left: 7pt !important; }
-
+  .info-tbl .val-cell {
+    font-size: 12pt !important;
+    padding-left: 7pt !important;
+  }
+ 
   .career-tbl th,
   .career-tbl td {
     font-size: 10.5pt !important;
     padding: 2pt !important;
     height: auto !important;
   }
-  .career-tbl th { height: 9mm !important; min-height: 9mm !important; }
+  .career-tbl th {
+    height: 9mm !important;
+    min-height: 9mm !important;
+  }
   .career-tbl .cell-strut { min-height: 13mm !important; }
-
+ 
   .skill-tbl td {
     font-size: 10.5pt !important;
     padding: 2pt !important;
     height: auto !important;
   }
   .skill-tbl .cell-strut-skill { min-height: 9mm !important; }
-
+ 
   .itv-tbl td {
     font-size: 10.5pt !important;
     padding: 3pt 7pt !important;
     height: auto !important;
   }
-  .itv-tbl .cell-strut-itv { min-height: 13mm !important; }
-
+  .itv-tbl .cell-strut-itv { min-height: 14mm !important; }
+ 
   .r-footer {
-    margin-top: 3mm !important;
-    padding-top: 2mm !important;
-    line-height: 1.15 !important;
+    margin-top: 5mm !important;
+    border-top: 1px solid #999999 !important;
+    padding-top: 3mm !important;
+    text-align: right !important;
+    line-height: 1.45 !important;
     page-break-inside: avoid !important;
     break-inside: avoid-page !important;
   }
-  .r-footer .org-primary,
-  .r-footer .org-secondary {
+  .r-footer .org-primary {
+    font-size: 11pt !important;
+    font-weight: 900 !important;
+    color: #111111 !important;
     white-space: nowrap !important;
-    page-break-inside: avoid !important;
-    break-inside: avoid-page !important;
   }
-  .r-footer .org-primary { font-size: 10.5pt !important; }
-  .r-footer .org-secondary { font-size: 7.5pt !important; }
+  .r-footer .org-secondary {
+    font-size: 8pt !important;
+    color: #888888 !important;
+    white-space: nowrap !important;
+  }
+ 
+  /* 인쇄 시 배경색 보존 */
+  .r-title,
+  .sec-hdr,
+  .info-tbl .photo-cell,
+  .info-tbl .lbl-cell,
+  .info-tbl .lbl-cell.visa-lbl,
+  .career-tbl th,
+  .career-tbl tr.row-alt td,
+  .skill-tbl .skill-lbl,
+  .skill-tbl .skill-val,
+  .itv-tbl .itv-lbl {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+ 
+  /* 숨김 연락처 */
+  .hidden-phone {
+    margin-top: 6mm !important;
+    padding: 0 !important;
+    font-size: 9pt !important;
+    font-weight: 600 !important;
+    color: #ffffff !important;
+    background: #ffffff !important;
+    text-align: left !important;
+    line-height: 1.4 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
 }
 </style>
 </head>
 <body>
-
+ 
 <div class="app-header">
   🌏 외국인 인재 이력서 작성 프로그램
   <span>행정사사무소 늘좋은 | K-외국인일자리지원센터</span>
 </div>
-
+ 
 <div class="workspace">
-
-  <!-- ═══ 입력 패널 ═══ -->
+ 
   <div class="form-panel">
-
-    <!-- 사진 -->
+ 
     <div class="card">
       <div class="card-head">📷 증명사진</div>
       <div class="card-body">
@@ -891,8 +764,7 @@ textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
         <input type="file" id="photoInput" accept="image/*">
       </div>
     </div>
-
-    <!-- ① 기본정보 -->
+ 
     <div class="card">
       <div class="card-head">① 기본 정보</div>
       <div class="card-body">
@@ -926,8 +798,7 @@ textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
         </div>
       </div>
     </div>
-
-    <!-- ② 경력 -->
+ 
     <div class="card">
       <div class="card-head">② 주요 경력 및 보유 기술</div>
       <div class="card-body">
@@ -943,8 +814,7 @@ textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
         </div>
       </div>
     </div>
-
-    <!-- ③ 상담 -->
+ 
     <div class="card">
       <div class="card-head">③ 행정사 상담 및 인터뷰 요약</div>
       <div class="card-body">
@@ -962,8 +832,7 @@ textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
         </div>
       </div>
     </div>
-
-    <!-- 🔒 숨김 연락처 (드래그/복사로만 보임) -->
+ 
     <div class="card" style="border-color:#ffd699">
       <div class="card-head" style="background:#e67e22">🔒 숨김 연락처 (드래그할 때만 보임)</div>
       <div class="card-body">
@@ -977,29 +846,24 @@ textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
         </div>
       </div>
     </div>
-
-    <!-- 미리보기 토글 (모바일 전용) -->
+ 
     <button class="preview-toggle" onclick="togglePreview()" id="prevToggleBtn" style="display:none">
       👁 미리보기 펼치기
     </button>
-
-    <!-- 버튼 -->
+ 
     <div class="btns">
       <button class="btn-pdf" onclick="doPrint()">🖨️ PDF 저장 / 인쇄</button>
       <button class="btn-rst" onclick="doReset()">초기화</button>
     </div>
   </div>
-
-  <!-- ═══ 미리보기 (A4) ═══ -->
+ 
   <div class="preview-area" id="previewArea">
     <div class="prev-label">실시간 미리보기 (A4 비율)</div>
     <div class="a4-shadow">
       <div class="resume">
-
-        <!-- 타이틀 -->
+ 
         <div class="r-title">외국인 인재 이력서</div>
-
-        <!-- ① 기본 정보 -->
+ 
         <div class="sec-hdr">① 기본 정보</div>
         <table class="info-tbl">
           <tr>
@@ -1031,8 +895,7 @@ textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
             <td class="val-cell visa-val" id="r_visa">&nbsp;</td>
           </tr>
         </table>
-
-        <!-- ② 경력 -->
+ 
         <div class="sec-hdr">② 주요 경력 및 보유 기술</div>
         <table class="career-tbl">
           <thead>
@@ -1050,8 +913,7 @@ textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
             <td class="skill-val" id="r_skills">&nbsp;</td>
           </tr>
         </table>
-
-        <!-- ③ 상담 -->
+ 
         <div class="sec-hdr">③ 행정사 상담 및 인터뷰 요약</div>
         <table class="itv-tbl">
           <tr>
@@ -1067,24 +929,21 @@ textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
             <td class="itv-val" id="r_iv2">&nbsp;</td>
           </tr>
         </table>
-
-        <!-- 푸터 -->
+ 
         <div class="r-footer">
           <div class="org-primary" id="r_orgBig">K-외국인일자리지원센터</div>
           <div class="org-secondary" id="r_orgSmall">행정사사무소 늘좋은</div>
         </div>
-
-        <!-- 🔒 숨김 연락처 (흰 글씨, 드래그할 때만 선택됨) -->
+ 
         <div class="hidden-phone" id="r_hiddenPhone">&nbsp;</div>
-
+ 
       </div>
     </div>
   </div>
-
+ 
 </div>
-
+ 
 <script>
-// ═══ 경력 4행 초기 생성 ═══
 const N = 4;
 (function(){
   const w = document.getElementById('crWrap');
@@ -1099,8 +958,7 @@ const N = 4;
     w.appendChild(d);
   }
 })();
-
-// ═══ 모바일 미리보기 토글 ═══
+ 
 function togglePreview(){
   const area = document.getElementById('previewArea');
   const btn = document.getElementById('prevToggleBtn');
@@ -1110,12 +968,10 @@ function togglePreview(){
   } else {
     area.classList.add('mobile-show');
     btn.innerHTML = '🔼 미리보기 접기';
-    // 펼치면 미리보기로 스크롤
     setTimeout(() => area.scrollIntoView({behavior: 'smooth', block: 'start'}), 100);
   }
 }
-
-// ═══ 모바일 환경에서 토글 버튼 표시 ═══
+ 
 (function(){
   function checkMobile(){
     const isMobile = window.innerWidth <= 768;
@@ -1125,8 +981,7 @@ function togglePreview(){
   checkMobile();
   window.addEventListener('resize', checkMobile);
 })();
-
-// ═══ 사진 업로드 ═══
+ 
 document.getElementById('photoInput').addEventListener('change', function(){
   const f = this.files[0];
   if (!f) return;
@@ -1144,22 +999,18 @@ document.getElementById('photoInput').addEventListener('change', function(){
   };
   r.readAsDataURL(f);
 });
-
+ 
 function g(id){ return document.getElementById(id).value.trim(); }
 function gv(id){ return document.getElementById(id); }
-
-// ═══ 실시간 업데이트 ═══
+ 
 function upd(){
-  // ① 기본정보
   gv('r_name').textContent   = g('name')   || '\u00A0';
   gv('r_age').textContent    = g('age')    || '\u00A0';
   gv('r_nation').textContent = g('nation') || '\u00A0';
   gv('r_addr').textContent   = g('addr')   || '\u00A0';
   gv('r_edu').textContent    = g('edu')    || '\u00A0';
   gv('r_visa').textContent   = g('visa')   || '\u00A0';
-
-  // ② 경력 — 4행 고정, 짝수행은 #F9F9F9
-  // 각 셀 안에 strut (강제 높이 보장 div) 삽입 — 빈 칸이어도 높이 유지
+ 
   const tb = gv('r_career');
   tb.innerHTML = '';
   for (let i = 0; i < N; i++) {
@@ -1173,62 +1024,65 @@ function upd(){
     tb.appendChild(tr);
   }
   gv('r_skills').innerHTML = '<div class="cell-strut-skill">' + (escHTML(g('skills')) || '&nbsp;') + '</div>';
-
-  // ③ 상담
+ 
   gv('r_iv0').innerHTML = '<div class="cell-strut-itv">' + (escHTML(g('iv0')).replace(/\n/g,'<br>') || '&nbsp;') + '</div>';
   gv('r_iv1').innerHTML = '<div class="cell-strut-itv">' + (escHTML(g('iv1')).replace(/\n/g,'<br>') || '&nbsp;') + '</div>';
   gv('r_iv2').innerHTML = '<div class="cell-strut-itv">' + (escHTML(g('iv2')).replace(/\n/g,'<br>') || '&nbsp;') + '</div>';
-
-  // 🔒 숨김 연락처 (흰 글씨로 PDF에 박힘 - 드래그하면 선택됨)
+ 
   const hp = g('hiddenPhone');
   gv('r_hiddenPhone').textContent = hp || '\u00A0';
 }
-
+ 
 function escHTML(s){
   return (s||'')
     .replace(/&/g,'&amp;')
     .replace(/</g,'&lt;')
     .replace(/>/g,'&gt;');
 }
-
-// ═══ PDF 저장 / 인쇄 ═══
-// PDF 파일명 = 외국인 이름 + 날짜 (예: 산자야_이력서_260425)
+ 
+// ═══ PDF 저장 / 인쇄 (모바일에서도 PC와 동일하게) ═══
 function doPrint(){
-  // 입력된 이름에서 한글 부분만 추출 (괄호 안 영문 제외)
   const fullName = g('name');
   let baseName = '외국인_인재';
-
+ 
   if (fullName) {
-    // "산자야 (SHRESTHA SANJAYA)" → "산자야"만 추출
     const koPart = fullName.split('(')[0].trim();
-    if (koPart) {
-      baseName = koPart;
-    }
+    if (koPart) baseName = koPart;
   }
-
-  // 오늘 날짜 YYMMDD 형식 (예: 260425)
+ 
   const now = new Date();
   const yy = String(now.getFullYear()).slice(2);
   const mm = String(now.getMonth() + 1).padStart(2, '0');
   const dd = String(now.getDate()).padStart(2, '0');
   const dateStr = yy + mm + dd;
-
+ 
   const fileName = baseName + '_이력서_' + dateStr;
-
-  // 원래 title 백업 후 변경
+ 
   const originalTitle = document.title;
   document.title = fileName;
-
-  // 인쇄 실행
-  window.print();
-
-  // 인쇄 후 원래 title 복원 (1초 후)
+ 
+  // 🔑 핵심: 인쇄 직전에 body에 print-mode 추가
+  // → 모바일 화면용 CSS 전부 무력화 (PC와 동일 출력)
+  document.body.classList.add('print-mode');
+ 
+  // 모바일에서 미리보기 영역이 숨겨져 있으면 강제로 펼침
+  const previewArea = document.getElementById('previewArea');
+  const wasHidden = !previewArea.classList.contains('mobile-show');
+  if (wasHidden) previewArea.classList.add('mobile-show');
+ 
+  // CSS 반영을 위한 짧은 딜레이 후 인쇄
   setTimeout(() => {
-    document.title = originalTitle;
-  }, 1000);
+    window.print();
+ 
+    // 인쇄 다이얼로그 닫힌 후 원래 상태로 복원
+    setTimeout(() => {
+      document.title = originalTitle;
+      document.body.classList.remove('print-mode');
+      if (wasHidden) previewArea.classList.remove('mobile-show');
+    }, 1000);
+  }, 100);
 }
-
-// ═══ 초기화 ═══
+ 
 function doReset(){
   if (!confirm('모든 내용을 초기화할까요?')) return;
   ['name','age','nation','addr','edu','visa','skills','iv0','iv1','iv2','hiddenPhone']
@@ -1242,8 +1096,7 @@ function doReset(){
   gv('rNoPhoto').style.display = 'block';
   upd();
 }
-
-// 초기 렌더
+ 
 upd();
 </script>
 </body>
