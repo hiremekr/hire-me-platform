@@ -213,7 +213,7 @@ textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
   font-weight: 900;
   color: #1a1a1a;
   letter-spacing: 2px;
-  line-height: 1.1;
+  line-height: 28pt;  /* 원본 Python leading=28 매칭 */
 }
 
 /* ── 섹션 헤더 (① ② ③) ── */
@@ -224,6 +224,7 @@ textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
   font-size: 11pt;
   font-weight: 700;
   color: #222222;
+  line-height: 13pt;  /* 원본 Python leading=13 매칭 */
   margin-top: 4mm;
   margin-bottom: 2mm;
 }
@@ -494,8 +495,8 @@ textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
   }
   /* 모바일 축소 폰트 무시하고 원본 크기 유지 */
   .resume { font-size: 12pt !important; }
-  .r-title { font-size: 20pt !important; padding: 11pt 0 !important; }
-  .sec-hdr { font-size: 11pt !important; padding: 5pt 9pt !important; }
+  .r-title { font-size: 20pt !important; padding: 11pt 0 !important; line-height: 28pt !important; }
+  .sec-hdr { font-size: 11pt !important; padding: 5pt 9pt !important; line-height: 13pt !important; }
   .info-tbl td { font-size: 10.5pt !important; padding: 2pt !important; height: 10.5mm !important; }
   .info-tbl .photo-cell { padding: 2mm !important; }
   .info-tbl .photo-cell img {
