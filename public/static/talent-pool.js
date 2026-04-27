@@ -22,9 +22,7 @@
     return FLAGS[n] || '<svg viewBox="0 0 30 20" xmlns="http://www.w3.org/2000/svg"><rect width="30" height="20" fill="#94a3b8"/></svg>';
   }
 
-  function getAvatar(g) {
-    return g === '여' ? '👩🏽' : '👨🏽';
-  }
+  function getAvatar(g) { return g === '여' ? '👩🏽' : '👨🏽'; }
 
   function getKoreanNum(k) {
     if (!k) return 0;
@@ -42,8 +40,17 @@
     card.className = 'talent-card card-anim bg-white rounded-2xl overflow-hidden flex flex-col';
     card.style.animationDelay = (idx * 0.04) + 's';
 
+    // 주요 업무 배지 (있을 때만)
+    var careerBadge = '';
+    if (t.mainCareer && t.mainCareer.trim()) {
+      careerBadge =
+        '<div style="position:absolute;top:14px;right:14px;background:rgba(255,255,255,0.95);padding:5px 12px;border-radius:100px;font-size:11px;font-weight:800;color:#0a66c2;box-shadow:0 2px 6px rgba(0,0,0,0.12);letter-spacing:-0.2px;">' +
+        '💼 ' + escapeHtml(t.mainCareer) +
+        '</div>';
+    }
+
     card.innerHTML =
-      '<div style="height:72px;background:linear-gradient(90deg,#0a66c2,#0952a0,#0a66c2);position:relative;overflow:hidden;flex-shrink:0"></div>' +
+      '<div style="height:72px;background:linear-gradient(90deg,#0a66c2,#0952a0,#0a66c2);position:relative;overflow:hidden;flex-shrink:0">' + careerBadge + '</div>' +
       '<div style="padding:0 20px 20px;margin-top:-36px;flex:1;display:flex;flex-direction:column">' +
         '<div style="position:relative;width:72px;height:72px">' +
           '<div style="width:100%;height:100%;border-radius:50%;background:#fff;padding:3px;box-shadow:0 4px 12px rgba(0,0,0,.1)">' +
@@ -118,8 +125,9 @@
 
   function openModal(t) {
     var gLabel = t.gender === '여' ? '여성' : '남성';
-    var info = '👤 ' + t.name + ' | ' + t.nationality + ' | ' + gLabel + ' | ' + t.age + '세 | 경력 ' + t.career + '년 | 희망 ' + t.visa;
-    var hidden = t.name + ' (' + t.nationality + ', ' + gLabel + ', ' + t.age + '세, 경력 ' + t.career + '년, 희망 ' + t.visa + ')';
+    var careerInfo = t.mainCareer ? (' · ' + t.mainCareer) : '';
+    var info = '👤 ' + t.name + ' | ' + t.nationality + ' | ' + gLabel + ' | ' + t.age + '세 | 경력 ' + t.career + '년' + careerInfo + ' | 희망 ' + t.visa;
+    var hidden = t.name + ' (' + t.nationality + ', ' + gLabel + ', ' + t.age + '세, 경력 ' + t.career + '년' + careerInfo + ', 희망 ' + t.visa + ')';
 
     document.getElementById('modalTalentInfo').textContent = info;
     document.getElementById('contactForm').reset();
@@ -140,7 +148,6 @@
     document.body.style.overflow = '';
   }
 
-  // 이벤트 바인딩
   ['filterNation', 'filterVisa', 'filterGender', 'filterKorean'].forEach(function(id) {
     document.getElementById(id).addEventListener('change', applyFilters);
   });
@@ -188,7 +195,6 @@
     });
   });
 
-  // 데이터 로드
   fetch(API_URL)
     .then(function(r) { return r.json(); })
     .then(function(json) {
