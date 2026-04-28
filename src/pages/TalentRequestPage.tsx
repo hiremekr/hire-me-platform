@@ -1,6 +1,5 @@
 import { Header } from '../components/Header'
 import { Footer } from '../components/Footer'
-import candidates from '../../data/candidates.json'
 
 export const TalentRequestPage = () => {
   return (
@@ -34,9 +33,10 @@ export const TalentRequestPage = () => {
                 </div>
               </div>
               <div class="text-sm text-gray">
+                <div><strong>이름:</strong> <span id="talent-name-display"></span></div>
+                <div><strong>주요 업무:</strong> <span id="talent-main"></span></div>
                 <div><strong>경력:</strong> <span id="talent-experience"></span></div>
                 <div><strong>한국어:</strong> <span id="talent-korean"></span></div>
-                <div><strong>희망지역:</strong> <span id="talent-location"></span></div>
               </div>
             </div>
           </div>
@@ -48,7 +48,7 @@ export const TalentRequestPage = () => {
               method="POST"
             >
               
-              {/* 인재 정보 */}
+              {/* 인재 정보 (hidden 필드 + 표시용) */}
               <div class="form-section">
                 <h3 class="text-xl font-bold text-navy mb-6">
                   <i class="fas fa-user text-green mr-3"></i>
@@ -72,6 +72,15 @@ export const TalentRequestPage = () => {
                     인재풀에서 선택하신 인재의 정보입니다
                   </p>
                 </div>
+
+                {/* 인재 상세 정보를 hidden 필드로도 전송 (Formspree 이메일에 포함되도록) */}
+                <input type="hidden" name="인재_국적" id="hidden-nation" />
+                <input type="hidden" name="인재_희망비자" id="hidden-visa" />
+                <input type="hidden" name="인재_경력" id="hidden-career" />
+                <input type="hidden" name="인재_한국어" id="hidden-korean" />
+                <input type="hidden" name="인재_성별" id="hidden-gender" />
+                <input type="hidden" name="인재_나이" id="hidden-age" />
+                <input type="hidden" name="인재_주요업무" id="hidden-main" />
               </div>
 
               {/* 기업 기본 정보 */}
@@ -299,11 +308,72 @@ export const TalentRequestPage = () => {
 
       <Footer />
       
-      {/* 인재 정보를 JavaScript 전역 변수로 제공 */}
+      {/* URL 파라미터에서 인재 정보 받아서 화면에 표시 */}
       <script dangerouslySetInnerHTML={{
         __html: `
-          // 인재 데이터를 전역 변수로 설정
-          window.candidatesData = ${JSON.stringify(candidates)};
+          (function() {
+            // 국기 이모지 매핑
+            var FLAG_EMOJI = {
+              '네팔':'🇳🇵','베트남':'🇻🇳','미얀마':'🇲🇲','방글라데시':'🇧🇩','스리랑카':'🇱🇰',
+              '인도네시아':'🇮🇩','캄보디아':'🇰🇭','우즈베키스탄':'🇺🇿','몽골':'🇲🇳','태국':'🇹🇭',
+              '필리핀':'🇵🇭','파키스탄':'🇵🇰','인도':'🇮🇳','중국':'🇨🇳','라오스':'🇱🇦',
+              '말레이시아':'🇲🇾','이집트':'🇪🇬'
+            };
+
+            function getParam(name) {
+              var params = new URLSearchParams(window.location.search);
+              return params.get(name) || '';
+            }
+
+            // URL 파라미터에서 인재 정보 추출
+            var name    = getParam('talent_name');
+            var nation  = getParam('talent_nation');
+            var visa    = getParam('talent_visa');
+            var career  = getParam('talent_career');
+            var korean  = getParam('talent_korean');
+            var gender  = getParam('talent_gender');
+            var age     = getParam('talent_age');
+            var main    = getParam('talent_main');
+
+            // 인재 이름 입력 (필수)
+            var nameInput = document.getElementById('interested-talent');
+            if (nameInput && name) nameInput.value = name;
+
+            // hidden 필드 채우기 (Formspree 이메일에 포함되도록)
+            function setHidden(id, val) {
+              var el = document.getElementById(id);
+              if (el) el.value = val || '';
+            }
+            setHidden('hidden-nation', nation);
+            setHidden('hidden-visa', visa);
+            setHidden('hidden-career', career ? career + '년' : '');
+            setHidden('hidden-korean', korean);
+            setHidden('hidden-gender', gender);
+            setHidden('hidden-age', age ? age + '세' : '');
+            setHidden('hidden-main', main);
+
+            // 상단 인재 정보 박스 표시
+            if (name && nation) {
+              var infoBox = document.getElementById('selected-talent-info');
+              if (infoBox) infoBox.style.display = '';
+
+              var gLabel = gender === '여' ? '여성' : '남성';
+              
+              function setText(id, val) {
+                var el = document.getElementById(id);
+                if (el) el.textContent = val || '-';
+              }
+
+              setText('talent-flag', FLAG_EMOJI[nation] || '🌏');
+              setText('talent-basic-info', nation + ' / ' + gLabel + ' / ' + age + '세');
+              setText('talent-residence', main ? '주요업무: ' + main : '');
+              setText('talent-visa', '희망비자: ' + visa);
+              setText('talent-name-display', name);
+              setText('talent-main', main || '-');
+              setText('talent-experience', career ? career + '년' : '-');
+              setText('talent-korean', korean || '-');
+            }
+          })();
         `
       }}></script>
     </div>
