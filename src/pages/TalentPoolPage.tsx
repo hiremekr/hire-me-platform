@@ -7,23 +7,189 @@ export const TalentPoolPage = () => {
       <Header />
 
       <style>{`
-        .talent-card { transition:all 0.22s cubic-bezier(0.4,0,0.2,1); border:1px solid #e5e7eb; }
-        .talent-card:hover { transform:translateY(-4px); box-shadow:0 14px 28px rgba(10,102,194,0.13); border-color:#0a66c2; }
+        .talent-card {
+          background:#fff;
+          border-radius:14px;
+          overflow:hidden;
+          border:1px solid #e5e7eb;
+          box-shadow:0 1px 3px rgba(0,0,0,0.04);
+          transition:all 0.22s cubic-bezier(0.4,0,0.2,1);
+          display:flex;
+          flex-direction:column;
+        }
+        .talent-card:hover {
+          transform:translateY(-4px);
+          box-shadow:0 14px 28px rgba(10,102,194,0.13);
+          border-color:#0a66c2;
+        }
         @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
         .card-anim { animation:fadeUp 0.4s ease both; }
         .spinner { width:40px;height:40px;border:3px solid #e2e8f0;border-top-color:#0a66c2;border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 16px; }
         @keyframes spin { to{transform:rotate(360deg)} }
-        .card-btn { width:100%;padding:10px;border-radius:9999px;border:2px solid #0a66c2;color:#0a66c2;background:#fff;font-weight:700;font-size:13px;cursor:pointer;transition:all 0.2s; }
-        .card-btn:hover { background:#0a66c2;color:#fff; }
-        .modal-overlay { position:fixed;inset:0;background:rgba(15,23,42,0.55);backdrop-filter:blur(4px);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity 0.2s; }
-        .modal-overlay.active { opacity:1;pointer-events:auto; }
-        .modal-box { background:#fff;border-radius:20px;padding:36px;max-width:480px;width:100%;box-shadow:0 24px 60px rgba(0,0,0,0.18);transform:translateY(16px) scale(0.97);transition:transform 0.25s cubic-bezier(0.4,0,0.2,1);position:relative;max-height:90vh;overflow-y:auto; }
-        .modal-overlay.active .modal-box { transform:translateY(0) scale(1); }
-        .form-input { width:100%;padding:10px 14px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;background:#f9fafb;outline:none;transition:border-color 0.15s;font-family:inherit;box-sizing:border-box; }
-        .form-input:focus { border-color:#0a66c2;background:#fff; }
-        .submit-btn { width:100%;padding:14px;background:#0a66c2;color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:background 0.2s; }
-        .submit-btn:hover { background:#0952a0; }
-        .submit-btn:disabled { background:#94a3b8;cursor:not-allowed; }
+
+        .tc-header {
+          height:72px;
+          background:linear-gradient(90deg,#0a66c2,#0952a0,#0a66c2);
+          position:relative;
+          flex-shrink:0;
+        }
+        .tc-badge {
+          position:absolute;
+          top:14px;
+          right:14px;
+          background:rgba(255,255,255,0.95);
+          padding:5px 12px;
+          border-radius:100px;
+          font-size:11px;
+          font-weight:800;
+          color:#0a66c2;
+          box-shadow:0 2px 6px rgba(0,0,0,0.12);
+          letter-spacing:-0.2px;
+          white-space:nowrap;
+          max-width:calc(100% - 28px);
+          overflow:hidden;
+          text-overflow:ellipsis;
+        }
+        .tc-body {
+          padding:0 18px 18px;
+          margin-top:-36px;
+          flex:1;
+          display:flex;
+          flex-direction:column;
+        }
+        .tc-avatar-wrap { position:relative; width:72px; height:72px; }
+        .tc-avatar-bg {
+          width:100%; height:100%;
+          border-radius:50%;
+          background:#fff;
+          padding:3px;
+          box-shadow:0 4px 12px rgba(0,0,0,0.1);
+        }
+        .tc-avatar {
+          width:100%; height:100%;
+          border-radius:50%;
+          background:linear-gradient(135deg,#fef3c7,#fde68a);
+          display:flex; align-items:center; justify-content:center;
+          font-size:34px;
+        }
+        .tc-flag {
+          position:absolute;
+          bottom:0; right:-2px;
+          width:26px; height:26px;
+          border:2.5px solid #fff;
+          border-radius:50%;
+          overflow:hidden;
+          box-shadow:0 2px 6px rgba(0,0,0,0.2);
+        }
+        .tc-name { font-size:17px; font-weight:800; color:#0f172a; margin-top:12px; }
+        .tc-sub { font-size:13px; color:#475569; margin-top:3px; }
+        .tc-meta { font-size:12px; color:#64748b; margin-top:6px; }
+        .tc-divider { height:1px; background:#e5e7eb; margin:12px 0; }
+
+        .tc-stats {
+          display:grid;
+          grid-template-columns:1fr 1fr;
+          gap:8px;
+          margin-bottom:10px;
+        }
+        .tc-stat {
+          background:#f1f5f9;
+          padding:8px 10px;
+          border-radius:8px;
+          text-align:center;
+        }
+        .tc-stat-label {
+          font-size:10px;
+          color:#64748b;
+          font-weight:700;
+        }
+        .tc-stat-val {
+          font-size:13px;
+          font-weight:800;
+          color:#0f172a;
+          margin-top:2px;
+          white-space:nowrap;
+          overflow:hidden;
+          text-overflow:ellipsis;
+        }
+
+        .tc-visa {
+          background:linear-gradient(135deg,#fef3c7,#fde68a);
+          padding:10px 12px;
+          border-radius:8px;
+          display:flex;
+          align-items:center;
+          justify-content:space-between;
+          margin-bottom:12px;
+          border:1px solid #fcd34d;
+          gap:6px;
+        }
+        .tc-visa-label {
+          font-size:11px;
+          color:#92400e;
+          font-weight:700;
+          white-space:nowrap;
+        }
+        .tc-visa-type {
+          font-size:14px;
+          font-weight:900;
+          color:#78350f;
+          white-space:nowrap;
+        }
+
+        .tc-btn {
+          width:100%;
+          padding:10px;
+          border-radius:9999px;
+          border:2px solid #0a66c2;
+          color:#0a66c2;
+          background:#fff;
+          font-weight:700;
+          font-size:13px;
+          cursor:pointer;
+          transition:all 0.2s;
+          margin-top:auto;
+          font-family:inherit;
+        }
+        .tc-btn:hover { background:#0a66c2; color:#fff; }
+
+        /* ─── 모바일 최적화 (480px 이하) ─── */
+        @media (max-width: 480px) {
+          .tc-body { padding:0 12px 12px; }
+          .tc-avatar-wrap { width:60px; height:60px; }
+          .tc-avatar { font-size:28px; }
+          .tc-flag { width:22px; height:22px; }
+          .tc-name { font-size:15px; }
+          .tc-sub { font-size:12px; }
+          .tc-meta { font-size:11px; }
+          .tc-divider { margin:10px 0; }
+
+          /* stat을 위아래로 (1열) */
+          .tc-stats { grid-template-columns:1fr; gap:6px; }
+          .tc-stat {
+            padding:6px 10px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            text-align:left;
+          }
+          .tc-stat-label { font-size:11px; }
+          .tc-stat-val { font-size:12px; margin-top:0; }
+
+          /* 비자 박스 column으로 */
+          .tc-visa {
+            flex-direction:column;
+            align-items:center;
+            text-align:center;
+            gap:2px;
+            padding:8px 10px;
+          }
+          .tc-visa-label { font-size:10px; }
+          .tc-visa-type { font-size:14px; }
+
+          .tc-btn { padding:9px; font-size:12px; }
+          .tc-badge { font-size:10px; padding:4px 10px; top:10px; right:10px; }
+        }
       `}</style>
 
       <section class="text-center py-12 px-5" style="background:linear-gradient(180deg,#fff 0%,#f3f5f8 100%)">
@@ -96,45 +262,6 @@ export const TalentPoolPage = () => {
           <h3 class="text-2xl font-black text-gray-900 mb-3">🤝 맞춤형 인재 추천 서비스</h3>
           <p class="text-gray-500 mb-6">원하는 조건의 인재를 찾지 못하셨나요?<br/>상세한 채용 요구사항을 알려주시면 최적의 인재를 추천해드립니다.</p>
           <a href="/company/apply" class="inline-block bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 rounded-xl font-bold no-underline">맞춤형 인재 추천 신청하기 →</a>
-        </div>
-      </div>
-
-      <div class="modal-overlay" id="modalOverlay">
-        <div class="modal-box">
-          <button id="modalCloseBtn" style="position:absolute;top:18px;right:20px;background:#f1f5f9;border:none;width:32px;height:32px;border-radius:50%;font-size:18px;cursor:pointer;color:#64748b">×</button>
-          <div id="modalContent">
-            <div class="text-xl font-black text-gray-900 mb-1">인재 정보 요청</div>
-            <p class="text-sm text-gray-500 mb-4" style="line-height:1.6">아래 정보를 입력하시면 담당자가 확인 후 연락드립니다.<br/>채용 수수료 없이 무료로 진행됩니다.</p>
-            <div id="modalTalentInfo" class="bg-blue-50 border border-blue-200 rounded-xl px-4 py-3 mb-4 text-sm text-blue-800 font-semibold"></div>
-            <form id="contactForm">
-              <input type="hidden" name="관심_인재" id="hiddenTalent"/>
-              <div class="mb-3">
-                <label class="block text-sm font-bold text-gray-700 mb-1">회사명 *</label>
-                <input class="form-input" type="text" name="회사명" placeholder="주식회사 예시" required/>
-              </div>
-              <div class="mb-3">
-                <label class="block text-sm font-bold text-gray-700 mb-1">담당자 이름 *</label>
-                <input class="form-input" type="text" name="담당자명" placeholder="홍길동" required/>
-              </div>
-              <div class="mb-3">
-                <label class="block text-sm font-bold text-gray-700 mb-1">연락처 *</label>
-                <input class="form-input" type="tel" name="연락처" placeholder="010-1234-5678" required/>
-              </div>
-              <div class="mb-3">
-                <label class="block text-sm font-bold text-gray-700 mb-1">이메일</label>
-                <input class="form-input" type="email" name="이메일" placeholder="example@company.com"/>
-              </div>
-              <div class="mb-3">
-                <label class="block text-sm font-bold text-gray-700 mb-1">업종 / 채용 직무</label>
-                <input class="form-input" type="text" name="업종직무" placeholder="제조업 / 용접"/>
-              </div>
-              <div class="mb-4">
-                <label class="block text-sm font-bold text-gray-700 mb-1">문의 내용</label>
-                <textarea class="form-input" name="문의내용" rows={3} placeholder="채용 조건이나 궁금한 점을 자유롭게 작성해주세요."></textarea>
-              </div>
-              <button type="submit" class="submit-btn" id="submitBtn">📨 문의 보내기</button>
-            </form>
-          </div>
         </div>
       </div>
 
