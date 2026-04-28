@@ -1,6 +1,5 @@
 (function() {
   var API_URL = 'https://script.google.com/macros/s/AKfycbwg14TmdT8_ieHiswYaoIQ78orlWyXysSj647VN2enwO2SUwnzrcgK6XaE1hl-Yi7Bn/exec';
-  var FORMSPREE_URL = 'https://formspree.io/f/xjkaedgv';
   var allTalent = [];
 
   var FLAGS = {
@@ -34,51 +33,64 @@
     return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
 
+  // 인재 정보 요청 페이지로 이동 (모든 정보 URL 파라미터로 전달)
+  function gotoRequestPage(t) {
+    var url = '/company/request?' +
+      'talent_id=' + t.no +
+      '&talent_name=' + encodeURIComponent(t.name) +
+      '&talent_nation=' + encodeURIComponent(t.nationality) +
+      '&talent_visa=' + encodeURIComponent(t.visa) +
+      '&talent_career=' + t.career +
+      '&talent_korean=' + encodeURIComponent(t.korean || '') +
+      '&talent_gender=' + encodeURIComponent(t.gender) +
+      '&talent_age=' + t.age +
+      '&talent_main=' + encodeURIComponent(t.mainCareer || '');
+    window.location.href = url;
+  }
+
   function buildCard(t, idx) {
     var gLabel = t.gender === '여' ? '여성' : '남성';
     var card = document.createElement('div');
-    card.className = 'talent-card card-anim bg-white rounded-2xl overflow-hidden flex flex-col';
+    card.className = 'talent-card card-anim';
     card.style.animationDelay = (idx * 0.04) + 's';
 
-    // 주요 업무 배지 (있을 때만)
     var careerBadge = '';
-    if (t.mainCareer && t.mainCareer.trim()) {
-      careerBadge =
-        '<div style="position:absolute;top:14px;right:14px;background:rgba(255,255,255,0.95);padding:5px 12px;border-radius:100px;font-size:11px;font-weight:800;color:#0a66c2;box-shadow:0 2px 6px rgba(0,0,0,0.12);letter-spacing:-0.2px;">' +
-        '💼 ' + escapeHtml(t.mainCareer) +
-        '</div>';
+    if (t.mainCareer && String(t.mainCareer).trim()) {
+      careerBadge = '<div class="tc-badge">💼 ' + escapeHtml(t.mainCareer) + '</div>';
     }
 
     card.innerHTML =
-      '<div style="height:72px;background:linear-gradient(90deg,#0a66c2,#0952a0,#0a66c2);position:relative;overflow:hidden;flex-shrink:0">' + careerBadge + '</div>' +
-      '<div style="padding:0 20px 20px;margin-top:-36px;flex:1;display:flex;flex-direction:column">' +
-        '<div style="position:relative;width:72px;height:72px">' +
-          '<div style="width:100%;height:100%;border-radius:50%;background:#fff;padding:3px;box-shadow:0 4px 12px rgba(0,0,0,.1)">' +
-            '<div style="width:100%;height:100%;border-radius:50%;background:linear-gradient(135deg,#fef3c7,#fde68a);display:flex;align-items:center;justify-content:center;font-size:34px">' +
-              getAvatar(t.gender) +
-            '</div>' +
+      '<div class="tc-header">' + careerBadge + '</div>' +
+      '<div class="tc-body">' +
+        '<div class="tc-avatar-wrap">' +
+          '<div class="tc-avatar-bg">' +
+            '<div class="tc-avatar">' + getAvatar(t.gender) + '</div>' +
           '</div>' +
-          '<div style="position:absolute;bottom:0;right:-2px;width:26px;height:26px;border:2.5px solid #fff;border-radius:50%;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,.2)">' +
-            getFlag(t.nationality) +
+          '<div class="tc-flag">' + getFlag(t.nationality) + '</div>' +
+        '</div>' +
+        '<div class="tc-name">' + escapeHtml(t.name) + '</div>' +
+        '<div class="tc-sub">' + escapeHtml(t.nationality) + ' · 경력 ' + t.career + '년</div>' +
+        '<div class="tc-meta">' + escapeHtml(t.nationality) + ' · ' + gLabel + ' · ' + t.age + '세</div>' +
+        '<div class="tc-divider"></div>' +
+        '<div class="tc-stats">' +
+          '<div class="tc-stat">' +
+            '<div class="tc-stat-label">경력</div>' +
+            '<div class="tc-stat-val">' + t.career + '년</div>' +
+          '</div>' +
+          '<div class="tc-stat">' +
+            '<div class="tc-stat-label">한국어</div>' +
+            '<div class="tc-stat-val">' + escapeHtml(t.korean || '미정') + '</div>' +
           '</div>' +
         '</div>' +
-        '<div style="font-size:17px;font-weight:800;color:#0f172a;margin-top:12px">' + escapeHtml(t.name) + '</div>' +
-        '<div style="font-size:13px;color:#475569;margin-top:3px">' + escapeHtml(t.nationality) + ' · 경력 ' + t.career + '년</div>' +
-        '<div style="font-size:12px;color:#64748b;margin-top:6px">' + escapeHtml(t.nationality) + ' · ' + gLabel + ' · ' + t.age + '세</div>' +
-        '<div style="height:1px;background:#e5e7eb;margin:14px 0"></div>' +
-        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">' +
-          '<div style="background:#f1f5f9;padding:10px 12px;border-radius:8px"><div style="font-size:10px;color:#64748b;font-weight:700">경력</div><div style="font-size:13px;font-weight:800;color:#0f172a;margin-top:3px">' + t.career + '년</div></div>' +
-          '<div style="background:#f1f5f9;padding:10px 12px;border-radius:8px"><div style="font-size:10px;color:#64748b;font-weight:700">한국어</div><div style="font-size:13px;font-weight:800;color:#0f172a;margin-top:3px">' + escapeHtml(t.korean || '미정') + '</div></div>' +
+        '<div class="tc-visa">' +
+          '<span class="tc-visa-label">🎯 희망 비자</span>' +
+          '<span class="tc-visa-type">' + escapeHtml(t.visa) + '</span>' +
         '</div>' +
-        '<div style="background:linear-gradient(135deg,#fef3c7,#fde68a);padding:12px 14px;border-radius:8px;display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;border:1px solid #fcd34d">' +
-          '<span style="font-size:11px;color:#92400e;font-weight:700">🎯 희망 비자</span>' +
-          '<span style="font-size:15px;font-weight:900;color:#78350f">' + escapeHtml(t.visa) + '</span>' +
-        '</div>' +
-        '<button class="card-btn">인재 정보 요청하기</button>' +
+        '<button class="tc-btn">인재 정보 요청하기</button>' +
       '</div>';
 
-    var btn = card.querySelector('.card-btn');
-    btn.addEventListener('click', function() { openModal(t); });
+    var btn = card.querySelector('.tc-btn');
+    btn.addEventListener('click', function() { gotoRequestPage(t); });
 
     return card;
   }
@@ -97,9 +109,7 @@
       return;
     }
 
-    data.forEach(function(t, i) {
-      grid.appendChild(buildCard(t, i));
-    });
+    data.forEach(function(t, i) { grid.appendChild(buildCard(t, i)); });
   }
 
   function applyFilters() {
@@ -123,79 +133,13 @@
     renderCards(allTalent);
   }
 
-  function openModal(t) {
-    var gLabel = t.gender === '여' ? '여성' : '남성';
-    var careerInfo = t.mainCareer ? (' · ' + t.mainCareer) : '';
-    var info = '👤 ' + t.name + ' | ' + t.nationality + ' | ' + gLabel + ' | ' + t.age + '세 | 경력 ' + t.career + '년' + careerInfo + ' | 희망 ' + t.visa;
-    var hidden = t.name + ' (' + t.nationality + ', ' + gLabel + ', ' + t.age + '세, 경력 ' + t.career + '년' + careerInfo + ', 희망 ' + t.visa + ')';
-
-    document.getElementById('modalTalentInfo').textContent = info;
-    document.getElementById('contactForm').reset();
-    document.getElementById('hiddenTalent').value = hidden;
-    document.getElementById('submitBtn').disabled = false;
-    document.getElementById('submitBtn').textContent = '📨 문의 보내기';
-    document.getElementById('contactForm').style.display = '';
-
-    var s = document.getElementById('modalContent').querySelector('.submit-success');
-    if (s) s.parentNode.removeChild(s);
-
-    document.getElementById('modalOverlay').classList.add('active');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeModal() {
-    document.getElementById('modalOverlay').classList.remove('active');
-    document.body.style.overflow = '';
-  }
-
   ['filterNation', 'filterVisa', 'filterGender', 'filterKorean'].forEach(function(id) {
     document.getElementById(id).addEventListener('change', applyFilters);
   });
-
   document.getElementById('resetFiltersBtn').addEventListener('click', resetFilters);
-  document.getElementById('modalCloseBtn').addEventListener('click', closeModal);
 
-  document.getElementById('modalOverlay').addEventListener('click', function(e) {
-    if (e.target === this) closeModal();
-  });
-
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') closeModal();
-  });
-
-  document.getElementById('contactForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    var btn = document.getElementById('submitBtn');
-    btn.disabled = true;
-    btn.textContent = '전송 중...';
-
-    fetch(FORMSPREE_URL, {
-      method: 'POST',
-      body: new FormData(this),
-      headers: { 'Accept': 'application/json' }
-    }).then(function(r) {
-      if (r.ok) {
-        document.getElementById('contactForm').style.display = 'none';
-        var s = document.createElement('div');
-        s.className = 'submit-success';
-        s.style.cssText = 'text-align:center;padding:20px 0';
-        s.innerHTML = '<div style="font-size:52px;margin-bottom:12px">✅</div>' +
-          '<h3 style="font-size:18px;font-weight:800;margin-bottom:8px">문의가 접수되었습니다!</h3>' +
-          '<p style="font-size:14px;color:#64748b;line-height:1.6">담당 행정사가 확인 후<br>빠르게 연락드리겠습니다.<br><br><strong>행정사사무소 늘좋은</strong></p>';
-        document.getElementById('modalContent').appendChild(s);
-      } else {
-        btn.disabled = false;
-        btn.textContent = '📨 문의 보내기';
-        alert('전송에 실패했습니다.');
-      }
-    }).catch(function() {
-      btn.disabled = false;
-      btn.textContent = '📨 문의 보내기';
-      alert('네트워크 오류가 발생했습니다.');
-    });
-  });
-
-  fetch(API_URL)
+  // 캐시 방지를 위해 timestamp 추가
+  fetch(API_URL + '?t=' + Date.now(), { cache: 'no-store' })
     .then(function(r) { return r.json(); })
     .then(function(json) {
       allTalent = json.talent || [];
@@ -207,8 +151,7 @@
       var sel = document.getElementById('filterNation');
       nations.forEach(function(n) {
         var o = document.createElement('option');
-        o.value = n;
-        o.textContent = n;
+        o.value = n; o.textContent = n;
         sel.appendChild(o);
       });
 
