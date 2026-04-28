@@ -20,7 +20,6 @@
   function getAvatar(g) { return g === '여' ? '👩🏽' : '👨🏽'; }
   function escapeHtml(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 
-  // 인재 정보 요청 페이지로 이동 URL 생성
   function buildRequestUrl(c) {
     return '/company/request?' +
       'talent_id=' + c.no +
@@ -34,7 +33,6 @@
       '&talent_main=' + encodeURIComponent(c.mainCareer || '');
   }
 
-  // 카드 내용 HTML 생성 (공통)
   function buildCardHTML(c) {
     var gLabel = c.gender === '여' ? '여성' : '남성';
     var careerBadge = '';
@@ -68,11 +66,10 @@
           '<span class="tcc-visa-label">🎯 희망 비자</span>' +
           '<span class="tcc-visa-type">' + escapeHtml(c.visa) + '</span>' +
         '</div>' +
-        '<a href="' + buildRequestUrl(c) + '" class="tcc-btn">인재 정보 요청하기</a>' +
+        '<a href="' + buildRequestUrl(c) + '" class="tcc-btn">인재 정보 요청</a>' +
       '</div>';
   }
 
-  // 데스크톱 카드 (carousel용 - candidate-card 클래스 유지)
   function buildDesktopCard(c) {
     var card = document.createElement('div');
     card.className = 'candidate-card talent-card-c';
@@ -80,7 +77,6 @@
     return card;
   }
 
-  // 모바일 카드 (carousel과 무관 - candidate-card 클래스 없음)
   function buildMobileCard(c) {
     var card = document.createElement('div');
     card.className = 'talent-card-c';
@@ -88,12 +84,102 @@
     return card;
   }
 
-  // 캐시 방지 + 강력 fetch
+  // ============================================
+  // 자체 캐러셀 로직 (기존 moveSlide 덮어쓰기)
+  // ============================================
+  var carouselState = {
+    currentIndex: 0,
+    autoSlideInterval: null,
+    cardCount: 0
+  };
+
+  function getVisibleCount() {
+    if (window.innerWidth >= 1280) return 4; // xl
+    if (window.innerWidth >= 1024) return 3; // lg
+    if (window.innerWidth >= 768) return 2;  // md
+    return 1;
+  }
+
+  function updateCarousel() {
+    var track = document.getElementById('candidate-track');
+    if (!track) return;
+
+    var visible = getVisibleCount();
+    var maxIndex = Math.max(0, carouselState.cardCount - visible);
+
+    if (carouselState.currentIndex < 0) {
+      carouselState.currentIndex = maxIndex;
+    } else if (carouselState.currentIndex > maxIndex) {
+      carouselState.currentIndex = 0;
+    }
+
+    // 카드 1장당 너비 = 100% / visible 개수
+    var cardWidthPercent = 100 / visible;
+    var translatePercent = -(carouselState.currentIndex * cardWidthPercent);
+
+    track.style.transition = 'transform 0.5s ease';
+    track.style.transform = 'translateX(' + translatePercent + '%)';
+  }
+
+  function moveSlideCustom(direction) {
+    carouselState.currentIndex += direction;
+    updateCarousel();
+
+    // 사용자 클릭 시 자동 슬라이드 일시 중단 후 재시작
+    stopAutoSlide();
+    startAutoSlide();
+  }
+
+  function startAutoSlide() {
+    stopAutoSlide();
+    carouselState.autoSlideInterval = setInterval(function() {
+      carouselState.currentIndex += 1;
+      updateCarousel();
+    }, 4000);
+  }
+
+  function stopAutoSlide() {
+    if (carouselState.autoSlideInterval) {
+      clearInterval(carouselState.autoSlideInterval);
+      carouselState.autoSlideInterval = null;
+    }
+  }
+
+  // 캐러셀 초기 스타일 설정
+  function setupCarouselStyles() {
+    var track = document.getElementById('candidate-track');
+    if (!track) return;
+
+    var visible = getVisibleCount();
+    var cardWidthPercent = 100 / visible;
+
+    // track 자체 flex 설정
+    track.style.display = 'flex';
+    track.style.transition = 'transform 0.5s ease';
+
+    // 각 카드에 고정 width 적용
+    var cards = track.querySelectorAll('.candidate-card');
+    cards.forEach(function(card) {
+      card.style.flex = '0 0 ' + cardWidthPercent + '%';
+      card.style.boxSizing = 'border-box';
+      card.style.padding = '0 12px';
+    });
+  }
+
+  // 윈도우 리사이즈 시 캐러셀 재계산
+  window.addEventListener('resize', function() {
+    setupCarouselStyles();
+    updateCarousel();
+  });
+
+  // 기존 moveSlide 함수 덮어쓰기 (HTML의 onclick에서 호출되는 함수)
+  window.moveSlide = moveSlideCustom;
+
+  // 데이터 로드
   fetch(API_URL + '?t=' + Date.now(), { cache: 'no-store' })
     .then(function(r) { return r.json(); })
     .then(function(json) {
       var candidates = json.talent || [];
-
       var emptyHtml = '<div style="text-align:center;padding:40px;color:#94a3b8;width:100%">현재 등록된 인재가 없습니다.</div>';
 
       if (candidates.length === 0) {
@@ -111,6 +197,18 @@
         candidates.forEach(function(c) {
           track.appendChild(buildDesktopCard(c));
         });
+
+        carouselState.cardCount = candidates.length;
+        carouselState.currentIndex = 0;
+
+        // 캐러셀 스타일 설정 + 자동 슬라이드 시작
+        setupCarouselStyles();
+        updateCarousel();
+        startAutoSlide();
+
+        // 마우스 오버 시 자동 슬라이드 일시정지
+        track.addEventListener('mouseenter', stopAutoSlide);
+        track.addEventListener('mouseleave', startAutoSlide);
       }
 
       // 모바일 - 그리드 (최대 12명)
