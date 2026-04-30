@@ -7,6 +7,158 @@ export const TalentPoolPage = () => {
       <Header />
 
       <style>{`
+        /* ─────────────────────────────────────────────
+           외국인 고용 계산기 진입 배너 (옵션 B)
+           ───────────────────────────────────────────── */
+        .calc-banner {
+          background: linear-gradient(135deg, #0F1F4D 0%, #081538 100%);
+          border-radius: 18px;
+          padding: 36px 44px;
+          color: #fff;
+          position: relative;
+          overflow: hidden;
+          display: grid;
+          grid-template-columns: 1fr auto;
+          align-items: center;
+          gap: 32px;
+          box-shadow: 0 12px 32px rgba(15, 31, 77, 0.18);
+        }
+        .calc-banner::before {
+          content: "";
+          position: absolute;
+          top: -80px;
+          right: -80px;
+          width: 320px;
+          height: 320px;
+          background: radial-gradient(circle, rgba(247, 111, 76, 0.22) 0%, transparent 70%);
+          border-radius: 50%;
+          pointer-events: none;
+        }
+        .calc-banner-left { position: relative; z-index: 1; }
+        .calc-eyebrow {
+          display: inline-block;
+          background: rgba(247, 111, 76, 0.18);
+          color: #FFB89E;
+          font-size: 11px;
+          font-weight: 800;
+          letter-spacing: 2.5px;
+          padding: 5px 12px;
+          border-radius: 6px;
+          margin-bottom: 14px;
+          text-transform: uppercase;
+        }
+        .calc-banner h2 {
+          font-size: 28px;
+          font-weight: 800;
+          line-height: 1.32;
+          letter-spacing: -0.6px;
+          color: #fff;
+          margin-bottom: 12px;
+        }
+        .calc-banner h2 .accent {
+          color: #F76F4C;
+        }
+        .calc-banner-desc {
+          font-size: 14px;
+          line-height: 1.7;
+          color: #CBD5E1;
+          max-width: 540px;
+          margin-bottom: 18px;
+        }
+        .calc-visa-tags {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+          margin-bottom: 22px;
+        }
+        .calc-visa-tag {
+          background: rgba(255, 255, 255, 0.08);
+          border: 1px solid rgba(247, 111, 76, 0.35);
+          color: #FFE9E1;
+          font-size: 12px;
+          font-weight: 600;
+          padding: 6px 12px;
+          border-radius: 100px;
+          white-space: nowrap;
+        }
+        .calc-cta {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          background: #F76F4C;
+          color: #fff;
+          padding: 13px 28px;
+          border-radius: 9999px;
+          font-weight: 700;
+          font-size: 15px;
+          text-decoration: none;
+          transition: all 0.2s;
+          box-shadow: 0 4px 12px rgba(247, 111, 76, 0.35);
+        }
+        .calc-cta:hover {
+          background: #E55A37;
+          transform: translateY(-2px);
+          box-shadow: 0 6px 16px rgba(247, 111, 76, 0.45);
+        }
+        .calc-banner-right {
+          position: relative;
+          z-index: 1;
+          text-align: center;
+          padding-left: 32px;
+          border-left: 1px solid rgba(255,255,255,0.12);
+        }
+        .calc-big-num {
+          font-size: 76px;
+          font-weight: 900;
+          color: #F76F4C;
+          line-height: 1;
+          letter-spacing: -2px;
+        }
+        .calc-big-num span {
+          font-size: 32px;
+          margin-left: 2px;
+        }
+        .calc-big-sub {
+          font-size: 13px;
+          color: #CBD5E1;
+          font-weight: 600;
+          margin-top: 8px;
+        }
+        .calc-big-note {
+          font-size: 11px;
+          color: #94A3B8;
+          margin-top: 4px;
+        }
+
+        /* 모바일 (640px 이하) */
+        @media (max-width: 640px) {
+          .calc-banner {
+            grid-template-columns: 1fr;
+            padding: 28px 22px;
+            gap: 22px;
+            border-radius: 14px;
+          }
+          .calc-banner h2 { font-size: 22px; }
+          .calc-banner-desc { font-size: 13px; }
+          .calc-banner-right {
+            padding-left: 0;
+            border-left: none;
+            border-top: 1px solid rgba(255,255,255,0.12);
+            padding-top: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: baseline;
+            gap: 12px;
+          }
+          .calc-big-num { font-size: 56px; }
+          .calc-big-sub { margin-top: 0; }
+          .calc-big-note { display: none; }
+          .calc-cta { width: 100%; justify-content: center; }
+        }
+
+        /* ─────────────────────────────────────────────
+           기존 인재풀 카드 스타일
+           ───────────────────────────────────────────── */
         .talent-card {
           background:#fff;
           border-radius:14px;
@@ -208,6 +360,39 @@ export const TalentPoolPage = () => {
       </section>
 
       <div class="max-w-7xl mx-auto px-5 pb-20">
+
+        {/* ─────────────────────────────────────────────
+            외국인 고용 가능 인원 계산기 진입 배너 (옵션 B)
+            인재풀에서 매칭 신청하기 전, 자가 진단 유도
+            ───────────────────────────────────────────── */}
+        <div class="calc-banner mb-6">
+          <div class="calc-banner-left">
+            <span class="calc-eyebrow">CALCULATOR</span>
+            <h2>
+              우리 회사 외국인<br/>
+              <span class="accent">몇 명까지</span> 채용 가능할까?
+            </h2>
+            <p class="calc-banner-desc">
+              인재풀에서 매칭 신청하기 전에, 비자별로 우리 회사가 보유 가능한 인원을 먼저 확인해보세요.
+              회사 정보 4가지만 입력하면 됩니다.
+            </p>
+            <div class="calc-visa-tags">
+              <span class="calc-visa-tag">✓ F-2-R</span>
+              <span class="calc-visa-tag">✓ E-7-4 (R + K-POINT)</span>
+              <span class="calc-visa-tag">✓ E-7-1</span>
+              <span class="calc-visa-tag">✓ 배우자 비자 안내</span>
+            </div>
+            <a href="/calculator" class="calc-cta">
+              계산기 시작하기 →
+            </a>
+          </div>
+          <div class="calc-banner-right">
+            <div class="calc-big-num">30<span>초</span></div>
+            <div class="calc-big-sub">한 번에 확인</div>
+            <div class="calc-big-note">참고용 수치</div>
+          </div>
+        </div>
+
         <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-200 mb-5">
           <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
             <div>
