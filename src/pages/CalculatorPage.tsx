@@ -930,7 +930,7 @@ export const CalculatorPage = () => {
 
       `}</style>
 
-      <div class="wrap">
+      <div class="wrap" style="padding-top: 80px">
 
   {/* ============================================================
        히어로
