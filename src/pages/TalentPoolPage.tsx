@@ -344,7 +344,7 @@ export const TalentPoolPage = () => {
         }
       `}</style>
 
-      <section class="text-center py-12 px-5" style="background:linear-gradient(180deg,#fff 0%,#f3f5f8 100%)">
+       <section class="text-center px-5" style="background:linear-gradient(180deg,#fff 0%,#f3f5f8 100%); padding-top: 128px; padding-bottom: 48px;">
         <div class="inline-flex items-center gap-2 bg-blue-50 text-blue-600 px-4 py-1 rounded-full text-xs font-bold mb-4">
           🎯 외국인 인재풀
         </div>
