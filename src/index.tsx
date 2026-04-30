@@ -17,6 +17,7 @@ import { SuccessPage } from './pages/SuccessPage'
 import { CompanySuccessPage } from './pages/CompanySuccessPage'
 import { TalentPoolPage } from './pages/TalentPoolPage'
 import { TalentRequestPage } from './pages/TalentRequestPage'
+import { CalculatorPage } from './pages/CalculatorPage'
 import { JobsPortalPage } from './pages/JobsPortalPage'
 import { HomePageEN } from './pages/HomePageEN'
 import { ApplyPageEN } from './pages/ApplyPageEN'
@@ -422,6 +423,14 @@ app.get('/company', (c) => {
   return c.render(
     <CompanyPage />,
     { title: '기업채용 - HIRE ME' }
+  )
+})
+
+// 외국인 고용 가능 인원 계산기
+app.get('/calculator', (c) => {
+  return c.render(
+    <CalculatorPage />,
+    { title: '외국인 고용 가능 인원 계산기 - HIRE ME' }
   )
 })
 
