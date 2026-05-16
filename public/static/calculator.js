@@ -295,8 +295,19 @@ rootHelpToggle.addEventListener('click', () => {
 // ============================================================
 // 계산 로직 (검증 완료된 함수)
 // ============================================================
+
+// E-7-4R 구간별 쿼터 (지침 표 기준)
+function calcE74RTierQuota(k) {
+  if (k <= 0) return 0;
+  if (k <= 5) return 3;
+  if (k <= 50) return Math.ceil(k * 0.5);
+  if (k <= 100) return Math.min(Math.ceil(k * 0.5), 35);
+  if (k <= 150) return 40;
+  return 50; // 151명 이상
+}
+
 function calculate(input) {
-  const { regionType, koreans, foreigners, hasE9 } = input;
+  const { regionType, koreans, foreigners, hasE9, hasE74KPoint } = input;
   const totalWorkers = koreans + foreigners;
   
   const result = { f2r: null, e74Combined: null, e74r: null, e74kpoint: null, e71: null };
@@ -320,48 +331,78 @@ function calculate(input) {
     result.f2r = { available: false, reason: 'region' };
   }
   
-  // E-7-4 통합 쿼터 비율
-  let combinedRate;
-  if (regionType === 'declining' || regionType === 'attention' || regionType === 'rootIndustry') combinedRate = 0.5;
-  else combinedRate = 0.3;
-  
+  // 한국인 0명 특례 (E-9 보유 시)
   const isKZeroSpecial = (koreans === 0 && hasE9);
-  let combinedQuota;
+  
+  // ====================================================
+  // E-7-4R 쿼터 계산
+  //   기본: 구간별 (지침 표)
+  //   특례: 인구감소지역 AND K-POINT 동시 고용 AND 내국인 71명 초과 → 50%
+  // ====================================================
+  const e74rSpecial50 = (regionType === 'declining' && hasE74KPoint && koreans > 71);
+  
+  let e74rQuota;
   if (isKZeroSpecial) {
-    if (regionType === 'declining' || regionType === 'rootIndustry' || regionType === 'attention') combinedQuota = 2;
-    else combinedQuota = 1;
+    // 한국인 0명 근속자 특례
+    if (regionType === 'declining' || regionType === 'rootIndustry') e74rQuota = 2;
+    else if (regionType === 'attention') e74rQuota = 1; // 관심지역 1명 (뿌리산업이면 2명이나, attention에서는 별도 처리 필요시 분기)
+    else e74rQuota = 1;
+  } else if (e74rSpecial50) {
+    e74rQuota = Math.ceil(koreans * 0.5); // 50% 특례
   } else {
-    combinedQuota = Math.ceil(koreans * combinedRate);
+    e74rQuota = calcE74RTierQuota(koreans); // 구간별 (기본)
   }
   
-  // E-7-4R
+  // E-7-4R 신청 가능 여부
   if (regionType === 'declining') {
     if (!hasE9) result.e74r = { available: false, reason: 'no-e9' };
-    else result.e74r = { available: true, quota: combinedQuota, mode: 'full' };
+    else result.e74r = { 
+      available: true, 
+      quota: e74rQuota, 
+      mode: 'full',
+      special50: e74rSpecial50
+    };
   } else if (regionType === 'attention') {
     if (!hasE9) result.e74r = { available: false, reason: 'no-e9' };
-    else result.e74r = { available: true, quota: combinedQuota, mode: 'change-only' };
+    else result.e74r = { 
+      available: true, 
+      quota: e74rQuota, 
+      mode: 'change-only',
+      special50: false // 관심지역은 50% 특례 불가
+    };
   } else {
     result.e74r = { available: false, reason: 'region' };
   }
   
-  // E-7-4 K-POINT
+  // ====================================================
+  // E-7-4 K-POINT 쿼터 (기존 로직 유지)
+  //   비율: 인구감소지역/관심지역/뿌리산업 = 50%, 그 외 = 30%
+  //   추가: 상시근로자(내국인+외국인)의 20% 상한
+  // ====================================================
+  let combinedRate;
+  if (regionType === 'declining' || regionType === 'attention' || regionType === 'rootIndustry') combinedRate = 0.5;
+  else combinedRate = 0.3;
+  
+  const combinedQuotaBase = isKZeroSpecial
+    ? ((regionType === 'declining' || regionType === 'rootIndustry' || regionType === 'attention') ? 2 : 1)
+    : Math.ceil(koreans * combinedRate);
+  
   if (!hasE9) {
     result.e74kpoint = { available: false, reason: 'no-e9' };
   } else {
     let kQ;
     if (isKZeroSpecial) {
-      if (regionType === 'declining' || regionType === 'rootIndustry' || regionType === 'attention') kQ = 2;
-      else kQ = 1;
+      kQ = combinedQuotaBase;
     } else {
       const totalRule = Math.ceil(totalWorkers * 0.2);
-      kQ = Math.min(combinedQuota, totalRule);
+      kQ = Math.min(combinedQuotaBase, totalRule);
     }
     result.e74kpoint = { available: true, quota: kQ };
   }
   
+  // 통합 쿼터 정보 (표시용)
   result.e74Combined = {
-    quota: combinedQuota,
+    quota: combinedQuotaBase,
     rate: combinedRate,
     isSpecial: isKZeroSpecial,
     available: hasE9,
@@ -420,7 +461,7 @@ function renderResults(result, input) {
     const ratePct = (result.e74Combined.rate * 100).toFixed(0);
     const specialNote = result.e74Combined.isSpecial 
       ? '한국인 0명 특례 적용 (E-9 1명 이상 보유 시)' 
-      : `내국인의 ${ratePct}% 기준`;
+      : `K-POINT 기준: 내국인의 ${ratePct}%`;
     
     // R 정보
     let rLine;
@@ -428,13 +469,21 @@ function renderResults(result, input) {
       const modeBadge = result.e74r.mode === 'full' 
         ? '<span class="mode-badge mode-full">신규+자격변경</span>'
         : '<span class="mode-badge mode-change-only">자격변경만</span>';
-      const rDetail = result.e74r.mode === 'full'
-        ? '인구감소지역에서 신규 채용 + 자격변경'
-        : '인구감소관심지역 — 재직자 자격변경만 가능';
+      const special50Badge = result.e74r.special50
+        ? ' <span class="mode-badge mode-special50">50% 특례 적용</span>'
+        : '';
+      let rDetail;
+      if (result.e74r.special50) {
+        rDetail = '인구감소지역 + K-POINT 동시 고용 + 내국인 71명 초과 → 50% 특례 적용';
+      } else if (result.e74r.mode === 'full') {
+        rDetail = '인구감소지역 신규 채용 + 자격변경 (구간별 쿼터)';
+      } else {
+        rDetail = '인구감소관심지역 — 재직자 자격변경만 가능 (구간별 쿼터)';
+      }
       rLine = `
         <div class="visa-sub-item">
           <div class="label-area">
-            <div class="label-name">E-7-4R ${modeBadge}</div>
+            <div class="label-name">E-7-4R ${modeBadge}${special50Badge}</div>
             <div class="label-detail">${rDetail}</div>
           </div>
           <div class="quota-num">${result.e74r.quota}명</div>
@@ -465,7 +514,11 @@ function renderResults(result, input) {
     
     // 추가 안내
     let notes = [];
-    notes.push('R과 K-POINT는 합산하여 통합 쿼터를 넘을 수 없습니다.');
+    if (result.e74r.special50) {
+      notes.push('E-7-4R은 50% 특례가 적용되어 구간별 상한(35/40/50명) 없이 내국인의 50%까지 가능합니다.');
+    } else if (result.e74r.available) {
+      notes.push('E-7-4R은 구간별 쿼터(1~5명→3 / 6~50명→50% / 51~100명→50%·최대 35 / 101~150명→40 / 151명↑→50)를 따릅니다.');
+    }
     if (result.e74Combined.isSpecial) {
       notes.push('한국인 0명 특례에 따라 K-POINT 상시근로자 20% 룰은 적용되지 않습니다.');
     } else {
@@ -475,10 +528,10 @@ function renderResults(result, input) {
     html += `
       <div class="visa-card">
         <div class="visa-head">
-          <div class="visa-name">E-7-4 통합 쿼터</div>
-          <div class="visa-quota">최대 <span class="num">${result.e74Combined.quota}</span>명</div>
+          <div class="visa-name">E-7-4 (R + K-POINT)</div>
+          <div class="visa-quota"></div>
         </div>
-        <div class="visa-desc">${specialNote}. R과 K-POINT를 합산하여 보유 가능한 인원입니다.</div>
+        <div class="visa-desc">${specialNote}.</div>
         <div class="visa-sub">
           ${rLine}
           ${kLine}
@@ -608,6 +661,19 @@ form.addEventListener('submit', (e) => {
   }
   const hasE9 = e9Yes;
   
+  // E-7-4 K-POINT 보유 여부 (신규)
+  const e74kYesEl = document.getElementById('has-e74k-yes');
+  const e74kNoEl = document.getElementById('has-e74k-no');
+  let hasE74KPoint = false;
+  if (e74kYesEl && e74kNoEl) {
+    // HTML에 해당 라디오가 있을 때만 검증
+    if (!e74kYesEl.checked && !e74kNoEl.checked) {
+      alert('현재 회사에 E-7-4 K-POINT 외국인 보유 여부를 선택해주세요.');
+      return;
+    }
+    hasE74KPoint = e74kYesEl.checked;
+  }
+  
   // regionType 결정
   let regionType;
   if (selectedRegion.type === 'declining') regionType = 'declining';
@@ -627,7 +693,7 @@ form.addEventListener('submit', (e) => {
   const hasDisq = disqualifiers.length > 0;
   
   // 계산
-  const input = { regionType, koreans, foreigners, hasE9 };
+  const input = { regionType, koreans, foreigners, hasE9, hasE74KPoint };
   const result = calculate(input);
   
   // 렌더링
