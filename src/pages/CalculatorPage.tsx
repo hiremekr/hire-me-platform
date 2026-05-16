@@ -624,6 +624,7 @@ export const CalculatorPage = () => {
   .mode-full { background: var(--success-bg); color: #15803D; }
   .mode-change-only { background: var(--warn-bg); color: var(--warn); }
   .mode-na { background: var(--bg-card); color: var(--muted); }
+  .mode-special50 { background: var(--accent-soft); color: var(--accent-deep); }
 
   /* 사용 불가 비자 (얇게 표시) */
   .visa-card.unavailable {
@@ -1021,6 +1022,23 @@ export const CalculatorPage = () => {
           <label for="has-e9-no">없음</label>
         </div>
       </div>
+
+      {/* ▼▼▼ 새로 추가된 K-POINT 보유 여부 ▼▼▼ */}
+      <div class="field">
+        <label class="field-label">현재 E-7-4 K-POINT 외국인 직원<span class="req">*</span>
+          <span class="field-help">인구감소지역 + 내국인 72명 이상이면 구간별 한도 대신 50% 특례가 적용됩니다</span>
+        </label>
+        <div class="check-row">
+          <input type="radio" id="has-e74k-yes" name="has-e74k" value="yes" />
+          <label for="has-e74k-yes">1명 이상 있음</label>
+        </div>
+        <div class="check-row" style="margin-top: 8px;">
+          <input type="radio" id="has-e74k-no" name="has-e74k" value="no" />
+          <label for="has-e74k-no">없음</label>
+        </div>
+      </div>
+      {/* ▲▲▲ 새로 추가된 K-POINT 보유 여부 ▲▲▲ */}
+
     </div>
 
     {/* Step 3. 결격사유 (선택사항) */}
