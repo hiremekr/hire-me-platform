@@ -538,6 +538,10 @@ function renderResults(result, input) {
             ${notes.map(n => `<p>※ ${n}</p>`).join('')}
           </div>
         </div>
+        <div style="background: var(--warn-bg); border: 1.5px solid var(--warn-border); border-radius: 8px; padding: 14px 16px; margin-top: 14px; font-size: 12.5px; line-height: 1.65; color: #78350F;">
+          <strong style="color: var(--warn); display: block; margin-bottom: 5px; font-size: 13px;">⚠️ E-7-4는 매우 예민한 비자입니다</strong>
+          본 계산기 결과는 <strong>참고용 수치</strong>이며, 실제 가능 인원은 직종, 임금, 회사 이력 등에 따라 달라질 수 있습니다. 특히 <strong>구직중인 외국인을 채용</strong>하시려는 경우, 반드시 <strong>관할 지자체 · 출입국관리사무소 · 담당 행정사</strong>와 사전에 상의하신 후 진행하시기 바랍니다.
+        </div>
       </div>
     `;
   } else {
