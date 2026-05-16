@@ -458,12 +458,11 @@ function renderResults(result, input) {
   
   // E-7-4 통합 쿼터 (R + K-POINT)
   if (result.e74Combined.available) {
-    const ratePct = (result.e74Combined.rate * 100).toFixed(0);
-    const specialNote = result.e74Combined.isSpecial 
-      ? '한국인 0명 특례 적용 (E-9 1명 이상 보유 시)' 
-      : `K-POINT 기준: 내국인의 ${ratePct}%`;
+    const topDesc = result.e74Combined.isSpecial
+      ? '한국인 0명 특례가 적용됩니다 (E-9 1명 이상 보유 시).'
+      : 'E-7-4R과 K-POINT는 같은 쿼터를 공유합니다. 두 비자를 합산해서 보유할 수 있는 인원과, K-POINT만 단독으로 자격변경할 때 가능한 인원이 아래와 같이 나뉩니다.';
     
-    // R 정보
+    // R 정보 — "E-7-4R + K-POINT 합산 최대" 의미
     let rLine;
     if (result.e74r.available) {
       const modeBadge = result.e74r.mode === 'full' 
@@ -474,11 +473,11 @@ function renderResults(result, input) {
         : '';
       let rDetail;
       if (result.e74r.special50) {
-        rDetail = '인구감소지역 + K-POINT 동시 고용 + 내국인 71명 초과 → 50% 특례 적용';
+        rDetail = 'E-7-4R + K-POINT 합산하여 보유할 수 있는 최대 인원입니다 (인구감소지역 50% 특례 적용 중)';
       } else if (result.e74r.mode === 'full') {
-        rDetail = '인구감소지역 신규 채용 + 자격변경 (구간별 쿼터)';
+        rDetail = 'E-7-4R + K-POINT 합산하여 보유할 수 있는 최대 인원입니다 (인구감소지역 — 신규 채용 + 자격변경 모두 가능)';
       } else {
-        rDetail = '인구감소관심지역 — 재직자 자격변경만 가능 (구간별 쿼터)';
+        rDetail = 'E-7-4R + K-POINT 합산하여 보유할 수 있는 최대 인원입니다 (인구감소관심지역 — 재직자 자격변경만 가능)';
       }
       rLine = `
         <div class="visa-sub-item">
@@ -501,12 +500,12 @@ function renderResults(result, input) {
       `;
     }
     
-    // K-POINT 정보
+    // K-POINT 정보 — "E-7-4R 없이 K-POINT 단독 자격변경 시" 의미
     let kLine = `
       <div class="visa-sub-item">
         <div class="label-area">
           <div class="label-name">E-7-4 K-POINT</div>
-          <div class="label-detail">1년 이상 재직 E-9 자격변경 또는 E-7-4 사업장변경자 채용</div>
+          <div class="label-detail">E-7-4R 없이 K-POINT만 자격변경할 때 가능한 인원입니다 (E-7-4 사업장변경자 채용 시에도 같은 쿼터에서 차감)</div>
         </div>
         <div class="quota-num">${result.e74kpoint.quota}명</div>
       </div>
@@ -515,14 +514,14 @@ function renderResults(result, input) {
     // 추가 안내
     let notes = [];
     if (result.e74r.special50) {
-      notes.push('E-7-4R은 50% 특례가 적용되어 구간별 상한(35/40/50명) 없이 내국인의 50%까지 가능합니다.');
+      notes.push('E-7-4R은 K-POINT 동시 고용 + 내국인 72명 이상 조건을 충족하여 구간별 상한 없이 내국인의 50%까지 가능합니다.');
     } else if (result.e74r.available) {
-      notes.push('E-7-4R은 구간별 쿼터(1~5명→3 / 6~50명→50% / 51~100명→50%·최대 35 / 101~150명→40 / 151명↑→50)를 따릅니다.');
+      notes.push('E-7-4R 쿼터는 구간별로 산정됩니다 (1~5명→3 / 6~50명→50% / 51~100명→최대 35 / 101~150명→40 / 151명↑→50).');
     }
     if (result.e74Combined.isSpecial) {
       notes.push('한국인 0명 특례에 따라 K-POINT 상시근로자 20% 룰은 적용되지 않습니다.');
     } else {
-      notes.push('K-POINT는 상시근로자(내국인+외국인)의 20% 한도가 추가 적용됩니다.');
+      notes.push('K-POINT 자격변경에는 회사가 발급하는 \'고용기업 추천서\'가 필수이며, 이 추천서는 상시근로자(내국인+외국인)의 20% 범위 내에서만 발급할 수 있어 K-POINT 가능 인원이 위와 같이 산정됩니다. 인구감소지역의 50% 특례는 E-7-4R에만 적용되며, K-POINT 추천서 한도(20%)는 그대로 유지됩니다.');
     }
     
     html += `
@@ -531,7 +530,7 @@ function renderResults(result, input) {
           <div class="visa-name">E-7-4 (R + K-POINT)</div>
           <div class="visa-quota"></div>
         </div>
-        <div class="visa-desc">${specialNote}.</div>
+        <div class="visa-desc">${topDesc}</div>
         <div class="visa-sub">
           ${rLine}
           ${kLine}
