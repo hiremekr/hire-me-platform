@@ -432,7 +432,7 @@ function renderResults(result, input) {
     html += `
       <div class="visa-card">
         <div class="visa-head">
-          <div class="visa-name">F-2-R <span class="mode-badge mode-full">신규+자격변경</span></div>
+          <div class="visa-name">F-2-R <span class="mode-badge mode-full">신규고용 · 자격변경 모두 가능</span></div>
           <div class="visa-quota">최대 <span class="num">${result.f2r.quota}</span>명</div>
         </div>
         <div class="visa-desc">지역특화 우수인재 비자. 인구감소지역 89개에서만 신청 가능하며, 신규 채용과 자격변경 모두 가능합니다.</div>
@@ -466,8 +466,8 @@ function renderResults(result, input) {
     let rLine;
     if (result.e74r.available) {
       const modeBadge = result.e74r.mode === 'full' 
-        ? '<span class="mode-badge mode-full">신규+자격변경</span>'
-        : '<span class="mode-badge mode-change-only">자격변경만</span>';
+        ? '<span class="mode-badge mode-full">신규고용 · 자격변경 모두 가능</span>'
+        : '<span class="mode-badge mode-change-only">재직자 자격변경만 가능</span>';
       const special50Badge = result.e74r.special50
         ? ' <span class="mode-badge mode-special50">50% 특례 적용</span>'
         : '';
@@ -533,9 +533,13 @@ function renderResults(result, input) {
           ${kLine}
           ${notesHtml}
         </div>
-        <div style="background: var(--warn-bg); border: 1.5px solid var(--warn-border); border-radius: 8px; padding: 14px 16px; margin-top: 14px; font-size: 12.5px; line-height: 1.65; color: #78350F;">
+        <div style="background: #EFF6FF; border: 1.5px solid #BFDBFE; border-radius: 8px; padding: 14px 16px; margin-top: 14px; font-size: 12.5px; line-height: 1.65; color: #1E3A8A;">
+          <strong style="color: #1E40AF; display: block; margin-bottom: 5px; font-size: 13px;">💡 헷갈리지 마세요</strong>
+          위 숫자는 회사가 <strong>보유 가능한 총 인원</strong>입니다. 현재 재직 중인 E-7-4(R+K-POINT) 인원이 있다면 그만큼 차감한 수가 추가 채용/자격변경 가능 인원입니다.
+        </div>
+        <div style="background: var(--warn-bg); border: 1.5px solid var(--warn-border); border-radius: 8px; padding: 14px 16px; margin-top: 10px; font-size: 12.5px; line-height: 1.65; color: #78350F;">
           <strong style="color: var(--warn); display: block; margin-bottom: 5px; font-size: 13px;">⚠️ E-7-4는 매우 예민한 비자입니다</strong>
-          본 계산기 결과는 <strong>참고용 수치</strong>이며, 실제 가능 인원은 직종, 임금, 회사 이력 등에 따라 달라질 수 있습니다. 특히 <strong>구직중인 외국인을 채용</strong>하시려는 경우, 반드시 <strong>관할 지자체 · 출입국관리사무소 · 담당 행정사</strong>와 사전에 상의하신 후 진행하시기 바랍니다.
+          본 계산기 결과는 <strong>참고용 수치</strong>이며, 실제 가능 인원은 <strong>출입국 지침</strong>에 따라 달라질 수 있습니다. 특히 <strong>구직중인 외국인을 채용</strong>하시려는 경우, 반드시 <strong>관할 출입국관리사무소 또는 전문 행정사</strong>와 사전에 상의하신 후 진행하시기 바랍니다.
         </div>
       </div>
     `;
