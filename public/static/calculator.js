@@ -511,18 +511,15 @@ function renderResults(result, input) {
       </div>
     `;
     
-    // 추가 안내
+    // 추가 안내 (사용자가 알아야 할 정보만 남김)
     let notes = [];
     if (result.e74r.special50) {
-      notes.push('E-7-4R은 K-POINT 동시 고용 + 내국인 72명 이상 조건을 충족하여 구간별 상한 없이 내국인의 50%까지 가능합니다.');
-    } else if (result.e74r.available) {
-      notes.push('E-7-4R 쿼터는 구간별로 산정됩니다 (1~5명→3 / 6~50명→50% / 51~100명→최대 35 / 101~150명→40 / 151명↑→50).');
+      notes.push('인구감소지역 + K-POINT 동시 고용 + 내국인 72명 이상 조건을 충족하여 50% 특례가 적용되었습니다.');
     }
-    if (result.e74Combined.isSpecial) {
-      notes.push('한국인 0명 특례에 따라 K-POINT 상시근로자 20% 룰은 적용되지 않습니다.');
-    } else {
-      notes.push('K-POINT 자격변경에는 회사가 발급하는 \'고용기업 추천서\'가 필수이며, 이 추천서는 상시근로자(내국인+외국인)의 20% 범위 내에서만 발급할 수 있어 K-POINT 가능 인원이 위와 같이 산정됩니다. 인구감소지역의 50% 특례는 E-7-4R에만 적용되며, K-POINT 추천서 한도(20%)는 그대로 유지됩니다.');
-    }
+    
+    const notesHtml = notes.length > 0
+      ? `<div class="visa-sub-note">${notes.map(n => `<p>※ ${n}</p>`).join('')}</div>`
+      : '';
     
     html += `
       <div class="visa-card">
@@ -534,9 +531,7 @@ function renderResults(result, input) {
         <div class="visa-sub">
           ${rLine}
           ${kLine}
-          <div class="visa-sub-note">
-            ${notes.map(n => `<p>※ ${n}</p>`).join('')}
-          </div>
+          ${notesHtml}
         </div>
         <div style="background: var(--warn-bg); border: 1.5px solid var(--warn-border); border-radius: 8px; padding: 14px 16px; margin-top: 14px; font-size: 12.5px; line-height: 1.65; color: #78350F;">
           <strong style="color: var(--warn); display: block; margin-bottom: 5px; font-size: 13px;">⚠️ E-7-4는 매우 예민한 비자입니다</strong>
