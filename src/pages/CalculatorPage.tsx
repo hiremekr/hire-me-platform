@@ -445,49 +445,26 @@ export const CalculatorPage = () => {
     flex-shrink: 0;
   }
 
-  /* ★[방안 A] 결과 하단 선택적 안내받기 배너 */
-  .lead-optin {
-    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-soft) 100%);
-    margin: 4px 16px 12px;
-    padding: 22px 24px;
-    border-radius: 12px;
-    color: #fff;
-    text-align: center;
-  }
-  .lead-optin-text strong {
-    display: block;
-    font-size: 15px;
-    font-weight: 700;
-    margin-bottom: 8px;
-    color: #fff;
-    letter-spacing: -0.2px;
-  }
-  .lead-optin-text p {
-    font-size: 12.5px;
-    line-height: 1.6;
-    color: #CBD5E1;
-    margin-bottom: 16px;
-  }
-  .lead-optin-text p b { color: #fff; }
-  .lead-optin-btn {
-    display: inline-block;
-    padding: 13px 26px;
-    background: var(--accent);
-    color: #fff;
-    border: none;
+  /* ★[방안 A] CTA 카드 내 '최신 정보 받아보기' 버튼 (명단 수집) */
+  .btn-cta-optin {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 28px;
+    background: #fff;
+    color: var(--navy);
+    border: 1.5px solid var(--navy);
     border-radius: 8px;
     font-size: 14px;
     font-weight: 700;
     font-family: inherit;
     cursor: pointer;
-    box-shadow: 0 2px 8px rgba(247,111,76,0.3);
     transition: background 0.15s, transform 0.1s;
+    width: 100%;
+    max-width: 320px;
   }
-  .lead-optin-btn:hover { background: var(--accent-deep); }
-  .lead-optin-btn:active { transform: translateY(1px); }
-  @media (max-width: 480px) {
-    .lead-optin { margin-left: 12px; margin-right: 12px; }
-  }
+  .btn-cta-optin:hover { background: var(--bg-card); }
+  .btn-cta-optin:active { transform: translateY(1px); }
 
   /* ★[방안 A] 선택적 명단 수집 모달 */
   .consent-overlay {
@@ -1399,6 +1376,9 @@ export const CalculatorPage = () => {
           </svg>
           카카오톡 1:1 무료 상담
         </a>
+        <button type="button" class="btn-cta-optin" id="open-lead-modal">
+          📮 E-7-4 · F-2-R 등 최신 정보 받아보기
+        </button>
       </div>
     </div>
 
