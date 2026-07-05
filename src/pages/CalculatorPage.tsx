@@ -445,161 +445,137 @@ export const CalculatorPage = () => {
     flex-shrink: 0;
   }
 
-  /* ★[방안 A] CTA 카드 내 '최신 정보 받아보기' 버튼 (명단 수집) */
-  .btn-cta-optin {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 14px 28px;
-    background: #fff;
-    color: var(--navy);
-    border: 1.5px solid var(--navy);
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 700;
-    font-family: inherit;
-    cursor: pointer;
-    transition: background 0.15s, transform 0.1s;
-    width: 100%;
-    max-width: 320px;
-  }
-  .btn-cta-optin:hover { background: var(--bg-card); }
-  .btn-cta-optin:active { transform: translateY(1px); }
-
-  /* ★[방안 A] 선택적 명단 수집 모달 */
-  .consent-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(8, 21, 56, 0.55);
-    z-index: 9999;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-  }
-  .consent-box {
-    background: #fff;
-    border-radius: 16px;
+  /* ★[방안 A] 결과 하단 인라인 안내신청 폼 (명단 수집) */
+  .optin-card {
+    background: linear-gradient(135deg, var(--navy-deep) 0%, var(--navy) 100%);
+    margin: 0 16px 12px;
     padding: 28px 26px;
-    max-width: 440px;
-    width: 100%;
-    max-height: 90vh;
-    overflow-y: auto;
-    box-shadow: 0 24px 60px rgba(8, 21, 56, 0.25);
+    border-radius: 12px;
+    color: #fff;
   }
-  .consent-head { text-align: center; margin-bottom: 20px; }
-  .consent-icon { font-size: 30px; margin-bottom: 8px; }
-  .consent-head h2 {
-    font-size: 18px;
+  .optin-head { text-align: center; margin-bottom: 20px; }
+  .optin-eyebrow {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--accent);
+    background: rgba(247,111,76,0.14);
+    padding: 5px 12px;
+    border-radius: 100px;
+    margin-bottom: 12px;
+  }
+  .optin-head h3 {
+    font-size: 17px;
     font-weight: 800;
-    color: var(--ink);
-    margin-bottom: 8px;
+    color: #fff;
     letter-spacing: -0.3px;
+    margin-bottom: 8px;
+    line-height: 1.4;
   }
-  .consent-head p {
+  .optin-head p {
     font-size: 12.5px;
-    color: var(--muted);
-    line-height: 1.6;
+    color: #CBD5E1;
+    line-height: 1.65;
   }
-  .consent-field { margin-bottom: 14px; }
-  .consent-field label {
+  .optin-head p b { color: #fff; }
+  .optin-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .optin-field-full { grid-column: 1 / -1; }
+  .optin-field label {
     display: block;
-    font-size: 12.5px;
+    font-size: 12px;
     font-weight: 600;
-    color: var(--ink);
+    color: #E2E8F0;
     margin-bottom: 6px;
   }
-  .consent-field .req { color: var(--accent); }
-  .consent-field .opt { color: var(--muted); font-weight: 400; font-size: 11.5px; }
-  .consent-field input {
+  .optin-field .req { color: var(--accent); }
+  .optin-field .opt { color: #94A3B8; font-weight: 400; font-size: 11px; }
+  .optin-field input {
     width: 100%;
     padding: 11px 13px;
-    border: 1.5px solid var(--line);
+    border: 1.5px solid rgba(255,255,255,0.18);
     border-radius: 8px;
     font-size: 14px;
     font-family: inherit;
     color: var(--ink);
     background: #fff;
   }
-  .consent-field input:focus {
+  .optin-field input:focus {
     outline: none;
-    border-color: var(--navy);
-    box-shadow: 0 0 0 3px rgba(15,31,77,0.08);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(247,111,76,0.2);
   }
-  .consent-field input::placeholder { color: #94A3B8; font-size: 12.5px; }
-  .consent-agrees {
-    background: var(--bg-soft);
+  .optin-field input::placeholder { color: #94A3B8; font-size: 12.5px; }
+  .optin-agrees {
+    background: rgba(255,255,255,0.06);
     border-radius: 10px;
     padding: 14px 16px;
-    margin: 18px 0;
+    margin-bottom: 16px;
     display: flex;
     flex-direction: column;
     gap: 12px;
   }
-  .consent-check {
+  .optin-check {
     display: flex;
     align-items: flex-start;
     gap: 10px;
     cursor: pointer;
   }
-  .consent-check input {
+  .optin-check input {
     width: 18px;
     height: 18px;
     margin-top: 1px;
-    accent-color: var(--navy);
+    accent-color: var(--accent);
     cursor: pointer;
     flex-shrink: 0;
   }
-  .consent-check strong {
+  .optin-check strong {
     display: block;
-    font-size: 13px;
-    color: var(--ink);
+    font-size: 12.5px;
+    color: #fff;
     font-weight: 700;
     margin-bottom: 3px;
   }
-  .consent-check .consent-detail {
+  .optin-check .optin-detail {
     display: block;
-    font-size: 11px;
-    color: var(--muted);
+    font-size: 10.5px;
+    color: #94A3B8;
     line-height: 1.55;
   }
-  .consent-actions {
-    display: flex;
-    gap: 10px;
-  }
-  .consent-btn-cancel {
-    flex: 1;
-    padding: 13px;
-    border: 1.5px solid var(--line);
-    border-radius: 10px;
-    background: #fff;
-    color: var(--muted);
-    font-size: 14px;
-    font-weight: 600;
-    font-family: inherit;
-    cursor: pointer;
-  }
-  .consent-btn-cancel:hover { background: var(--bg-card); }
-  .consent-btn-submit {
-    flex: 2;
-    padding: 13px;
+  .optin-submit {
+    width: 100%;
+    padding: 15px;
     border: none;
     border-radius: 10px;
     background: var(--accent);
     color: #fff;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 700;
     font-family: inherit;
     cursor: pointer;
-    box-shadow: 0 2px 8px rgba(247,111,76,0.25);
+    box-shadow: 0 2px 10px rgba(247,111,76,0.35);
+    transition: background 0.15s, transform 0.1s;
   }
-  .consent-btn-submit:hover { background: var(--accent-deep); }
-  .consent-btn-submit:disabled { background: #CBD5E1; cursor: not-allowed; box-shadow: none; }
-  .consent-foot {
+  .optin-submit:hover { background: var(--accent-deep); }
+  .optin-submit:active { transform: translateY(1px); }
+  .optin-submit:disabled { background: #64748B; cursor: not-allowed; box-shadow: none; }
+  .optin-foot {
     text-align: center;
     font-size: 11px;
     color: #94A3B8;
-    margin-top: 14px;
+    margin-top: 12px;
+  }
+  .optin-card.done {
+    text-align: center;
+  }
+  @media (max-width: 480px) {
+    .optin-card { margin-left: 12px; margin-right: 12px; padding: 24px 18px; }
+    .optin-grid { grid-template-columns: 1fr; }
   }
 
   /* ★[2026.6] 결과 내 카톡 상담 유도 버튼 */
@@ -1294,55 +1270,6 @@ export const CalculatorPage = () => {
   </form>
 
   {/* ============================================================
-       ★[동의 모달] 결과 확인 전 회사 정보 + 동의 수집
-       ============================================================ */}
-  <div class="consent-overlay" id="consent-modal">
-    <div class="consent-box">
-      <div class="consent-head">
-        <div class="consent-icon">📮</div>
-        <h2>법령 변경 안내 신청</h2>
-        <p>비자·외국인 고용 관계법령이 바뀔 때<br />귀사에 영향을 주는 내용을 가장 먼저 안내해 드립니다.</p>
-      </div>
-
-      <div class="consent-field">
-        <label for="consent-company">회사명 <span class="req">*</span></label>
-        <input type="text" id="consent-company" placeholder="예: (주)늘좋은" autocomplete="organization" />
-      </div>
-      <div class="consent-field">
-        <label for="consent-email">이메일 <span class="req">*</span></label>
-        <input type="email" id="consent-email" placeholder="예: hr@company.com" autocomplete="email" />
-      </div>
-      <div class="consent-field">
-        <label for="consent-phone">연락처 <span class="opt">(선택)</span></label>
-        <input type="tel" id="consent-phone" placeholder="정확한 상담·법령 변경 안내가 필요하실 때 연락드립니다" autocomplete="tel" />
-      </div>
-
-      <div class="consent-agrees">
-        <label class="consent-check">
-          <input type="checkbox" id="consent-privacy" />
-          <span>
-            <strong>(필수) 개인정보 수집·이용 동의</strong>
-            <span class="consent-detail">수집항목: 회사명, 이메일, 연락처(선택) · 목적: 법령 변경 안내 및 문의 응대 · 보관기간: 동의 철회 시 또는 목적 달성 시까지. 동의를 거부하실 수 있으며, 이 경우 안내 신청만 제한됩니다.</span>
-          </span>
-        </label>
-        <label class="consent-check">
-          <input type="checkbox" id="consent-marketing" />
-          <span>
-            <strong>(선택) 비자·고용 관계법령 변경 안내 수신 동의</strong>
-            <span class="consent-detail">비자·외국인 고용 관련 법령 변경 소식과 상담 정보를 이메일·문자로 가장 먼저 받아보실 수 있습니다. 미동의 시에도 결과 확인은 가능합니다.</span>
-          </span>
-        </label>
-      </div>
-
-      <div class="consent-actions">
-        <button type="button" class="consent-btn-cancel" id="consent-cancel">닫기</button>
-        <button type="button" class="consent-btn-submit" id="consent-submit">신청하기 →</button>
-      </div>
-      <p class="consent-foot">행정사사무소 늘좋은 · 법무부 등록 출입국민원 대행기관</p>
-    </div>
-  </div>
-
-  {/* ============================================================
        결과 영역
        ============================================================ */}
   <div class="result-section" id="result-section">
@@ -1376,10 +1303,51 @@ export const CalculatorPage = () => {
           </svg>
           카카오톡 1:1 무료 상담
         </a>
-        <button type="button" class="btn-cta-optin" id="open-lead-modal">
-          📮 E-7-4 · F-2-R 등 최신 정보 받아보기
-        </button>
       </div>
+    </div>
+
+    {/* ★[방안 A] 결과 하단 인라인 안내신청 폼 — 원하는 사람만 작성 (강제 아님) */}
+    <div class="optin-card" id="optin-card">
+      <div class="optin-head">
+        <div class="optin-eyebrow">📮 E-7-4 · F-2-R 등 최신 정보 받기</div>
+        <h3>법령은 자주 바뀝니다. 가장 먼저 안내받으세요</h3>
+        <p>2026.6 농축어업 특례처럼 외국인 고용 기준은 수시로 개정됩니다.<br />이메일을 남겨두시면 <b>귀사에 영향을 주는 변경 사항</b>을 무료로 안내해 드립니다.</p>
+      </div>
+
+      <div class="optin-grid">
+        <div class="optin-field">
+          <label for="consent-company">회사명 <span class="req">*</span></label>
+          <input type="text" id="consent-company" placeholder="예: (주)늘좋은" autocomplete="organization" />
+        </div>
+        <div class="optin-field">
+          <label for="consent-email">이메일 <span class="req">*</span></label>
+          <input type="email" id="consent-email" placeholder="예: hr@company.com" autocomplete="email" />
+        </div>
+        <div class="optin-field optin-field-full">
+          <label for="consent-phone">연락처 <span class="opt">(선택)</span></label>
+          <input type="tel" id="consent-phone" placeholder="정확한 상담이 필요하실 때 연락드립니다" autocomplete="tel" />
+        </div>
+      </div>
+
+      <div class="optin-agrees">
+        <label class="optin-check">
+          <input type="checkbox" id="consent-privacy" />
+          <span>
+            <strong>(필수) 개인정보 수집·이용 동의</strong>
+            <span class="optin-detail">수집항목: 회사명, 이메일, 연락처(선택) · 목적: 법령 변경 안내 및 문의 응대 · 보관기간: 동의 철회 시 또는 목적 달성 시까지. 동의를 거부하실 수 있으며, 이 경우 안내 신청만 제한됩니다.</span>
+          </span>
+        </label>
+        <label class="optin-check">
+          <input type="checkbox" id="consent-marketing" />
+          <span>
+            <strong>(선택) 비자·고용 관계법령 변경 안내 수신 동의</strong>
+            <span class="optin-detail">비자·외국인 고용 관련 법령 변경 소식과 상담 정보를 이메일·문자로 가장 먼저 받아보실 수 있습니다.</span>
+          </span>
+        </label>
+      </div>
+
+      <button type="button" class="optin-submit" id="consent-submit">📮 최신 정보 신청하기</button>
+      <p class="optin-foot">무료 · 언제든 수신거부 가능 · 행정사사무소 늘좋은</p>
     </div>
 
     <div class="disclaimer">
