@@ -1,5 +1,26 @@
 // ============================================================
-// 시·군·구 데이터 (89 + 18 = 107)
+// 외국인 고용 가능 인원 계산기 — 2026.6 개정 반영본
+// 변경 지점은 모두 ★[2026.6] 주석으로 표시했습니다.
+//
+// 이번 수정 요약
+//   1) 농축어업 특례 신설 : 「고용허용 인원 특례」(50%) 대상에 농축어업 추가
+//      (근거: 법무부 보도자료 2026.6.1, 6월 시행)
+//   2) 4인 이하 정액 규칙 신설 : 특례(인구감소·농축어업·뿌리산업) 2명 / 일반 1명
+//      → 20% 상한·기업추천서 쿼터보다 우선(무시)
+//   3) 업종 특례를 지역과 분리 : 뿌리산업 체크박스 → 농축어업/뿌리산업 라디오
+//      (일반지역 + 관심지역에서 노출, 인구감소지역은 이미 50%라 비활성)
+//   4) 관심지역 K-POINT rate 정상화 : 일반업종 0.3 / 농축어업·뿌리 0.5
+//   5) E-7-4R·K-POINT 각각 독립 표시(합산·연장 상한 문구 제거) + 카톡 상담 유도
+//   6) 결격사유 6개 항목으로 통일
+//
+//   ※ 미변경: F-2-R, E-7-4R 자체 쿼터표(1~5명 3명 등), E-9
+// ============================================================
+
+// ★[2026.6] 상담 연결 — 대표번호 개통 후 이 상수만 교체하면 전체 반영됨
+const CONSULT_KAKAO_URL = 'http://pf.kakao.com/_pPxnFxj/chat';
+
+// ============================================================
+// 시·군·구 데이터 (89 + 18 = 107)  — 변경 없음
 // ============================================================
 const REGIONS = {
   declining: [
@@ -121,13 +142,29 @@ const REGIONS = {
 const regionInput = document.getElementById('region-input');
 const suggestionsEl = document.getElementById('suggestions');
 const regionResult = document.getElementById('region-result');
-const rootIndustryRow = document.getElementById('root-industry-row');
-const rootIndustryCheck = document.getElementById('root-industry');
+
+// ★[2026.6] 뿌리산업 단일 체크박스 → 농축어업/뿌리산업 라디오 그룹으로 교체
+//   HTML: <div id="industry-row"> 안에 <input type="radio" name="industry" value="none|agri|root">
+const industryRow = document.getElementById('industry-row');
+
+function getIndustry() {
+  const el = document.querySelector('input[name="industry"]:checked');
+  return el ? el.value : 'none'; // 'none' | 'agri'(농축어업) | 'root'(뿌리산업)
+}
+function resetIndustry() {
+  const none = document.getElementById('industry-none');
+  if (none) none.checked = true;
+}
+function setIndustryEnabled(enabled) {
+  if (!industryRow) return;
+  industryRow.classList.toggle('disabled', !enabled);
+  document.querySelectorAll('input[name="industry"]').forEach(r => { r.disabled = !enabled; });
+  if (!enabled) resetIndustry(); // 인구감소지역 선택 시 업종 특례는 무의미 → 초기화
+}
 
 let selectedRegion = null; // { type: 'declining'|'attention'|'general', sido, name } 또는 null
 let activeIdx = -1;
 
-// 모든 시·군·구 통합 (declining, attention 표시 + 일반은 검색 시 그 외로 처리)
 const ALL_KNOWN = [
   ...REGIONS.declining.map(r => ({ ...r, type: 'declining' })),
   ...REGIONS.attention.map(r => ({ ...r, type: 'attention' })),
@@ -148,7 +185,6 @@ function findMatches(query) {
 function renderSuggestions(matches, query) {
   if (!matches.length) {
     if (query.trim().length >= 1) {
-      // 일반지역 안내 항목
       suggestionsEl.innerHTML = `
         <div class="suggestion" data-idx="-1" id="general-region-pick">
           <div class="place">"${escapeHtml(query)}" <span class="sido">— 일반지역으로 처리</span></div>
@@ -161,7 +197,7 @@ function renderSuggestions(matches, query) {
     }
     return;
   }
-  
+
   let html = matches.map((m, i) => {
     const tagCls = m.type === 'declining' ? 'tag-declining' : 'tag-attention';
     const tagTxt = m.type === 'declining' ? '인구감소지역' : '인구감소관심지역';
@@ -172,8 +208,7 @@ function renderSuggestions(matches, query) {
       </div>
     `;
   }).join('');
-  
-  // 추가로 일반지역 옵션 (마지막에)
+
   if (query.trim().length >= 2) {
     html += `
       <div class="suggestion" data-idx="${matches.length}" data-general="1">
@@ -182,7 +217,7 @@ function renderSuggestions(matches, query) {
       </div>
     `;
   }
-  
+
   suggestionsEl.innerHTML = html;
   suggestionsEl.classList.add('show');
   activeIdx = -1;
@@ -201,7 +236,7 @@ function selectRegion(region) {
       <strong>${escapeHtml(region.name)}</strong> · 일반지역으로 처리됩니다.
       <span class="small">F-2-R · E-7-4R 신청은 불가하며, E-7-4 K-POINT와 E-7-1만 검토 가능합니다.</span>
     `;
-    rootIndustryRow.classList.remove('disabled');
+    setIndustryEnabled(true); // ★[2026.6] 일반지역: 농축어업/뿌리산업 특례 선택 가능
   } else if (region.type === 'declining') {
     regionInput.value = `${region.name} (${region.short})`;
     regionResult.className = 'region-result declining show';
@@ -209,8 +244,7 @@ function selectRegion(region) {
       <strong>${escapeHtml(region.name)}</strong> · 인구감소지역 (89개)
       <span class="small">F-2-R · E-7-4R 신청 모두 가능 (신규 채용 + 자격변경)</span>
     `;
-    rootIndustryRow.classList.add('disabled');
-    rootIndustryCheck.checked = false;
+    setIndustryEnabled(false); // 인구감소지역은 이미 50% 특례 → 업종 특례 비활성
   } else if (region.type === 'attention') {
     regionInput.value = `${region.name} (${region.short})`;
     regionResult.className = 'region-result attention show';
@@ -218,18 +252,16 @@ function selectRegion(region) {
       <strong>${escapeHtml(region.name)}</strong> · 인구감소관심지역 (18개)
       <span class="small">E-7-4R은 자격변경만 가능 · F-2-R 신청은 불가</span>
     `;
-    rootIndustryRow.classList.add('disabled');
-    rootIndustryCheck.checked = false;
+    setIndustryEnabled(true); // ★[2026.6] 관심지역도 농축어업/뿌리산업이면 K-POINT 50% → 선택 가능
   }
   suggestionsEl.classList.remove('show');
 }
 
 regionInput.addEventListener('input', () => {
-  // 입력이 변경되면 선택 해제
   selectedRegion = null;
   regionResult.classList.remove('show');
-  rootIndustryRow.classList.remove('disabled');
-  
+  setIndustryEnabled(true); // 지역 재선택 전까지 기본 활성
+
   const matches = findMatches(regionInput.value);
   renderSuggestions(matches, regionInput.value);
 });
@@ -264,7 +296,7 @@ regionInput.addEventListener('keydown', (e) => {
 suggestionsEl.addEventListener('click', (e) => {
   const item = e.target.closest('.suggestion');
   if (!item) return;
-  
+
   const isGeneral = item.dataset.general === '1' || item.id === 'general-region-pick';
   if (isGeneral) {
     const userInput = regionInput.value.trim() || '입력하신 지역';
@@ -278,25 +310,26 @@ suggestionsEl.addEventListener('click', (e) => {
   }
 });
 
-// 외부 클릭 시 자동완성 닫기
 document.addEventListener('click', (e) => {
   if (!regionInput.contains(e.target) && !suggestionsEl.contains(e.target)) {
     suggestionsEl.classList.remove('show');
   }
 });
 
-// 뿌리산업 도움말 토글
+// 업종 특례 도움말 토글 (기존 뿌리산업 도움말 재사용)
 const rootHelpToggle = document.getElementById('root-help-toggle');
 const rootHelpContent = document.getElementById('root-help-content');
-rootHelpToggle.addEventListener('click', () => {
-  rootHelpContent.classList.toggle('show');
-});
+if (rootHelpToggle && rootHelpContent) {
+  rootHelpToggle.addEventListener('click', () => {
+    rootHelpContent.classList.toggle('show');
+  });
+}
 
 // ============================================================
-// 계산 로직 (검증 완료된 함수)
+// 계산 로직
 // ============================================================
 
-// E-7-4R 구간별 쿼터 (지침 표 기준)
+// E-7-4R 자체 쿼터표 (지역특화 지침) — ★ 이번 개정과 무관, 변경 없음
 function calcE74RTierQuota(k) {
   if (k <= 0) return 0;
   if (k <= 5) return 3;
@@ -307,15 +340,22 @@ function calcE74RTierQuota(k) {
 }
 
 function calculate(input) {
-  const { regionType, koreans, foreigners, hasE9, hasE74KPoint } = input;
+  // ★[2026.6] regionType(지역)과 industry(업종)를 분리해서 받음
+  //   regionType: 'declining' | 'attention' | 'general'
+  //   industry  : 'none' | 'agri'(농축어업) | 'root'(뿌리산업)
+  const { regionType, industry, koreans, foreigners, hasE9, hasE74KPoint } = input;
   const totalWorkers = koreans + foreigners;
-  
+
   const result = { f2r: null, e74Combined: null, e74r: null, e74kpoint: null, e71: null };
-  
-  // F-2-R
+
+  // ★[2026.6] 50% 특례 단일 판정 : 인구감소지역 OR 농축어업 OR 뿌리산업
+  const isSpecialRate = (regionType === 'declining') || industry === 'agri' || industry === 'root';
+
+  // ---------------------------------------------------------
+  // F-2-R  — 변경 없음 (인구감소지역 전용)
+  // ---------------------------------------------------------
   if (regionType === 'declining') {
     if (koreans === 0) {
-      // 한국인 0명 시 F-2-R 신청은 일반적으로 어려움 — 행정사 상담 유도
       result.f2r = { available: false, reason: 'no-koreans' };
     } else {
       let q;
@@ -330,92 +370,68 @@ function calculate(input) {
   } else {
     result.f2r = { available: false, reason: 'region' };
   }
-  
-  // 한국인 0명 특례 (E-9 보유 시)
-  const isKZeroSpecial = (koreans === 0 && hasE9);
-  
-  // ====================================================
-  // E-7-4R 쿼터 계산
-  //   기본: 구간별 (지침 표)
-  //   특례: 인구감소지역 AND K-POINT 동시 고용 AND 내국인 71명 초과 → 50%
-  // ====================================================
-  const e74rSpecial50 = (regionType === 'declining' && hasE74KPoint && koreans > 71);
-  
+
+  // ---------------------------------------------------------
+  // E-7-4R 쿼터 — ★ 자체표 유지. 0명 처리만 지역별로 정리
+  //   내국인 1명 이상 : 자체표 (1~5명 3명 등)
+  //   내국인 0명(+E-9): 인구감소지역 2명 / 관심지역 1명
+  // ---------------------------------------------------------
+  const e74rSpecial50 = (regionType === 'declining' && hasE74KPoint && koreans > 71); // 기존 규칙 보존
   let e74rQuota;
-  if (isKZeroSpecial) {
-    // 한국인 0명 근속자 특례
-    if (regionType === 'declining' || regionType === 'rootIndustry') e74rQuota = 2;
-    else if (regionType === 'attention') e74rQuota = 1; // 관심지역 1명 (뿌리산업이면 2명이나, attention에서는 별도 처리 필요시 분기)
-    else e74rQuota = 1;
+  if (koreans === 0) {
+    e74rQuota = (regionType === 'declining') ? 2 : 1; // ★[2026.6] 인구감소 2 / 관심 1
   } else if (e74rSpecial50) {
-    e74rQuota = Math.ceil(koreans * 0.5); // 50% 특례
+    e74rQuota = Math.ceil(koreans * 0.5);
   } else {
-    e74rQuota = calcE74RTierQuota(koreans); // 구간별 (기본)
+    e74rQuota = calcE74RTierQuota(koreans);
   }
-  
-  // E-7-4R 신청 가능 여부
+
   if (regionType === 'declining') {
     if (!hasE9) result.e74r = { available: false, reason: 'no-e9' };
-    else result.e74r = { 
-      available: true, 
-      quota: e74rQuota, 
-      mode: 'full',
-      special50: e74rSpecial50
-    };
+    else result.e74r = { available: true, quota: e74rQuota, mode: 'full', special50: e74rSpecial50 };
   } else if (regionType === 'attention') {
     if (!hasE9) result.e74r = { available: false, reason: 'no-e9' };
-    else result.e74r = { 
-      available: true, 
-      quota: e74rQuota, 
-      mode: 'change-only',
-      special50: false // 관심지역은 50% 특례 불가
-    };
+    else result.e74r = { available: true, quota: e74rQuota, mode: 'change-only', special50: false };
   } else {
     result.e74r = { available: false, reason: 'region' };
   }
-  
-  // ====================================================
-  // E-7-4 K-POINT 쿼터 (기존 로직 유지)
-  //   비율: 인구감소지역/관심지역/뿌리산업 = 50%, 그 외 = 30%
-  //   추가: 상시근로자(내국인+외국인)의 20% 상한
-  // ====================================================
-  let combinedRate;
-  if (regionType === 'declining' || regionType === 'attention' || regionType === 'rootIndustry') combinedRate = 0.5;
-  else combinedRate = 0.3;
-  
-  const combinedQuotaBase = isKZeroSpecial
-    ? ((regionType === 'declining' || regionType === 'rootIndustry' || regionType === 'attention') ? 2 : 1)
-    : Math.ceil(koreans * combinedRate);
-  
+
+  // ---------------------------------------------------------
+  // E-7-4 K-POINT 쿼터 — ★[2026.6] 핵심 수정부
+  //   rate : 특례(인구감소·농축어업·뿌리산업) 0.5 / 그 외 0.3
+  //   4인 이하 : 특례 2명 / 일반 1명  (20% 상한·추천서 쿼터보다 우선 = 무시)
+  //   5명 이상 : min( ceil(국민 × rate), ceil(상시근로자 × 20%) )
+  // ---------------------------------------------------------
+  const combinedRate = isSpecialRate ? 0.5 : 0.3;
+
   if (!hasE9) {
     result.e74kpoint = { available: false, reason: 'no-e9' };
   } else {
     let kQ;
-    if (isKZeroSpecial) {
-      kQ = combinedQuotaBase;
+    let isSmallSpecial = false;
+    if (koreans <= 4) {
+      kQ = isSpecialRate ? 2 : 1;   // 4인 이하 정액
+      isSmallSpecial = true;
     } else {
-      const totalRule = Math.ceil(totalWorkers * 0.2);
-      kQ = Math.min(combinedQuotaBase, totalRule);
+      const byRate = Math.ceil(koreans * combinedRate);
+      const cap20 = Math.ceil(totalWorkers * 0.2);
+      kQ = Math.min(byRate, cap20);
     }
-    result.e74kpoint = { available: true, quota: kQ };
+    result.e74kpoint = { available: true, quota: kQ, isSmallSpecial };
   }
-  
-  // 통합 쿼터 정보 (표시용)
-  result.e74Combined = {
-    quota: combinedQuotaBase,
-    rate: combinedRate,
-    isSpecial: isKZeroSpecial,
-    available: hasE9,
-  };
-  
-  // E-7-1
+
+  result.e74Combined = { rate: combinedRate, available: hasE9 };
+
+  // ---------------------------------------------------------
+  // E-7-1  — 변경 없음
+  // ---------------------------------------------------------
   if (koreans === 0) {
     result.e71 = { available: true, special: true };
   } else {
     const calcMax = Math.max(1, Math.ceil(koreans * 0.2));
     result.e71 = { available: true, calcMax: calcMax };
   }
-  
+
   return result;
 }
 
@@ -423,11 +439,20 @@ function calculate(input) {
 // 결과 렌더링
 // ============================================================
 function renderResults(result, input) {
-  const { regionType } = input;
+  const { regionType, industry } = input;
   const cards = document.getElementById('result-cards');
   let html = '';
-  
-  // F-2-R
+
+  // 카톡 상담 유도 버튼 (공통) — ★[2026.6] 정확한 판단은 사무실로 유도
+  const consultCTA = `
+    <a href="${CONSULT_KAKAO_URL}" target="_blank" rel="noopener"
+       style="display:flex; align-items:center; justify-content:center; gap:8px; text-decoration:none;
+              background:#FEE500; color:#3A1D1D; font-weight:700; font-size:13.5px;
+              border-radius:10px; padding:14px 16px; margin-top:12px;">
+      💬 정확한 허용 인원·연장 가능 여부는 행정사사무소 늘좋은에 문의하세요
+    </a>`;
+
+  // ---------- F-2-R ----------
   if (result.f2r.available) {
     html += `
       <div class="visa-card">
@@ -455,34 +480,31 @@ function renderResults(result, input) {
       </div>
     `;
   }
-  
-  // E-7-4 통합 쿼터 (R + K-POINT)
+
+  // ---------- E-7-4 (R + K-POINT 각각 독립 표시) ----------
+  // ★[2026.6] 합산/연장 상한 문구 전부 제거. 두 트랙을 계산값 그대로 각각 표시.
   if (result.e74Combined.available) {
-    const topDesc = result.e74Combined.isSpecial
-      ? '한국인 0명 특례가 적용됩니다 (E-9 1명 이상 보유 시).'
-      : 'E-7-4R과 K-POINT는 같은 쿼터를 공유합니다. 두 비자를 합산해서 보유할 수 있는 인원과, K-POINT만 단독으로 자격변경할 때 가능한 인원이 아래와 같이 나뉩니다.';
-    
-    // R 정보 — "E-7-4R + K-POINT 합산 최대" 의미
+    // 업종 특례 배지 (인구감소지역은 이미 지역특례라 배지 없음)
+    let specialBadge = '';
+    if (regionType !== 'declining' && industry === 'agri') {
+      specialBadge = ` <span class="mode-badge mode-special50">농축어업 특례 · 50%</span>`;
+    } else if (regionType !== 'declining' && industry === 'root') {
+      specialBadge = ` <span class="mode-badge mode-special50">뿌리산업 특례 · 50%</span>`;
+    }
+
+    // E-7-4R 줄
     let rLine;
     if (result.e74r.available) {
-      const modeBadge = result.e74r.mode === 'full' 
-        ? '<span class="mode-badge mode-full">신규고용 · 자격변경 모두 가능</span>'
+      const modeBadge = result.e74r.mode === 'full'
+        ? '<span class="mode-badge mode-full">신규채용 · 자격변경 모두 가능</span>'
         : '<span class="mode-badge mode-change-only">재직자 자격변경만 가능</span>';
-      const special50Badge = result.e74r.special50
-        ? ' <span class="mode-badge mode-special50">50% 특례 적용</span>'
-        : '';
-      let rDetail;
-      if (result.e74r.special50) {
-        rDetail = 'E-7-4R + K-POINT 합산하여 보유할 수 있는 최대 인원입니다 (인구감소지역 50% 특례 적용 중)';
-      } else if (result.e74r.mode === 'full') {
-        rDetail = 'E-7-4R + K-POINT 합산하여 보유할 수 있는 최대 인원입니다 (인구감소지역 — 신규 채용 + 자격변경 모두 가능)';
-      } else {
-        rDetail = 'E-7-4R + K-POINT 합산하여 보유할 수 있는 최대 인원입니다 (인구감소관심지역 — 재직자 자격변경만 가능)';
-      }
+      const rDetail = result.e74r.mode === 'full'
+        ? '인구감소지역 지역특화 비자. E-7-4R 자체 쿼터표로 산정된 보유 가능 인원입니다.'
+        : '인구감소관심지역 — 재직 중인 근로자의 자격변경만 가능합니다. E-7-4R 자체 쿼터표 기준입니다.';
       rLine = `
         <div class="visa-sub-item">
           <div class="label-area">
-            <div class="label-name">E-7-4R ${modeBadge}${special50Badge}</div>
+            <div class="label-name">E-7-4R ${modeBadge}</div>
             <div class="label-detail">${rDetail}</div>
           </div>
           <div class="quota-num">${result.e74r.quota}명</div>
@@ -492,71 +514,73 @@ function renderResults(result, input) {
       rLine = `
         <div class="visa-sub-item unavailable">
           <div class="label-area">
-            <div class="label-name">E-7-4R <span class="mode-badge mode-na">신청 불가</span></div>
-            <div class="label-detail">인구감소지역 또는 인구감소관심지역에서만 신청 가능</div>
+            <div class="label-name">E-7-4R <span class="mode-badge mode-na">해당 없음</span></div>
+            <div class="label-detail">인구감소지역 · 인구감소관심지역에서만 신청 가능합니다.</div>
           </div>
           <div class="quota-num">—</div>
         </div>
       `;
     }
-    
-    // K-POINT 정보 — "E-7-4R 없이 K-POINT 단독 자격변경 시" 의미
-    let kLine = `
+
+    // E-7-4 K-POINT 줄
+    const kLine = `
       <div class="visa-sub-item">
         <div class="label-area">
-          <div class="label-name">E-7-4 K-POINT</div>
-          <div class="label-detail">E-7-4R 없이 K-POINT만 자격변경할 때 가능한 인원입니다 (E-7-4 사업장변경자 채용 시에도 같은 쿼터에서 차감)</div>
+          <div class="label-name">E-7-4 K-POINT${specialBadge}</div>
+          <div class="label-detail">E-9 등에서 E-7-4 K-POINT로 자격변경할 때 보유 가능한 인원입니다.</div>
         </div>
         <div class="quota-num">${result.e74kpoint.quota}명</div>
       </div>
     `;
-    
-    // 추가 안내 (사용자가 알아야 할 정보만 남김)
+
+    // 각주 (필요한 경우만)
     let notes = [];
-    if (result.e74r.special50) {
-      notes.push('인구감소지역 + K-POINT 동시 고용 + 내국인 72명 이상 조건을 충족하여 50% 특례가 적용되었습니다.');
+    if (regionType === 'declining' && result.e74kpoint.isSmallSpecial) {
+      notes.push('내국인 4인 이하 특례(K-POINT 2명)는 기업추천서 쿼터에 <b>우선하는 것으로 산정</b>했습니다. 실제 적용은 관할 출입국에서 최종 확인하세요.');
     }
-    
-    const notesHtml = notes.length > 0
+    if (industry === 'agri') {
+      notes.push('농축어업 50% 특례는 <b>2026.6 시행</b>(법무부 보도자료 2026.6.1)에 따른 것으로, 농축어업 해당 여부는 <b>사업주가 판단</b>합니다.');
+    }
+    if (regionType === 'attention' && industry === 'none' && input.koreans === 0) {
+      notes.push('내국인이 없는 경우 K-POINT 인원이 제한적입니다. 이럴 때는 <b>E-7-4R(자격변경)로 우회</b>하는 방안 검토를 권장합니다.');
+    }
+    const notesHtml = notes.length
       ? `<div class="visa-sub-note">${notes.map(n => `<p>※ ${n}</p>`).join('')}</div>`
       : '';
-    
+
     html += `
       <div class="visa-card">
         <div class="visa-head">
-          <div class="visa-name">E-7-4 (R + K-POINT)</div>
+          <div class="visa-name">E-7-4 (R · K-POINT)</div>
           <div class="visa-quota"></div>
         </div>
-        <div class="visa-desc">${topDesc}</div>
+        <div class="visa-desc">E-7-4R과 K-POINT는 서로 다른 트랙입니다. 아래는 각 트랙별로 산정한 보유 가능 인원입니다.</div>
         <div class="visa-sub">
           ${rLine}
           ${kLine}
           ${notesHtml}
         </div>
-        <div style="background: #EFF6FF; border: 1.5px solid #BFDBFE; border-radius: 8px; padding: 14px 16px; margin-top: 14px; font-size: 12.5px; line-height: 1.65; color: #1E3A8A;">
-          <strong style="color: #1E40AF; display: block; margin-bottom: 5px; font-size: 13px;">💡 헷갈리지 마세요</strong>
-          위 숫자는 회사가 <strong>보유 가능한 총 인원</strong>입니다. 현재 재직 중인 E-7-4(R+K-POINT) 인원이 있다면 그만큼 차감한 수가 추가 채용/자격변경 가능 인원입니다.
-        </div>
-        <div style="background: var(--warn-bg); border: 1.5px solid var(--warn-border); border-radius: 8px; padding: 14px 16px; margin-top: 10px; font-size: 12.5px; line-height: 1.65; color: #78350F;">
+        <div style="background: var(--warn-bg); border: 1.5px solid var(--warn-border); border-radius: 8px; padding: 14px 16px; margin-top: 12px; font-size: 12.5px; line-height: 1.65; color: #78350F;">
           <strong style="color: var(--warn); display: block; margin-bottom: 5px; font-size: 13px;">⚠️ E-7-4는 매우 예민한 비자입니다</strong>
-          본 계산기 결과는 <strong>참고용 수치</strong>이며, 실제 가능 인원은 <strong>출입국 지침</strong>에 따라 달라질 수 있습니다. 특히 <strong>구직중인 외국인을 채용</strong>하시려는 경우, 반드시 <strong>관할 출입국관리사무소 또는 전문 행정사</strong>와 사전에 상의하신 후 진행하시기 바랍니다.
+          위 숫자는 <strong>참고용 수치</strong>이며, 현재 재직 중인 E-7-4(R·K-POINT) 인원·기업추천서 쿼터·연장 시점 등에 따라 실제 가능 인원은 달라집니다. 특히 <strong>구직 중인 외국인 채용</strong>이나 <strong>연장</strong>을 준비 중이라면 반드시 사전에 확인하시기 바랍니다.
         </div>
+        ${consultCTA}
       </div>
     `;
   } else {
-    // E-9 미보유
     html += `
       <div class="visa-card unavailable">
         <div class="visa-head">
-          <div class="visa-name">E-7-4 (R + K-POINT)</div>
+          <div class="visa-name">E-7-4 (R · K-POINT)</div>
           <div class="visa-na-text">신청 불가</div>
         </div>
         <div class="visa-desc">E-7-4 계열은 현재 E-9 비자 외국인이 1명 이상 재직 중이어야 신청 가능합니다.</div>
+        ${consultCTA}
       </div>
     `;
   }
-  
-  // E-7-1
+
+  // ---------- E-7-1 ----------
   if (result.e71.special) {
     html += `
       <div class="visa-card">
@@ -582,8 +606,8 @@ function renderResults(result, input) {
       </div>
     `;
   }
-  
-  // ===== 배우자 비자 안내 (인구감소지역 / 관심지역에서만) =====
+
+  // ---------- 배우자 비자 안내 ----------
   if (regionType === 'declining') {
     html += `
       <div class="spouse-info">
@@ -610,16 +634,17 @@ function renderResults(result, input) {
       </div>
     `;
   }
-  
+
   cards.innerHTML = html;
-  
-  // 헤더 서브타이틀 업데이트
+
+  // 헤더 서브타이틀 — ★[2026.6] rootIndustry regionType 제거, 업종 라벨은 industry로
   const subtitle = document.getElementById('result-subtitle');
   let regionLabel;
   if (regionType === 'declining') regionLabel = '인구감소지역';
   else if (regionType === 'attention') regionLabel = '인구감소관심지역';
-  else if (regionType === 'rootIndustry') regionLabel = '뿌리산업 (일반지역)';
   else regionLabel = '일반지역';
+  if (industry === 'agri') regionLabel += ' · 농축어업';
+  else if (industry === 'root') regionLabel += ' · 뿌리산업';
   subtitle.textContent = `${regionLabel} · 참고용 수치 · 정확한 판단은 행정사 상담`;
 }
 
@@ -633,17 +658,16 @@ const warningBanner = document.getElementById('warning-banner');
 
 form.addEventListener('submit', (e) => {
   e.preventDefault();
-  
-  // 검증
+
   if (!selectedRegion) {
     alert('회사 소재지를 선택해주세요.');
     regionInput.focus();
     return;
   }
-  
+
   const koreans = parseInt(document.getElementById('koreans').value);
   const foreigners = parseInt(document.getElementById('foreigners').value);
-  
+
   if (isNaN(koreans) || koreans < 0) {
     alert('내국인 고용보험 가입자 수를 입력해주세요.');
     document.getElementById('koreans').focus();
@@ -654,7 +678,7 @@ form.addEventListener('submit', (e) => {
     document.getElementById('foreigners').focus();
     return;
   }
-  
+
   const e9Yes = document.getElementById('has-e9-yes').checked;
   const e9No = document.getElementById('has-e9-no').checked;
   if (!e9Yes && !e9No) {
@@ -662,54 +686,44 @@ form.addEventListener('submit', (e) => {
     return;
   }
   const hasE9 = e9Yes;
-  
-  // E-7-4 K-POINT 보유 여부 (신규)
+
   const e74kYesEl = document.getElementById('has-e74k-yes');
   const e74kNoEl = document.getElementById('has-e74k-no');
   let hasE74KPoint = false;
   if (e74kYesEl && e74kNoEl) {
-    // HTML에 해당 라디오가 있을 때만 검증
     if (!e74kYesEl.checked && !e74kNoEl.checked) {
       alert('현재 회사에 E-7-4 K-POINT 외국인 보유 여부를 선택해주세요.');
       return;
     }
     hasE74KPoint = e74kYesEl.checked;
   }
-  
-  // regionType 결정
+
+  // ★[2026.6] regionType(지역)과 industry(업종) 분리 수집
   let regionType;
   if (selectedRegion.type === 'declining') regionType = 'declining';
   else if (selectedRegion.type === 'attention') regionType = 'attention';
-  else if (selectedRegion.type === 'general') {
-    regionType = rootIndustryCheck.checked ? 'rootIndustry' : 'general';
-  }
-  
-  // 한국인 0명인데 외국인도 0명인 경우 안내
+  else regionType = 'general';
+
+  // 인구감소지역은 이미 50%라 업종 특례 무의미 → 'none' 고정
+  const industry = (regionType === 'declining') ? 'none' : getIndustry();
+
   if (koreans === 0 && foreigners === 0) {
     alert('회사에 직원이 1명 이상 있어야 합니다.');
     return;
   }
-  
-  // 결격사유 체크
+
   const disqualifiers = document.querySelectorAll('.disq:checked');
   const hasDisq = disqualifiers.length > 0;
-  
-  // 계산
-  const input = { regionType, koreans, foreigners, hasE9, hasE74KPoint };
+
+  const input = { regionType, industry, koreans, foreigners, hasE9, hasE74KPoint };
   const result = calculate(input);
-  
-  // 렌더링
+
   renderResults(result, input);
-  
-  if (hasDisq) {
-    warningBanner.style.display = 'flex';
-  } else {
-    warningBanner.style.display = 'none';
-  }
-  
+
+  warningBanner.style.display = hasDisq ? 'flex' : 'none';
+
   resultSection.classList.add('show');
-  
-  // 결과 영역으로 스크롤
+
   setTimeout(() => {
     resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, 100);
@@ -721,16 +735,17 @@ document.getElementById('reset-btn').addEventListener('click', () => {
   form.reset();
   selectedRegion = null;
   regionResult.classList.remove('show');
-  rootIndustryRow.classList.remove('disabled');
-  rootHelpContent.classList.remove('show');
+  setIndustryEnabled(true);      // ★[2026.6] 업종 라디오 활성 + 초기화
+  resetIndustry();
+  if (rootHelpContent) rootHelpContent.classList.remove('show');
   disqToggle.classList.remove('expanded');
   disqChecklist.classList.remove('show');
-  disqToggleText.textContent = '결격사유 5개 항목 펼치기';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  disqToggleText.textContent = '결격사유 6개 항목 펼치기'; // ★[2026.6] 5개→6개 통일
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 
 // ============================================================
-// 결격사유 섹션 토글 (선택사항 — 펼치기/접기)
+// 결격사유 섹션 토글
 // ============================================================
 const disqToggle = document.getElementById('disq-toggle');
 const disqChecklist = document.getElementById('disq-checklist');
@@ -741,5 +756,5 @@ disqToggle.addEventListener('click', () => {
   disqChecklist.classList.toggle('show', isExpanded);
   disqToggleText.textContent = isExpanded
     ? '결격사유 항목 접기'
-    : '결격사유 5개 항목 펼치기';
+    : '결격사유 6개 항목 펼치기'; // ★[2026.6] 5개→6개 통일
 });
