@@ -765,9 +765,9 @@ function buildResultSummary(result, input) {
 }
 
 // Airtable(company 테이블)로 전송 — ★ 토큰은 Cloudflare 프록시가 처리, 여기엔 없음
-//   기존 checkvisa 프록시(/api/alarm)를 재활용. tableType:'company'로 company 테이블에 저장.
+//   hireme 자체 프록시(/api/company)가 company 테이블에 바로 저장.
 async function saveToAirtable(payload) {
-  const PROXY_URL = '/api/alarm'; // 셀프비자와 동일한 프록시 (tableType으로 테이블 구분)
+  const PROXY_URL = '/api/company'; // hireme functions/api/company.js
 
   // 지역/업종 코드를 사람이 읽는 한글로 변환 (Airtable 저장용)
   const regionLabel = payload.region === 'declining' ? '인구감소지역'
@@ -779,7 +779,6 @@ async function saveToAirtable(payload) {
 
   // ★ 필드 이름을 company 테이블의 실제 열 이름과 정확히 일치시킴
   const body = {
-    tableType: 'company', // ← 프록시가 company 테이블(tblL1r9nmkyeCJRD2)로 라우팅
     fields: {
       'Company Name': payload.company,
       'Email': payload.email,
