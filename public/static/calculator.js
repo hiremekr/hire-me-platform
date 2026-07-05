@@ -635,22 +635,7 @@ function renderResults(result, input) {
     `;
   }
 
-  // ★[방안 A] 결과 하단 — 원하는 사람만 명단 남기는 선택 배너 (강제 아님)
-  html += `
-    <div class="lead-optin">
-      <div class="lead-optin-text">
-        <strong>비자·고용 관계법령, 자주 바뀝니다</strong>
-        <p>2026.6 농축어업 특례처럼 외국인 고용 기준은 수시로 개정됩니다. 이메일을 남겨두시면 <b>귀사에 영향을 주는 변경 사항을 가장 먼저</b> 안내해 드립니다. (무료 · 언제든 수신거부 가능)</p>
-      </div>
-      <button type="button" class="lead-optin-btn" id="open-lead-modal">📮 법령 변경 안내받기</button>
-    </div>
-  `;
-
   cards.innerHTML = html;
-
-  // 안내받기 버튼 → 모달 열기
-  const openLeadBtn = document.getElementById('open-lead-modal');
-  if (openLeadBtn) openLeadBtn.addEventListener('click', openConsentModal);
   const subtitle = document.getElementById('result-subtitle');
   let regionLabel;
   if (regionType === 'declining') regionLabel = '인구감소지역';
@@ -886,3 +871,7 @@ disqToggle.addEventListener('click', () => {
     ? '결격사유 항목 접기'
     : '결격사유 6개 항목 펼치기'; // ★[2026.6] 5개→6개 통일
 });
+
+// ★[방안 A] CTA 카드의 "최신 정보 받아보기" 버튼 → 명단 수집 모달 열기
+const openLeadBtn = document.getElementById('open-lead-modal');
+if (openLeadBtn) openLeadBtn.addEventListener('click', openConsentModal);
