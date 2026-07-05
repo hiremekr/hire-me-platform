@@ -315,6 +315,17 @@ export const CalculatorPage = () => {
     pointer-events: none;
   }
 
+  /* ★[2026.6] 업종 특례 라디오 그룹 (농축어업/뿌리산업/해당없음) */
+  .industry-group { display: flex; flex-direction: column; gap: 8px; }
+  .industry-group.disabled { opacity: 0.5; pointer-events: none; }
+  .industry-note {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 8px;
+    line-height: 1.55;
+  }
+  .industry-note strong { color: var(--body); }
+
   /* 결격사유 체크리스트 */
   .checklist {
     display: flex;
@@ -433,6 +444,24 @@ export const CalculatorPage = () => {
     height: 18px;
     flex-shrink: 0;
   }
+
+  /* ★[2026.6] 결과 내 카톡 상담 유도 버튼 */
+  .consult-cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-decoration: none;
+    background: #FEE500;
+    color: #3A1D1D;
+    font-weight: 700;
+    font-size: 13.5px;
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-top: 12px;
+    transition: filter 0.15s;
+  }
+  .consult-cta:hover { filter: brightness(0.96); }
 
   /* ============================================================
      결과 영역
@@ -880,7 +909,7 @@ export const CalculatorPage = () => {
     opacity: 0;
   }
   .disq-collapsed.show {
-    max-height: 1000px;
+    max-height: 1200px;
     margin-top: 16px;
     opacity: 1;
   }
@@ -940,7 +969,7 @@ export const CalculatorPage = () => {
     <div class="hero-content">
       <div class="eyebrow">CALCULATOR</div>
       <h1>외국인 고용 가능 인원<br />한 번에 확인하세요</h1>
-      <p>회사 정보 4가지만 입력하면 F-2-R, E-7-4 (R + K-POINT), E-7-1 비자별로<br />최대 몇 명까지 보유 가능한지 즉시 알려드립니다.</p>
+      <p>회사 정보 4가지만 입력하면 F-2-R, E-7-4 (R · K-POINT), E-7-1 비자별로<br />최대 몇 명까지 보유 가능한지 즉시 알려드립니다.</p>
       <div class="hero-brand">
         <strong>행정사사무소 늘좋은</strong> · 법무부 등록 출입국민원 대행기관
       </div>
@@ -969,13 +998,33 @@ export const CalculatorPage = () => {
         <div class="region-result" id="region-result"></div>
       </div>
 
-      <div class="field" id="root-industry-field">
-        <div class="check-row" id="root-industry-row">
-          <input type="checkbox" id="root-industry" />
-          <div style="flex: 1;">
-            <label for="root-industry">우리 회사는 뿌리산업입니다</label>
-            <div class="row-help">주조·금형·소성가공·용접·열처리·표면처리 등</div>
+      {/* ★[2026.6] 뿌리산업 단일 체크박스 → 업종 특례 라디오(농축어업/뿌리산업/해당없음) */}
+      <div class="field" id="industry-field">
+        <label class="field-label">업종 특례 (해당 시 선택)
+          <span class="field-help">농축어업·뿌리산업이면 고용허용 인원 특례(50%)가 적용됩니다. 인구감소지역은 이미 특례가 적용되어 선택할 필요가 없습니다.</span>
+        </label>
+        <div class="industry-group" id="industry-row">
+          <div class="check-row">
+            <input type="radio" id="industry-none" name="industry" value="none" checked />
+            <label for="industry-none">해당 없음 (일반 업종)</label>
           </div>
+          <div class="check-row">
+            <input type="radio" id="industry-agri" name="industry" value="agri" />
+            <div style="flex: 1;">
+              <label for="industry-agri">농축어업</label>
+              <div class="row-help">농업 · 축산업 · 어업 (2026.6 시행 신규 특례)</div>
+            </div>
+          </div>
+          <div class="check-row">
+            <input type="radio" id="industry-root" name="industry" value="root" />
+            <div style="flex: 1;">
+              <label for="industry-root">뿌리산업</label>
+              <div class="row-help">주조·금형·소성가공·용접·열처리·표면처리 등</div>
+            </div>
+          </div>
+        </div>
+        <div class="industry-note">
+          <strong>※ 농축어업·뿌리산업 해당 여부는 사업주가 판단합니다.</strong> 정확한 분류는 관할 출입국 또는 행정사 상담으로 확인하세요.
         </div>
         <button type="button" class="help-toggle" id="root-help-toggle">뿌리산업이란?</button>
         <div class="help-content" id="root-help-content">
@@ -1023,10 +1072,10 @@ export const CalculatorPage = () => {
         </div>
       </div>
 
-      {/* ▼▼▼ 새로 추가된 K-POINT 보유 여부 ▼▼▼ */}
+      {/* E-7-4 K-POINT 보유 여부 */}
       <div class="field">
         <label class="field-label">현재 E-7-4 K-POINT 외국인 직원<span class="req">*</span>
-          <span class="field-help">인구감소지역 + 내국인 72명 이상이면 구간별 한도 대신 50% 특례가 적용됩니다</span>
+          <span class="field-help">E-7-4R과 K-POINT를 함께 보유 중인 경우 정확한 판단을 위해 선택해주세요</span>
         </label>
         <div class="check-row">
           <input type="radio" id="has-e74k-yes" name="has-e74k" value="yes" />
@@ -1037,7 +1086,6 @@ export const CalculatorPage = () => {
           <label for="has-e74k-no">없음</label>
         </div>
       </div>
-      {/* ▲▲▲ 새로 추가된 K-POINT 보유 여부 ▲▲▲ */}
 
     </div>
 
@@ -1051,7 +1099,7 @@ export const CalculatorPage = () => {
       <div class="step-desc">결격사유는 시간이 지나면 해소되는 경우가 많습니다. 현재 회사 상황을 점검하고 싶은 분만 펼쳐서 확인해 주세요. 체크하지 않아도 결과 확인은 정상적으로 진행됩니다.</div>
 
       <button type="button" class="disq-toggle" id="disq-toggle">
-        <span class="disq-toggle-text">결격사유 5개 항목 펼치기</span>
+        <span class="disq-toggle-text">결격사유 6개 항목 펼치기</span>
         <span class="disq-toggle-icon">▼</span>
       </button>
 
@@ -1075,6 +1123,10 @@ export const CalculatorPage = () => {
         <div class="checklist-item">
           <input type="checkbox" id="d5" class="disq" />
           <label for="d5">대표자가 성매매 · 성폭력 · 마약 관련 처벌받은 사실이 있다</label>
+        </div>
+        <div class="checklist-item">
+          <input type="checkbox" id="d6" class="disq" />
+          <label for="d6">외국인고용법 위반 등으로 고용허가 취소 또는 고용제한 조치를 받아, 현재 신규 신청이 제한된 기간에 있다</label>
         </div>
       </div>
     </div>
