@@ -565,4 +565,36 @@ app.post('/api/backup-email', async (c) => {
   }
 })
 
+// 외국인 고용 계산기 - 명단 수집 (company 테이블 저장)
+app.post('/api/company', async (c) => {
+  try {
+    const body = await c.req.json()
+
+    const baseId = 'appqZ4tJx9S4cNLLk'   // Check Visa 베이스
+    const tableId = 'tblL1r9nmkyeCJRD2'   // company 테이블
+
+    const res = await fetch(`https://api.airtable.com/v0/${baseId}/${tableId}`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${c.env.AIRTABLE_TOKEN}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ fields: body.fields })
+    })
+
+    const data = await res.json()
+
+    if (!res.ok) {
+      console.error('Airtable API 오류:', data)
+      return c.json({ success: false, error: data }, res.status)
+    }
+
+    return c.json({ success: true, data })
+
+  } catch (error) {
+    console.error('company 저장 오류:', error)
+    return c.json({ success: false, error: String(error) }, 500)
+  }
+})
+
 export default app
