@@ -635,9 +635,22 @@ function renderResults(result, input) {
     `;
   }
 
+  // ★[방안 A] 결과 하단 — 원하는 사람만 명단 남기는 선택 배너 (강제 아님)
+  html += `
+    <div class="lead-optin">
+      <div class="lead-optin-text">
+        <strong>비자·고용 관계법령, 자주 바뀝니다</strong>
+        <p>2026.6 농축어업 특례처럼 외국인 고용 기준은 수시로 개정됩니다. 이메일을 남겨두시면 <b>귀사에 영향을 주는 변경 사항을 가장 먼저</b> 안내해 드립니다. (무료 · 언제든 수신거부 가능)</p>
+      </div>
+      <button type="button" class="lead-optin-btn" id="open-lead-modal">📮 법령 변경 안내받기</button>
+    </div>
+  `;
+
   cards.innerHTML = html;
 
-  // 헤더 서브타이틀 — ★[2026.6] rootIndustry regionType 제거, 업종 라벨은 industry로
+  // 안내받기 버튼 → 모달 열기
+  const openLeadBtn = document.getElementById('open-lead-modal');
+  if (openLeadBtn) openLeadBtn.addEventListener('click', openConsentModal);
   const subtitle = document.getElementById('result-subtitle');
   let regionLabel;
   if (regionType === 'declining') regionLabel = '인구감소지역';
@@ -718,16 +731,131 @@ form.addEventListener('submit', (e) => {
   const input = { regionType, industry, koreans, foreigners, hasE9, hasE74KPoint };
   const result = calculate(input);
 
+  // ★[방안 A] 결과를 바로 공개 (벽 없음). 명단 수집은 결과 안의 '안내받기' 버튼으로 선택.
+  pendingResult = { result, input, hasDisq };
+  showResult();
+});
+
+// ============================================================
+// ★[방안 A] 선택적 명단 수집 모달 — 결과는 이미 공개됨.
+//   결과 하단 "법령 변경 안내받기" 버튼을 누른 사람만 이 모달로 정보 입력.
+//   설계: 회사명·이메일 필수 / 전화 선택 / 동의 2종 분리(개인정보 필수·광고 선택)
+// ============================================================
+let pendingResult = null; // 마지막 계산 결과 (모달 저장 시 계산결과 함께 기록용)
+
+const consentModal = document.getElementById('consent-modal');
+const consentCompany = document.getElementById('consent-company');
+const consentEmail = document.getElementById('consent-email');
+const consentPhone = document.getElementById('consent-phone');
+const consentPrivacy = document.getElementById('consent-privacy'); // 필수
+const consentMarketing = document.getElementById('consent-marketing'); // 선택
+const consentSubmitBtn = document.getElementById('consent-submit');
+const consentCancelBtn = document.getElementById('consent-cancel');
+
+function openConsentModal() {
+  if (consentModal) consentModal.style.display = 'flex';
+}
+function closeConsentModal() {
+  if (consentModal) consentModal.style.display = 'none';
+}
+
+// 실제 결과 표시 (동의 완료 후에만 호출)
+function showResult() {
+  if (!pendingResult) return;
+  const { result, input, hasDisq } = pendingResult;
   renderResults(result, input);
-
   warningBanner.style.display = hasDisq ? 'flex' : 'none';
-
   resultSection.classList.add('show');
-
   setTimeout(() => {
     resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, 100);
-});
+}
+
+// 이메일 형식 간단 검증
+function isValidEmail(v) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+}
+
+// 계산 결과를 사람이 읽을 수 있는 한 줄로 (Airtable '계산결과' 칼럼용)
+function buildResultSummary(result, input) {
+  const parts = [];
+  if (result.f2r && result.f2r.available) parts.push(`F-2-R ${result.f2r.quota}명`);
+  if (result.e74r && result.e74r.available) parts.push(`E-7-4R ${result.e74r.quota}명`);
+  if (result.e74kpoint && result.e74kpoint.available) parts.push(`K-POINT ${result.e74kpoint.quota}명`);
+  const regionLabel = input.regionType === 'declining' ? '인구감소지역'
+    : input.regionType === 'attention' ? '관심지역' : '일반지역';
+  return `[${regionLabel}] 내국인 ${input.koreans}·외국인 ${input.foreigners} / ` + (parts.join(', ') || '해당 없음');
+}
+
+// Airtable(company 테이블)로 전송 — ★ 토큰은 프록시가 처리, 여기엔 없음
+async function saveToAirtable(payload) {
+  // ⬇️⬇️⬇️ [연결 지점] checkvisa 프록시 재활용 예정. 지금은 주소만 비워둠 ⬇️⬇️⬇️
+  const PROXY_URL = ''; // 예) '/api/company-lead'  ← Cloudflare 프록시 주소를 나중에 넣음
+  // ⬆️⬆️⬆️ 이 한 줄만 나중에 채우면 저장이 켜짐 ⬆️⬆️⬆️
+
+  if (!PROXY_URL) {
+    // 아직 연결 전: 저장은 건너뛰되, 무엇이 저장될지 콘솔로 확인 (테스트용)
+    console.log('[company 저장 예정 데이터]', payload);
+    return { ok: true, skipped: true };
+  }
+  try {
+    const res = await fetch(PROXY_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    return { ok: res.ok };
+  } catch (e) {
+    console.error('저장 실패:', e);
+    return { ok: false };
+  }
+}
+
+// "안내 신청하기" 클릭 (결과는 이미 화면에 있음)
+if (consentSubmitBtn) {
+  consentSubmitBtn.addEventListener('click', async () => {
+    const company = (consentCompany.value || '').trim();
+    const email = (consentEmail.value || '').trim();
+    const phone = (consentPhone.value || '').trim();
+
+    // 검증: 회사명·이메일 필수, 개인정보 동의 필수
+    if (!company) { alert('회사명을 입력해주세요.'); consentCompany.focus(); return; }
+    if (!email || !isValidEmail(email)) { alert('이메일을 정확히 입력해주세요.'); consentEmail.focus(); return; }
+    if (!consentPrivacy.checked) { alert('개인정보 수집·이용 동의가 필요합니다.'); return; }
+
+    // 저장 페이로드 구성 (마지막 계산 결과 포함)
+    const { result, input } = pendingResult || { result: null, input: {} };
+    const payload = {
+      company,
+      email,
+      phone,                                   // 선택 (없으면 빈 값)
+      region: input.regionType || '',
+      koreans: input.koreans ?? '',
+      foreigners: input.foreigners ?? '',
+      industry: input.industry || '',
+      resultSummary: (result && input.regionType) ? buildResultSummary(result, input) : '',
+      privacyConsent: true,                    // 필수라 항상 true
+      marketingConsent: !!consentMarketing.checked, // 선택
+      source: 'calculator',                    // 유입경로
+    };
+
+    consentSubmitBtn.disabled = true;
+    consentSubmitBtn.textContent = '처리 중...';
+    await saveToAirtable(payload);
+    consentSubmitBtn.disabled = false;
+    consentSubmitBtn.textContent = '신청하기 →';
+
+    closeConsentModal();
+    alert('신청이 완료되었습니다. 비자·고용 관계법령 변경 시 안내드리겠습니다. 감사합니다.');
+  });
+}
+
+// 모달 닫기 (결과는 그대로 보임)
+if (consentCancelBtn) {
+  consentCancelBtn.addEventListener('click', () => {
+    closeConsentModal();
+  });
+}
 
 // 다시 계산
 document.getElementById('reset-btn').addEventListener('click', () => {
