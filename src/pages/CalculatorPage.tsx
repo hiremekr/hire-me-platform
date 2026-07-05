@@ -445,6 +445,186 @@ export const CalculatorPage = () => {
     flex-shrink: 0;
   }
 
+  /* ★[방안 A] 결과 하단 선택적 안내받기 배너 */
+  .lead-optin {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-soft) 100%);
+    margin: 4px 16px 12px;
+    padding: 22px 24px;
+    border-radius: 12px;
+    color: #fff;
+    text-align: center;
+  }
+  .lead-optin-text strong {
+    display: block;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #fff;
+    letter-spacing: -0.2px;
+  }
+  .lead-optin-text p {
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: #CBD5E1;
+    margin-bottom: 16px;
+  }
+  .lead-optin-text p b { color: #fff; }
+  .lead-optin-btn {
+    display: inline-block;
+    padding: 13px 26px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(247,111,76,0.3);
+    transition: background 0.15s, transform 0.1s;
+  }
+  .lead-optin-btn:hover { background: var(--accent-deep); }
+  .lead-optin-btn:active { transform: translateY(1px); }
+  @media (max-width: 480px) {
+    .lead-optin { margin-left: 12px; margin-right: 12px; }
+  }
+
+  /* ★[방안 A] 선택적 명단 수집 모달 */
+  .consent-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(8, 21, 56, 0.55);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .consent-box {
+    background: #fff;
+    border-radius: 16px;
+    padding: 28px 26px;
+    max-width: 440px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 24px 60px rgba(8, 21, 56, 0.25);
+  }
+  .consent-head { text-align: center; margin-bottom: 20px; }
+  .consent-icon { font-size: 30px; margin-bottom: 8px; }
+  .consent-head h2 {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--ink);
+    margin-bottom: 8px;
+    letter-spacing: -0.3px;
+  }
+  .consent-head p {
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .consent-field { margin-bottom: 14px; }
+  .consent-field label {
+    display: block;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .consent-field .req { color: var(--accent); }
+  .consent-field .opt { color: var(--muted); font-weight: 400; font-size: 11.5px; }
+  .consent-field input {
+    width: 100%;
+    padding: 11px 13px;
+    border: 1.5px solid var(--line);
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--ink);
+    background: #fff;
+  }
+  .consent-field input:focus {
+    outline: none;
+    border-color: var(--navy);
+    box-shadow: 0 0 0 3px rgba(15,31,77,0.08);
+  }
+  .consent-field input::placeholder { color: #94A3B8; font-size: 12.5px; }
+  .consent-agrees {
+    background: var(--bg-soft);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin: 18px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .consent-check {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    cursor: pointer;
+  }
+  .consent-check input {
+    width: 18px;
+    height: 18px;
+    margin-top: 1px;
+    accent-color: var(--navy);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .consent-check strong {
+    display: block;
+    font-size: 13px;
+    color: var(--ink);
+    font-weight: 700;
+    margin-bottom: 3px;
+  }
+  .consent-check .consent-detail {
+    display: block;
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+  .consent-actions {
+    display: flex;
+    gap: 10px;
+  }
+  .consent-btn-cancel {
+    flex: 1;
+    padding: 13px;
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+    background: #fff;
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+  }
+  .consent-btn-cancel:hover { background: var(--bg-card); }
+  .consent-btn-submit {
+    flex: 2;
+    padding: 13px;
+    border: none;
+    border-radius: 10px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(247,111,76,0.25);
+  }
+  .consent-btn-submit:hover { background: var(--accent-deep); }
+  .consent-btn-submit:disabled { background: #CBD5E1; cursor: not-allowed; box-shadow: none; }
+  .consent-foot {
+    text-align: center;
+    font-size: 11px;
+    color: #94A3B8;
+    margin-top: 14px;
+  }
+
   /* ★[2026.6] 결과 내 카톡 상담 유도 버튼 */
   .consult-cta {
     display: flex;
@@ -1135,6 +1315,55 @@ export const CalculatorPage = () => {
       비자별 보유 가능 인원 확인하기
     </button>
   </form>
+
+  {/* ============================================================
+       ★[동의 모달] 결과 확인 전 회사 정보 + 동의 수집
+       ============================================================ */}
+  <div class="consent-overlay" id="consent-modal">
+    <div class="consent-box">
+      <div class="consent-head">
+        <div class="consent-icon">📮</div>
+        <h2>법령 변경 안내 신청</h2>
+        <p>비자·외국인 고용 관계법령이 바뀔 때<br />귀사에 영향을 주는 내용을 가장 먼저 안내해 드립니다.</p>
+      </div>
+
+      <div class="consent-field">
+        <label for="consent-company">회사명 <span class="req">*</span></label>
+        <input type="text" id="consent-company" placeholder="예: (주)늘좋은" autocomplete="organization" />
+      </div>
+      <div class="consent-field">
+        <label for="consent-email">이메일 <span class="req">*</span></label>
+        <input type="email" id="consent-email" placeholder="예: hr@company.com" autocomplete="email" />
+      </div>
+      <div class="consent-field">
+        <label for="consent-phone">연락처 <span class="opt">(선택)</span></label>
+        <input type="tel" id="consent-phone" placeholder="정확한 상담·법령 변경 안내가 필요하실 때 연락드립니다" autocomplete="tel" />
+      </div>
+
+      <div class="consent-agrees">
+        <label class="consent-check">
+          <input type="checkbox" id="consent-privacy" />
+          <span>
+            <strong>(필수) 개인정보 수집·이용 동의</strong>
+            <span class="consent-detail">수집항목: 회사명, 이메일, 연락처(선택) · 목적: 법령 변경 안내 및 문의 응대 · 보관기간: 동의 철회 시 또는 목적 달성 시까지. 동의를 거부하실 수 있으며, 이 경우 안내 신청만 제한됩니다.</span>
+          </span>
+        </label>
+        <label class="consent-check">
+          <input type="checkbox" id="consent-marketing" />
+          <span>
+            <strong>(선택) 비자·고용 관계법령 변경 안내 수신 동의</strong>
+            <span class="consent-detail">비자·외국인 고용 관련 법령 변경 소식과 상담 정보를 이메일·문자로 가장 먼저 받아보실 수 있습니다. 미동의 시에도 결과 확인은 가능합니다.</span>
+          </span>
+        </label>
+      </div>
+
+      <div class="consent-actions">
+        <button type="button" class="consent-btn-cancel" id="consent-cancel">닫기</button>
+        <button type="button" class="consent-btn-submit" id="consent-submit">신청하기 →</button>
+      </div>
+      <p class="consent-foot">행정사사무소 늘좋은 · 법무부 등록 출입국민원 대행기관</p>
+    </div>
+  </div>
 
   {/* ============================================================
        결과 영역
