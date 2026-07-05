@@ -726,23 +726,15 @@ form.addEventListener('submit', (e) => {
 //   결과 하단 "법령 변경 안내받기" 버튼을 누른 사람만 이 모달로 정보 입력.
 //   설계: 회사명·이메일 필수 / 전화 선택 / 동의 2종 분리(개인정보 필수·광고 선택)
 // ============================================================
-let pendingResult = null; // 마지막 계산 결과 (모달 저장 시 계산결과 함께 기록용)
+let pendingResult = null; // 마지막 계산 결과 (신청 시 계산결과 함께 기록용)
 
-const consentModal = document.getElementById('consent-modal');
+const optinCard = document.getElementById('optin-card');
 const consentCompany = document.getElementById('consent-company');
 const consentEmail = document.getElementById('consent-email');
 const consentPhone = document.getElementById('consent-phone');
 const consentPrivacy = document.getElementById('consent-privacy'); // 필수
 const consentMarketing = document.getElementById('consent-marketing'); // 선택
 const consentSubmitBtn = document.getElementById('consent-submit');
-const consentCancelBtn = document.getElementById('consent-cancel');
-
-function openConsentModal() {
-  if (consentModal) consentModal.style.display = 'flex';
-}
-function closeConsentModal() {
-  if (consentModal) consentModal.style.display = 'none';
-}
 
 // 실제 결과 표시 (동의 완료 후에만 호출)
 function showResult() {
@@ -772,23 +764,45 @@ function buildResultSummary(result, input) {
   return `[${regionLabel}] 내국인 ${input.koreans}·외국인 ${input.foreigners} / ` + (parts.join(', ') || '해당 없음');
 }
 
-// Airtable(company 테이블)로 전송 — ★ 토큰은 프록시가 처리, 여기엔 없음
+// Airtable(company 테이블)로 전송 — ★ 토큰은 Cloudflare 프록시가 처리, 여기엔 없음
+//   기존 checkvisa 프록시(/api/alarm)를 재활용. tableType:'company'로 company 테이블에 저장.
 async function saveToAirtable(payload) {
-  // ⬇️⬇️⬇️ [연결 지점] checkvisa 프록시 재활용 예정. 지금은 주소만 비워둠 ⬇️⬇️⬇️
-  const PROXY_URL = ''; // 예) '/api/company-lead'  ← Cloudflare 프록시 주소를 나중에 넣음
-  // ⬆️⬆️⬆️ 이 한 줄만 나중에 채우면 저장이 켜짐 ⬆️⬆️⬆️
+  const PROXY_URL = '/api/alarm'; // 셀프비자와 동일한 프록시 (tableType으로 테이블 구분)
 
-  if (!PROXY_URL) {
-    // 아직 연결 전: 저장은 건너뛰되, 무엇이 저장될지 콘솔로 확인 (테스트용)
-    console.log('[company 저장 예정 데이터]', payload);
-    return { ok: true, skipped: true };
-  }
+  // 지역/업종 코드를 사람이 읽는 한글로 변환 (Airtable 저장용)
+  const regionLabel = payload.region === 'declining' ? '인구감소지역'
+    : payload.region === 'attention' ? '인구감소관심지역'
+    : payload.region === 'general' ? '일반지역' : '';
+  const industryLabel = payload.industry === 'agri' ? '농축어업'
+    : payload.industry === 'root' ? '뿌리산업'
+    : payload.industry === 'none' ? '해당없음' : '';
+
+  // ★ 필드 이름을 company 테이블의 실제 열 이름과 정확히 일치시킴
+  const body = {
+    tableType: 'company', // ← 프록시가 company 테이블(tblL1r9nmkyeCJRD2)로 라우팅
+    fields: {
+      'Company Name': payload.company,
+      'Email': payload.email,
+      'Phone (optional)': payload.phone || '',
+      '소재지': regionLabel,
+      '내국인수': (payload.koreans === '' ? null : Number(payload.koreans)),
+      '외국인수': (payload.foreigners === '' ? null : Number(payload.foreigners)),
+      '계산결과': payload.resultSummary || '',
+      '업종': industryLabel,
+      '개인정보동의': !!payload.privacyConsent,
+      '광고수신동의': !!payload.marketingConsent,
+      '유입경로': payload.source || 'calculator',
+      // '동의일시'는 Airtable가 자동 기록 (Created time)
+    },
+  };
+
   try {
     const res = await fetch(PROXY_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
+      body: JSON.stringify(body),
     });
+    if (!res.ok) console.error('저장 실패 (서버 응답):', res.status);
     return { ok: res.ok };
   } catch (e) {
     console.error('저장 실패:', e);
@@ -826,19 +840,24 @@ if (consentSubmitBtn) {
 
     consentSubmitBtn.disabled = true;
     consentSubmitBtn.textContent = '처리 중...';
-    await saveToAirtable(payload);
-    consentSubmitBtn.disabled = false;
-    consentSubmitBtn.textContent = '신청하기 →';
+    const saveRes = await saveToAirtable(payload);
 
-    closeConsentModal();
-    alert('신청이 완료되었습니다. 비자·고용 관계법령 변경 시 안내드리겠습니다. 감사합니다.');
-  });
-}
-
-// 모달 닫기 (결과는 그대로 보임)
-if (consentCancelBtn) {
-  consentCancelBtn.addEventListener('click', () => {
-    closeConsentModal();
+    if (saveRes && saveRes.ok) {
+      // 폼을 완료 메시지로 교체 (인라인이라 모달처럼 닫지 않음)
+      if (optinCard) {
+        optinCard.classList.add('done');
+        optinCard.innerHTML = `
+          <div style="text-align:center; padding:8px 0;">
+            <div style="font-size:34px; margin-bottom:10px;">✅</div>
+            <h3 style="font-size:17px; font-weight:800; color:#fff; margin-bottom:8px;">신청이 완료되었습니다</h3>
+            <p style="font-size:12.5px; color:#CBD5E1; line-height:1.65;">비자·고용 관계법령이 바뀌면 <b style="color:#fff;">${company}</b> 님께 가장 먼저 안내해 드리겠습니다.<br />감사합니다.</p>
+          </div>`;
+      }
+    } else {
+      consentSubmitBtn.disabled = false;
+      consentSubmitBtn.textContent = '📮 최신 정보 신청하기';
+      alert('일시적으로 신청 처리에 실패했습니다. 잠시 후 다시 시도해 주세요.');
+    }
   });
 }
 
@@ -871,7 +890,3 @@ disqToggle.addEventListener('click', () => {
     ? '결격사유 항목 접기'
     : '결격사유 6개 항목 펼치기'; // ★[2026.6] 5개→6개 통일
 });
-
-// ★[방안 A] CTA 카드의 "최신 정보 받아보기" 버튼 → 명단 수집 모달 열기
-const openLeadBtn = document.getElementById('open-lead-modal');
-if (openLeadBtn) openLeadBtn.addEventListener('click', openConsentModal);
