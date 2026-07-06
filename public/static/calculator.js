@@ -18,6 +18,8 @@
 
 // ★[2026.6] 상담 연결 — 대표번호 개통 후 이 상수만 교체하면 전체 반영됨
 const CONSULT_KAKAO_URL = 'http://pf.kakao.com/_pPxnFxj/chat';
+// ★[대표번호] 1660-1345 (LG U+ 전국대표번호, 표준형 ARS) — 2026.7 개통
+const CONSULT_TEL = '1660-1345';
 
 // ============================================================
 // 시·군·구 데이터 (89 + 18 = 107)  — 변경 없음
@@ -581,30 +583,33 @@ function renderResults(result, input) {
   }
 
   // ---------- E-7-1 ----------
-  if (result.e71.special) {
-    html += `
-      <div class="visa-card">
-        <div class="visa-head">
-          <div class="visa-name">E-7-1 <span class="visa-name-sub">(전문인력 · 단순노무 금지)</span></div>
-          <div class="visa-quota">최대 <span class="num">1~2</span>명</div>
+  // ★[변경] 농축어업은 E-7-1(전문인력)과 무관 → 농축어업 결과에서는 E-7-1 카드 제외
+  if (industry !== 'agri') {
+    if (result.e71.special) {
+      html += `
+        <div class="visa-card">
+          <div class="visa-head">
+            <div class="visa-name">E-7-1 <span class="visa-name-sub">(전문인력 · 단순노무 금지)</span></div>
+            <div class="visa-quota">최대 <span class="num">1~2</span>명</div>
+          </div>
+          <div class="visa-desc">전문인력 비자. 한국인 직원이 0명인 경우 직종 코드별로 별도 검토가 필요하며, 동일 직종 코드로 일반적으로 1~2명까지 가능합니다.</div>
         </div>
-        <div class="visa-desc">전문인력 비자. 한국인 직원이 0명인 경우 직종 코드별로 별도 검토가 필요하며, 동일 직종 코드로 일반적으로 1~2명까지 가능합니다.</div>
-      </div>
-    `;
-  } else {
-    const calcMax = result.e71.calcMax;
-    const desc = calcMax > 2
-      ? `전문인력 비자. 일반 직종은 내국인의 20% (계산값 ${calcMax}명) 권장이며, 내국인 보호 직종은 20% 강제 + 정밀 심사 대상입니다. 다만 <strong>실무상 동일 직종 코드로 1~2명</strong> 정도가 일반적이며, 그 이상은 상당한 사유가 필요합니다.`
-      : `전문인력 비자. 일반 직종은 내국인의 20% 권장, 내국인 보호 직종은 20% 강제 + 정밀 심사 대상입니다. 동일 직종 코드로 일반적으로 1~2명까지 가능합니다.`;
-    html += `
-      <div class="visa-card">
-        <div class="visa-head">
-          <div class="visa-name">E-7-1 <span class="visa-name-sub">(전문인력 · 단순노무 금지)</span></div>
-          <div class="visa-quota">최대 <span class="num">1~2</span>명</div>
+      `;
+    } else {
+      const calcMax = result.e71.calcMax;
+      const desc = calcMax > 2
+        ? `전문인력 비자. 일반 직종은 내국인의 20% (계산값 ${calcMax}명) 권장이며, 내국인 보호 직종은 20% 강제 + 정밀 심사 대상입니다. 다만 <strong>실무상 동일 직종 코드로 1~2명</strong> 정도가 일반적이며, 그 이상은 상당한 사유가 필요합니다.`
+        : `전문인력 비자. 일반 직종은 내국인의 20% 권장, 내국인 보호 직종은 20% 강제 + 정밀 심사 대상입니다. 동일 직종 코드로 일반적으로 1~2명까지 가능합니다.`;
+      html += `
+        <div class="visa-card">
+          <div class="visa-head">
+            <div class="visa-name">E-7-1 <span class="visa-name-sub">(전문인력 · 단순노무 금지)</span></div>
+            <div class="visa-quota">최대 <span class="num">1~2</span>명</div>
+          </div>
+          <div class="visa-desc">${desc}</div>
         </div>
-        <div class="visa-desc">${desc}</div>
-      </div>
-    `;
+      `;
+    }
   }
 
   // ---------- 배우자 비자 안내 ----------
